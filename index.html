@@ -181,20 +181,25 @@ open(`<h2>Lend “${esc(b.title)}”</h2><label for="l-s">Student</label><select
 dlg.onclick=e=>{if(e.target.dataset.close!==undefined)return closeDlg();if(e.target.dataset.x==="ok"){const d=Math.max(1,+$("#l-d").value||14);
 const loan={sid:$("#l-s").value,date:Date.now(),due:Date.now()+d*day};saveBook({...b,loan});closeDlg();toast("Lent to "+stu(loan.sid).name+".")}}}
 function giveBack(id){const b=S.books.find(x=>x.id===id);saveBook({...b,loan:null});toast("Returned. Book is available again.")}
+function validISBN(c){c=String(c).replace(/[-\s]/g,"");
+if(/^97[89]\d{10}$/.test(c)){let t=0;for(let i=0;i<12;i++)t+=(+c[i])*(i%2?3:1);return (10-t%10)%10===+c[12]}
+if(/^\d{9}[\dX]$/.test(c)){let t=0;for(let i=0;i<9;i++)t+=(+c[i])*(10-i);t+=c[9]==="X"?10:+c[9];return t%11===0}
+return false}
+const okCode=c=>validISBN(c)||S.books.some(b=>b.isbn===c);
 let stream=null,scanning=false,zxr=null;
 async function scan(cb,keep){
 if(!navigator.mediaDevices){toast("The camera needs a secure page. Open the app from its https:// address.");return}
-open(`<h2>Scan barcode</h2><video id="vid" playsinline muted></video><div class="note">Point the camera at the barcode on the back of the book.</div><div class="row"><button class="b alt" data-close>Cancel</button></div>`);
+open(`<h2>Scan barcode</h2><video id="vid" playsinline muted></video><div class="note">Point the camera at the long barcode on the back cover, the one with the number starting 978 or 979.</div><div class="row"><button class="b alt" data-close>Cancel</button></div>`);
 dlg.onclick=e=>{if(e.target.dataset.close!==undefined)closeDlg()};
 try{const v=$("#vid");scanning=true;
 if("BarcodeDetector" in window){
 stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:"environment"}});v.srcObject=stream;await v.play();
 const det=new BarcodeDetector({formats:["ean_13","ean_8","upc_a","code_128","qr_code"]});
-const loop=async()=>{if(!scanning)return;try{const r=await det.detect(v);if(r.length){const code=r[0].rawValue;stopScan();dlg.close();cb(code);return}}catch(e){}requestAnimationFrame(loop)};loop()
+const loop=async()=>{if(!scanning)return;try{const r=await det.detect(v);const hit=r.find(x=>okCode(x.rawValue));if(hit){const code=hit.rawValue;stopScan();dlg.close();cb(code);return}}catch(e){}requestAnimationFrame(loop)};loop()
 }else{
 if(!window.ZXing)throw new Error("scanner library missing");
 zxr=new ZXing.BrowserMultiFormatReader();
-await zxr.decodeFromConstraints({video:{facingMode:"environment"}},v,res=>{if(res&&scanning){const code=res.getText();stopScan();dlg.close();cb(code)}})}
+await zxr.decodeFromConstraints({video:{facingMode:"environment"}},v,res=>{if(res&&scanning){const code=res.getText();if(okCode(code)){stopScan();dlg.close();cb(code)}}})}
 }catch(e){toast("Camera could not start. Allow camera access and check your internet connection, then try again.");closeDlg()}}
 function stopScan(){scanning=false;if(zxr){try{zxr.reset()}catch(e){}zxr=null}if(stream){stream.getTracks().forEach(t=>t.stop());stream=null}}
 dlg.addEventListener("close",stopScan);
