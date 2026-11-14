@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Shelfmark – School Library Inventory</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#eef3f5;--surf:#fff;--ink:#14202b;--mute:#5b6b78;--line:#d3dde3;--spine:#1e5b4f;--onspine:#fff;--out:#c77d0a;--outbg:#fdf0d8;--ok:#1e5b4f;--okbg:#dcefe9;--bad:#b3261e;color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f1a20;--surf:#182630;--ink:#e8f0f3;--mute:#93a5b1;--line:#2b3d49;--spine:#3aa58f;--onspine:#06231d;--out:#f0b04a;--outbg:#3a2c10;--ok:#7fd6c3;--okbg:#14332c;--bad:#ff8a80;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0f1a20;--surf:#182630;--ink:#e8f0f3;--mute:#93a5b1;--line:#2b3d49;--spine:#3aa58f;--onspine:#06231d;--out:#f0b04a;--outbg:#3a2c10;--ok:#7fd6c3;--okbg:#14332c;--bad:#ff8a80;color-scheme:dark}
+*{box-sizing:border-box}html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.45 "Bricolage Grotesque",system-ui,-apple-system,"Segoe UI",sans-serif}
+header{background:var(--spine);color:var(--onspine);padding:18px 16px 0;position:sticky;top:env(safe-area-inset-top,0px);z-index:5}
+h1{margin:0 0 2px;font-size:26px;font-weight:800;letter-spacing:-.5px}
+header p{margin:0 0 12px;opacity:.85;font-size:14px}
+nav{display:flex;gap:4px;max-width:760px;margin:0 auto}
+nav button{flex:1;background:transparent;border:0;color:inherit;opacity:.75;font:600 15px inherit;font-family:inherit;padding:10px 4px;border-bottom:4px solid transparent;cursor:pointer}
+nav button[aria-selected=true]{opacity:1;border-color:var(--onspine)}
+.wrap{max-width:760px;margin:0 auto}
+header .wrap{padding:0}
+main{max-width:760px;margin:0 auto;padding:16px}
+.bar{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap}
+input,select{font:inherit;color:var(--ink);background:var(--surf);border:1.5px solid var(--line);border-radius:8px;padding:10px 12px;width:100%}
+.bar input{flex:1;min-width:150px;width:auto}
+button.b{font:600 15px inherit;font-family:inherit;border:0;border-radius:8px;padding:10px 14px;cursor:pointer;background:var(--spine);color:var(--onspine)}
+button.b.alt{background:transparent;color:var(--ink);border:1.5px solid var(--line)}
+button.b.danger{background:transparent;color:var(--bad);border:1.5px solid var(--line)}
+button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid var(--out);outline-offset:2px}
+.card{background:var(--surf);border:1px solid var(--line);border-left:8px solid var(--spine);border-radius:6px;padding:12px;margin-bottom:10px;display:flex;gap:12px;align-items:center}
+.card.out{border-left-color:var(--out)}
+.cov{width:46px;height:64px;border-radius:3px;background:var(--line);object-fit:cover;flex:none}
+.info{flex:1;min-width:0}
+.t{font-weight:600}.s{color:var(--mute);font-size:14px}
+.tag{display:inline-block;font-size:13px;font-weight:600;padding:2px 8px;border-radius:99px;background:var(--okbg);color:var(--ok)}
+.tag.out{background:var(--outbg);color:var(--out)}.tag.late{background:var(--bad);color:#fff}
+.empty{text-align:center;color:var(--mute);padding:36px 12px;border:2px dashed var(--line);border-radius:8px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px}
+.stats div{background:var(--surf);border:1px solid var(--line);border-radius:6px;padding:10px;text-align:center}
+.stats b{display:block;font-size:24px}.stats span{font-size:13px;color:var(--mute)}
+dialog{border:0;border-radius:12px;padding:18px;width:min(440px,92vw);background:var(--surf);color:var(--ink)}
+dialog::backdrop{background:rgba(0,0,0,.5)}
+dialog h2{margin:0 0 12px;font-size:20px}
+label{display:block;font-weight:600;font-size:14px;margin:10px 0 4px}
+.row{display:flex;gap:8px;margin-top:16px;justify-content:flex-end;flex-wrap:wrap}
+video{width:100%;border-radius:8px;background:#000;max-height:50vh}
+.note{font-size:13px;color:var(--mute);margin-top:6px}
+.hide{display:none!important}
+#out{position:absolute;top:14px;right:16px;background:transparent;color:inherit;border:1.5px solid currentColor;padding:6px 10px;font-size:13px}
+.login{max-width:380px;margin:8vh auto;padding:0 16px}
+.login form{background:var(--surf);border:1px solid var(--line);border-radius:12px;padding:20px}
+#toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:8px;opacity:0;pointer-events:none;transition:opacity .2s;z-index:20;max-width:90vw}
+#toast.on{opacity:1}
+@media (prefers-reduced-motion:reduce){#toast{transition:none}}
+</style>
+</head>
+<body>
+<header id="hdr"><div class="wrap" style="padding:0 16px">
+<button class="b" id="out">Sign out</button><h1>Shelfmark</h1><p>School library inventory</p>
+<nav role="tablist"><button role="tab" data-tab="books">Books</button><button role="tab" data-tab="students">Students</button><button role="tab" data-tab="loans">Borrowed</button></nav>
+</div></header>
+<section id="login" class="login"><form id="lf"><h2>Shelfmark: teacher sign in</h2>
+<label for="em">Email</label><input id="em" type="email" autocomplete="username" required>
+<label for="pw">Password</label><input id="pw" type="password" autocomplete="current-password" required>
+<div class="note" id="lerr" role="alert"></div><div class="row"><button class="b" type="submit">Sign in</button></div></form></section>
+<main id="main"></main>
+<dialog id="dlg"></dialog>
+<div id="toast" role="status"></div>
+<script src="https://cdn.jsdelivr.net/npm/@zxing/library@0.21.3/umd/index.min.js"></script>
+<script type="module">
+import {initializeApp} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import {getAuth,onAuthStateChanged,signInWithEmailAndPassword,signOut} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import {initializeFirestore,persistentLocalCache,collection,doc,setDoc,deleteDoc,onSnapshot} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+/* ===== PASTE YOUR FIREBASE SETTINGS HERE (from Project settings > Your apps > Web app) ===== */
+const firebaseConfig={
+  apiKey:"AIzaSyC3HAYuurEz1TX9TYketlIUlatmSNmLf0Y",
+  authDomain:"school-library-ca0fa.firebaseapp.com",
+  projectId:"school-library-ca0fa",
+  storageBucket:"school-library-ca0fa.firebasestorage.app",
+  messagingSenderId:"234913600017",
+  appId:"1:234913600017:web:60b1a5f0f5bebd0b7557b0"
+};
+/* ========================================================================================= */
+
+let S={books:[],students:[]},tab="books",q="",unsubs=[],db,auth;
+const configured=!firebaseConfig.apiKey.startsWith("PASTE");
+if(configured){const app=initializeApp(firebaseConfig);auth=getAuth(app);db=initializeFirestore(app,{localCache:persistentLocalCache()})}
+const clean=o=>JSON.parse(JSON.stringify(o));
+const fail=e=>toast("Could not save: "+(e.code||e.message));
+const saveBook=b=>setDoc(doc(db,"books",b.id),clean(b)).catch(fail);
+const delBook=id=>deleteDoc(doc(db,"books",id)).catch(fail);
+const saveStu=x=>setDoc(doc(db,"students",x.id),clean(x)).catch(fail);
+const delStu=id=>deleteDoc(doc(db,"students",id)).catch(fail);
+function startSync(){stopSync();unsubs=[
+onSnapshot(collection(db,"books"),r=>{S.books=r.docs.map(d=>d.data()).sort((a,b)=>(b.addedAt||0)-(a.addedAt||0));render()},fail),
+onSnapshot(collection(db,"students"),r=>{S.students=r.docs.map(d=>d.data()).sort((a,b)=>a.name.localeCompare(b.name));render()},fail)]}
+function stopSync(){unsubs.forEach(f=>f());unsubs=[]}
+const $=s=>document.querySelector(s),uid=()=>Math.random().toString(36).slice(2,10);
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const dlg=$("#dlg");
+function toast(m){const t=$("#toast");t.textContent=m;t.classList.add("on");clearTimeout(t._h);t._h=setTimeout(()=>t.classList.remove("on"),2600)}
+const day=86400000,fmt=d=>new Date(d).toLocaleDateString(undefined,{day:"numeric",month:"short"});
+const stu=id=>S.students.find(s=>s.id===id);
+function status(b){if(!b.loan)return'<span class="tag">Available</span>';const s=stu(b.loan.sid),late=Date.now()>b.loan.due;
+return`<span class="tag ${late?"late":"out"}">${late?"Overdue":"Borrowed"}</span> <span class="s">${esc(s?s.name:"Unknown student")} · due ${fmt(b.loan.due)}</span>`}
+function bookCard(b){return`<div class="card ${b.loan?"out":""}">${b.cover?`<img class="cov" alt="" src="${b.cover}">`:'<div class="cov"></div>'}
+<div class="info"><div class="t">${esc(b.title)}</div><div class="s">${esc(b.author||"Author not set")}${b.isbn?" · "+esc(b.isbn):""}</div><div>${status(b)}</div></div>
+<button class="b ${b.loan?"alt":""}" data-act="${b.loan?"return":"borrow"}" data-id="${b.id}">${b.loan?"Return":"Lend"}</button>
+<button class="b alt" data-act="editbook" data-id="${b.id}" aria-label="Edit ${esc(b.title)}">Edit</button></div>`}
+function render(){
+document.querySelectorAll("nav button").forEach(b=>b.setAttribute("aria-selected",b.dataset.tab===tab));
+const m=$("#main");
+if(tab==="books"){
+const f=S.books.filter(b=>(b.title+" "+(b.author||"")+" "+(b.isbn||"")).toLowerCase().includes(q.toLowerCase()));
+const out=S.books.filter(b=>b.loan).length;
+m.innerHTML=`<div class="stats"><div><b>${S.books.length}</b><span>Books</span></div><div><b>${S.books.length-out}</b><span>Available</span></div><div><b>${out}</b><span>Borrowed</span></div></div>
+<div class="bar"><input id="q" type="search" placeholder="Search title, author or barcode" value="${esc(q)}" aria-label="Search books"><button class="b" data-act="scanfind">Scan</button><button class="b" data-act="addbook">Add book</button></div>
+${f.length?f.map(bookCard).join(""):`<div class="empty">${S.books.length?"No books match your search.":"No books yet. Select Add book to register the first one."}</div>`}`;
+const qi=$("#q");qi.addEventListener("input",e=>{q=e.target.value;const p=e.target.selectionStart;render();const n=$("#q");n.focus();n.setSelectionRange(p,p)});
+}else if(tab==="students"){
+m.innerHTML=`<div class="bar"><button class="b" data-act="addstu">Add student</button></div>`+(S.students.length?S.students.map(s=>{const n=S.books.filter(b=>b.loan&&b.loan.sid===s.id);
+return`<div class="card ${n.length?"out":""}"><div class="info"><div class="t">${esc(s.name)}</div><div class="s">${esc(s.cls||"No class set")}</div><div class="s">${n.length?n.map(b=>esc(b.title)).join(", "):"No books borrowed"}</div></div><button class="b alt" data-act="editstu" data-id="${s.id}">Edit</button></div>`}).join(""):`<div class="empty">No students yet. Add students so you can lend books to them.</div>`);
+}else{
+const o=S.books.filter(b=>b.loan).sort((a,b)=>a.loan.due-b.loan.due);
+m.innerHTML=o.length?o.map(bookCard).join(""):`<div class="empty">Nothing is borrowed right now.</div>`}}
+document.addEventListener("click",e=>{
+const t=e.target.closest("[data-tab]");if(t){tab=t.dataset.tab;render();return}
+const a=e.target.closest("[data-act]");if(!a)return;const id=a.dataset.id;
+({addbook:()=>bookForm(),editbook:()=>bookForm(S.books.find(b=>b.id===id)),borrow:()=>lend(id),return:()=>giveBack(id),
+addstu:()=>stuForm(),editstu:()=>stuForm(stu(id)),scanfind:()=>scan(code=>{const b=S.books.find(x=>x.isbn===code);if(b){q=code;render();toast("Found: "+b.title)}else{toast("No book with barcode "+code+". Add it first.");bookForm(null,code)}})})[a.dataset.act]?.()});
+function open(html){dlg.innerHTML=html;if(!dlg.open)dlg.showModal()}
+dlg.addEventListener("click",e=>{if(e.target.dataset.close!==undefined)closeDlg()});
+function closeDlg(){stopScan();dlg.close()}
+let coverData=null;
+function bookForm(b,isbn){coverData=b?b.cover:null;
+open(`<h2>${b?"Edit book":"Add book"}</h2>
+<label for="f-cover">Cover photo</label><input id="f-cover" type="file" accept="image/*" capture="environment">
+<div class="note">Take a photo of the cover. It is saved with the book so you can recognize it later.</div>
+<img id="prev" class="cov" style="width:70px;height:96px;margin-top:8px;${coverData?"":"display:none"}" alt="Cover preview" ${coverData?`src="${coverData}"`:""}>
+<label for="f-title">Title</label><input id="f-title" value="${esc(b?.title)}">
+<label for="f-author">Author</label><input id="f-author" value="${esc(b?.author)}">
+<label for="f-isbn">Barcode (ISBN)</label><div class="bar" style="margin:0"><input id="f-isbn" value="${esc(isbn||b?.isbn||"")}" inputmode="numeric"><button class="b alt" data-x="scan">Scan</button><button class="b alt" data-x="lookup">Look up</button></div><div class="note" id="lk"></div>
+<div class="row">${b&&b.id?'<button class="b danger" data-x="del">Delete</button>':""}<button class="b alt" data-close>Cancel</button><button class="b" data-x="save">Save book</button></div>`);
+if(isbn&&!(b&&b.title))autoLookup(isbn);
+$("#f-cover").onchange=async e=>{const f=e.target.files[0];if(!f)return;coverData=await shrink(f);const p=$("#prev");p.src=coverData;p.style.display="block"};
+dlg.onclick=e=>{const x=e.target.dataset.x;if(e.target.dataset.close!==undefined)return closeDlg();
+if(x==="scan"){const keep={...(b||{}),title:$("#f-title").value,author:$("#f-author").value,id:b?.id,cover:coverData,loan:b?.loan};scan(c=>bookForm(keep,c))}
+if(x==="lookup")autoLookup($("#f-isbn").value.trim());
+if(x==="save"){const title=$("#f-title").value.trim();if(!title){toast("Enter a title first.");return}
+const d={title,author:$("#f-author").value.trim(),isbn:$("#f-isbn").value.trim(),cover:coverData};
+const ex=b&&b.id&&S.books.find(z=>z.id===b.id);
+saveBook(ex?{...ex,...d}:{id:uid(),loan:null,addedAt:Date.now(),...d});closeDlg();toast("Book saved.")}
+if(x==="del"&&confirm("Delete this book from the inventory?")){delBook(b.id);closeDlg()}}}
+async function lookupISBN(isbn){
+try{const r=await fetch(`https://openlibrary.org/api/books?bibkeys=ISBN:${isbn}&format=json&jscmd=data`);const d=(await r.json())["ISBN:"+isbn];
+if(d)return{title:d.title+(d.subtitle?": "+d.subtitle:""),author:(d.authors||[]).map(a=>a.name).join(", "),cover:d.cover?.medium||""}}catch(e){}
+try{const r=await fetch(`https://www.googleapis.com/books/v1/volumes?q=isbn:${isbn}`);const v=(await r.json()).items?.[0]?.volumeInfo;
+if(v)return{title:v.title,author:(v.authors||[]).join(", "),cover:(v.imageLinks?.thumbnail||"").replace("http://","https://")}}catch(e){}
+return null}
+async function autoLookup(isbn){
+const lk=$("#lk");if(!/^\d{8,13}$/.test(isbn)){if(lk)lk.textContent="Enter the barcode digits first (8 to 13 numbers).";return}
+if(lk)lk.textContent="Looking up this book…";
+const r=await lookupISBN(isbn);if(!$("#f-title"))return;
+if(!r){$("#lk").textContent="Book not found online. Type the title and author yourself.";return}
+if(!$("#f-title").value)$("#f-title").value=r.title||"";if(!$("#f-author").value)$("#f-author").value=r.author||"";
+if(r.cover&&!coverData){coverData=r.cover;const p=$("#prev");p.src=r.cover;p.style.display="block"}
+$("#lk").textContent="Found. Check the details, then save."}
+function shrink(file){return new Promise(res=>{const i=new Image(),u=URL.createObjectURL(file);i.onload=()=>{const r=Math.min(1,240/i.width),c=document.createElement("canvas");c.width=i.width*r;c.height=i.height*r;c.getContext("2d").drawImage(i,0,0,c.width,c.height);URL.revokeObjectURL(u);res(c.toDataURL("image/jpeg",.7))};i.src=u})}
+function stuForm(s){open(`<h2>${s?"Edit student":"Add student"}</h2><label for="s-name">Name</label><input id="s-name" value="${esc(s?.name)}"><label for="s-cls">Class</label><input id="s-cls" value="${esc(s?.cls)}" placeholder="For example, 7B">
+<div class="row">${s?'<button class="b danger" data-x="del">Delete</button>':""}<button class="b alt" data-close>Cancel</button><button class="b" data-x="save">Save student</button></div>`);
+dlg.onclick=e=>{const x=e.target.dataset.x;if(e.target.dataset.close!==undefined)return closeDlg();
+if(x==="save"){const name=$("#s-name").value.trim();if(!name){toast("Enter the student's name.");return}
+saveStu(s?{...s,name,cls:$("#s-cls").value.trim()}:{id:uid(),name,cls:$("#s-cls").value.trim()});closeDlg()}
+if(x==="del"){if(S.books.some(b=>b.loan&&b.loan.sid===s.id)){toast("Return this student's books before deleting.");return}if(confirm("Delete this student?")){delStu(s.id);closeDlg()}}}}
+function lend(id){const b=S.books.find(x=>x.id===id);
+if(!S.students.length){toast("Add a student first.");tab="students";render();return}
+open(`<h2>Lend “${esc(b.title)}”</h2><label for="l-s">Student</label><select id="l-s">${S.students.map(s=>`<option value="${s.id}">${esc(s.name)}${s.cls?" ("+esc(s.cls)+")":""}</option>`).join("")}</select>
+<label for="l-d">Days to keep it</label><input id="l-d" type="number" min="1" value="14">
+<div class="row"><button class="b alt" data-close>Cancel</button><button class="b" data-x="ok">Lend book</button></div>`);
+dlg.onclick=e=>{if(e.target.dataset.close!==undefined)return closeDlg();if(e.target.dataset.x==="ok"){const d=Math.max(1,+$("#l-d").value||14);
+const loan={sid:$("#l-s").value,date:Date.now(),due:Date.now()+d*day};saveBook({...b,loan});closeDlg();toast("Lent to "+stu(loan.sid).name+".")}}}
+function giveBack(id){const b=S.books.find(x=>x.id===id);saveBook({...b,loan:null});toast("Returned. Book is available again.")}
+let stream=null,scanning=false,zxr=null;
+async function scan(cb,keep){
+if(!navigator.mediaDevices){toast("The camera needs a secure page. Open the app from its https:// address.");return}
+open(`<h2>Scan barcode</h2><video id="vid" playsinline muted></video><div class="note">Point the camera at the barcode on the back of the book.</div><div class="row"><button class="b alt" data-close>Cancel</button></div>`);
+dlg.onclick=e=>{if(e.target.dataset.close!==undefined)closeDlg()};
+try{const v=$("#vid");scanning=true;
+if("BarcodeDetector" in window){
+stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:"environment"}});v.srcObject=stream;await v.play();
+const det=new BarcodeDetector({formats:["ean_13","ean_8","upc_a","code_128","qr_code"]});
+const loop=async()=>{if(!scanning)return;try{const r=await det.detect(v);if(r.length){const code=r[0].rawValue;stopScan();dlg.close();cb(code);return}}catch(e){}requestAnimationFrame(loop)};loop()
+}else{
+if(!window.ZXing)throw new Error("scanner library missing");
+zxr=new ZXing.BrowserMultiFormatReader();
+await zxr.decodeFromConstraints({video:{facingMode:"environment"}},v,res=>{if(res&&scanning){const code=res.getText();stopScan();dlg.close();cb(code)}})}
+}catch(e){toast("Camera could not start. Allow camera access and check your internet connection, then try again.");closeDlg()}}
+function stopScan(){scanning=false;if(zxr){try{zxr.reset()}catch(e){}zxr=null}if(stream){stream.getTracks().forEach(t=>t.stop());stream=null}}
+dlg.addEventListener("close",stopScan);
+const loginEl=$("#login"),hdr=$("#hdr"),mainEl=$("#main");
+function showApp(on){loginEl.classList.toggle("hide",on);hdr.classList.toggle("hide",!on);mainEl.classList.toggle("hide",!on)}
+showApp(false);
+if(!configured){$("#lerr").textContent="Firebase is not set up yet. Paste your Firebase settings into the marked section at the top of the script in this file."}
+else{
+onAuthStateChanged(auth,u=>{if(u){showApp(true);startSync();render()}else{stopSync();S={books:[],students:[]};showApp(false)}});
+$("#lf").addEventListener("submit",async e=>{e.preventDefault();$("#lerr").textContent="";
+try{await signInWithEmailAndPassword(auth,$("#em").value.trim(),$("#pw").value)}
+catch(err){$("#lerr").textContent=["auth/invalid-credential","auth/wrong-password","auth/user-not-found"].includes(err.code)?"Wrong email or password.":"Could not sign in: "+err.code}});
+$("#out").addEventListener("click",()=>signOut(auth));
+}
+</script>
+</body>
+</html>
