@@ -67,10 +67,11 @@ video{width:100%;border-radius:8px;background:#000;max-height:50vh}
 <dialog id="dlg"></dialog>
 <div id="toast" role="status"></div>
 <script src="https://cdn.jsdelivr.net/npm/@zxing/library@0.21.3/umd/index.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script type="module">
 import {initializeApp} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import {getAuth,onAuthStateChanged,signInWithEmailAndPassword,signOut} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-import {initializeFirestore,persistentLocalCache,collection,doc,setDoc,deleteDoc,onSnapshot} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import {initializeFirestore,persistentLocalCache,collection,doc,setDoc,deleteDoc,onSnapshot,writeBatch} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 /* ===== PASTE YOUR FIREBASE SETTINGS HERE (from Project settings > Your apps > Web app) ===== */
 const firebaseConfig={
@@ -115,7 +116,7 @@ if(tab==="books"){
 const f=S.books.filter(b=>(b.title+" "+(b.author||"")+" "+(b.isbn||"")).toLowerCase().includes(q.toLowerCase()));
 const out=S.books.filter(b=>b.loan).length;
 m.innerHTML=`<div class="stats"><div><b>${S.books.length}</b><span>Books</span></div><div><b>${S.books.length-out}</b><span>Available</span></div><div><b>${out}</b><span>Borrowed</span></div></div>
-<div class="bar"><input id="q" type="search" placeholder="Search title, author or barcode" value="${esc(q)}" aria-label="Search books"><button class="b" data-act="scanfind">Scan</button><button class="b" data-act="addbook">Add book</button></div>
+<div class="bar"><input id="q" type="search" placeholder="Search title, author or barcode" value="${esc(q)}" aria-label="Search books"><button class="b" data-act="scanfind">Scan</button><button class="b alt" data-act="import">Import</button><button class="b" data-act="addbook">Add book</button></div>
 ${f.length?f.map(bookCard).join(""):`<div class="empty">${S.books.length?"No books match your search.":"No books yet. Select Add book to register the first one."}</div>`}`;
 const qi=$("#q");qi.addEventListener("input",e=>{q=e.target.value;const p=e.target.selectionStart;render();const n=$("#q");n.focus();n.setSelectionRange(p,p)});
 }else if(tab==="students"){
@@ -127,7 +128,7 @@ m.innerHTML=o.length?o.map(bookCard).join(""):`<div class="empty">Nothing is bor
 document.addEventListener("click",e=>{
 const t=e.target.closest("[data-tab]");if(t){tab=t.dataset.tab;render();return}
 const a=e.target.closest("[data-act]");if(!a)return;const id=a.dataset.id;
-({addbook:()=>bookForm(),editbook:()=>bookForm(S.books.find(b=>b.id===id)),borrow:()=>lend(id),return:()=>giveBack(id),
+({addbook:()=>bookForm(),import:()=>importDlg(),editbook:()=>bookForm(S.books.find(b=>b.id===id)),borrow:()=>lend(id),return:()=>giveBack(id),
 addstu:()=>stuForm(),editstu:()=>stuForm(stu(id)),scanfind:()=>scan(code=>{const b=S.books.find(x=>x.isbn===code);if(b){q=code;render();toast("Found: "+b.title)}else{toast("No book with barcode "+code+". Add it first.");bookForm(null,code)}})})[a.dataset.act]?.()});
 function open(html){dlg.innerHTML=html;if(!dlg.open)dlg.showModal()}
 dlg.addEventListener("click",e=>{if(e.target.dataset.close!==undefined)closeDlg()});
@@ -166,6 +167,61 @@ if(!r){$("#lk").textContent="Book not found online. Type the title and author yo
 if(!$("#f-title").value)$("#f-title").value=r.title||"";if(!$("#f-author").value)$("#f-author").value=r.author||"";
 if(r.cover&&!coverData){coverData=r.cover;const p=$("#prev");p.src=r.cover;p.style.display="block"}
 $("#lk").textContent="Found. Check the details, then save."}
+function importDlg(){
+open(`<h2>Import books from Excel</h2>
+<p class="note" style="margin-top:0">Your sheet needs a first row with the column names <b>Title</b>, <b>Author</b> and <b>ISBN</b>. If a row has an ISBN but no title, the app looks the title up online. Excel (.xlsx, .xls) and CSV files work.</p>
+<input id="imp-f" type="file" accept=".xlsx,.xls,.csv" aria-label="Choose an Excel or CSV file">
+<div id="imp-out"></div>
+<div class="row" style="justify-content:space-between"><button class="b alt" data-x="tpl">Download template</button><button class="b alt" data-close>Close</button></div>`);
+pending=[];
+dlg.onclick=e=>{if(e.target.dataset.close!==undefined)return closeDlg();
+if(e.target.dataset.x==="tpl"){const wb=XLSX.utils.book_new();XLSX.utils.book_append_sheet(wb,XLSX.utils.aoa_to_sheet([["Title","Author","ISBN"],["Harry Potter and the Philosopher’s Stone","J. K. Rowling","9780747532743"],["","","9780340832875"]]),"Books");XLSX.writeFile(wb,"books-template.xlsx")}
+if(e.target.dataset.x==="go")runImport()};
+$("#imp-f").onchange=e=>readSheet(e.target.files[0])}
+let pending=[];
+async function readSheet(file){
+const out=$("#imp-out");if(!file)return;pending=[];
+if(!window.XLSX){out.innerHTML='<div class="note">The spreadsheet reader did not load. Check your internet connection and reload the page.</div>';return}
+out.innerHTML='<div class="note">Reading file…</div>';
+let rows;
+try{const wb=XLSX.read(await file.arrayBuffer(),{type:"array"});rows=XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]],{header:1,defval:"",raw:true})}
+catch(e){out.innerHTML='<div class="note">Could not read this file. Save it as .xlsx or .csv and try again.</div>';return}
+if(!rows.length){out.innerHTML='<div class="note">The file is empty.</div>';return}
+const hdr=rows[0].map(h=>String(h).trim().toLowerCase());
+const ci=re=>hdr.findIndex(h=>re.test(h));
+const ti=ci(/title|name/),ai=ci(/author|writer/),ii=ci(/isbn|barcode/);
+if(ti<0&&ii<0){out.innerHTML='<div class="note">No Title or ISBN column found. Put the column names in the first row, or download the template.</div>';return}
+const have=new Set(S.books.map(b=>b.isbn).filter(Boolean)),seen=new Set();
+const list=[];let dup=0;
+for(const r of rows.slice(1)){
+const g=i=>i>=0&&r[i]!=null?String(r[i]).trim():"";
+const title=g(ti),author=g(ai);let isbn=g(ii).replace(/[^0-9Xx]/g,"").toUpperCase();
+if(/^\d{9}$/.test(isbn))isbn="0"+isbn;
+if(!title&&!isbn)continue;
+if(isbn&&(have.has(isbn)||seen.has(isbn))){dup++;continue}
+if(isbn)seen.add(isbn);
+list.push({title,author,isbn})}
+const todo=list.filter(x=>x.isbn&&!x.title);let k=0,n=0;
+const run=async()=>{while(k<todo.length){const x=todo[k++];const r=await lookupISBN(x.isbn);
+if(r){x.title=r.title;if(!x.author)x.author=r.author;if(r.cover)x.cover=r.cover}
+n++;out.innerHTML=`<div class="note">Looking up titles… ${n} of ${todo.length}</div>`}};
+await Promise.all([run(),run(),run(),run()]);
+let unknown=0;
+list.forEach(x=>{if(!x.title){x.title="Unknown title (ISBN "+x.isbn+")";unknown++}});
+pending=list;
+if(!list.length){out.innerHTML=`<div class="note">Nothing to import.${dup?" "+dup+" rows were already in the inventory or repeated.":""}</div>`;return}
+out.innerHTML=`<p><b>${list.length} books</b> ready to add.${dup?` ${dup} skipped because they are already in the inventory or repeated in the file.`:""}${unknown?` ${unknown} could not be found online and will be added as “Unknown title”. You can edit them afterwards.`:""}</p>
+<div class="note">First rows: ${list.slice(0,4).map(x=>esc(x.title)).join("; ")}${list.length>4?"…":""}</div>
+<div class="row"><button class="b" data-x="go">Import ${list.length} books</button></div>`}
+async function runImport(){
+if(!pending.length)return;const out=$("#imp-out");const items=pending.slice();pending=[];
+out.innerHTML='<div class="note">Importing… please keep this page open.</div>';
+const base=Date.now();
+try{for(let i=0;i<items.length;i+=400){const b=writeBatch(db);
+items.slice(i,i+400).forEach((x,j)=>{const id=uid()+uid();b.set(doc(db,"books",id),clean({id,title:x.title,author:x.author||"",isbn:x.isbn||"",cover:x.cover||"",loan:null,addedAt:base-(i+j)}))});
+await b.commit()}
+closeDlg();toast("Imported "+items.length+" books.")}
+catch(e){fail(e);out.innerHTML='<div class="note">Import failed: '+esc(e.code||e.message)+'</div>'}}
 function shrink(file){return new Promise(res=>{const i=new Image(),u=URL.createObjectURL(file);i.onload=()=>{const r=Math.min(1,240/i.width),c=document.createElement("canvas");c.width=i.width*r;c.height=i.height*r;c.getContext("2d").drawImage(i,0,0,c.width,c.height);URL.revokeObjectURL(u);res(c.toDataURL("image/jpeg",.7))};i.src=u})}
 function stuForm(s){open(`<h2>${s?"Edit student":"Add student"}</h2><label for="s-name">Name</label><input id="s-name" value="${esc(s?.name)}"><label for="s-cls">Class</label><input id="s-cls" value="${esc(s?.cls)}" placeholder="For example, 7B">
 <div class="row">${s?'<button class="b danger" data-x="del">Delete</button>':""}<button class="b alt" data-close>Cancel</button><button class="b" data-x="save">Save student</button></div>`);
