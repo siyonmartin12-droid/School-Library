@@ -149,7 +149,7 @@ dlg.onclick=e=>{const x=e.target.dataset.x;if(e.target.dataset.close!==undefined
 if(x==="scan"){const keep={...(b||{}),title:$("#f-title").value,author:$("#f-author").value,id:b?.id,cover:coverData,loan:b?.loan};scan(c=>bookForm(keep,c))}
 if(x==="lookup")autoLookup($("#f-isbn").value.trim());
 if(x==="save"){const title=$("#f-title").value.trim();if(!title){toast("Enter a title first.");return}
-const d={title,author:$("#f-author").value.trim(),isbn:$("#f-isbn").value.trim(),cover:coverData};
+const d={title,author:$("#f-author").value.trim(),isbn:to13($("#f-isbn").value.trim().replace(/[-\s]/g,"").toUpperCase()),cover:coverData};
 const ex=b&&b.id&&S.books.find(z=>z.id===b.id);
 saveBook(ex?{...ex,...d}:{id:uid(),loan:null,addedAt:Date.now(),...d});closeDlg();toast("Book saved.")}
 if(x==="del"&&confirm("Delete this book from the inventory?")){delBook(b.id);closeDlg()}}}
@@ -178,6 +178,7 @@ dlg.onclick=e=>{if(e.target.dataset.close!==undefined)return closeDlg();
 if(e.target.dataset.x==="tpl"){const wb=XLSX.utils.book_new();XLSX.utils.book_append_sheet(wb,XLSX.utils.aoa_to_sheet([["Title","Author","ISBN"],["Harry Potter and the Philosopher’s Stone","J. K. Rowling","9780747532743"],["","","9780340832875"]]),"Books");XLSX.writeFile(wb,"books-template.xlsx")}
 if(e.target.dataset.x==="go")runImport()};
 $("#imp-f").onchange=e=>readSheet(e.target.files[0])}
+function to13(c){if(/^\d{9}[\dX]$/.test(c)&&validISBN(c)){const b="978"+c.slice(0,9);let t=0;for(let i=0;i<12;i++)t+=(+b[i])*(i%2?3:1);return b+((10-t%10)%10)}return c}
 let pending=[];
 async function readSheet(file){
 const out=$("#imp-out");if(!file)return;pending=[];
@@ -196,7 +197,7 @@ const list=[];let dup=0;
 for(const r of rows.slice(1)){
 const g=i=>i>=0&&r[i]!=null?String(r[i]).trim():"";
 const title=g(ti),author=g(ai);let isbn=g(ii).replace(/[^0-9Xx]/g,"").toUpperCase();
-if(/^\d{9}$/.test(isbn))isbn="0"+isbn;
+if(/^\d{9}$/.test(isbn))isbn="0"+isbn;isbn=to13(isbn);
 if(!title&&!isbn)continue;
 if(isbn&&(have.has(isbn)||seen.has(isbn))){dup++;continue}
 if(isbn)seen.add(isbn);
