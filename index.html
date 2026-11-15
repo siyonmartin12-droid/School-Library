@@ -216,7 +216,7 @@ function bookForm(b,isbn){coverData=b?b.cover:null;formPhotos=b&&b.photos?[...b.
 const other=!!(b&&b.cond&&!CONDS.some(c=>c[0]===b.cond));
 open(`<h2>${b&&b.id?"Edit book":"Add book"}</h2>
 <label for="f-cover">Cover photo</label><input id="f-cover" type="file" accept="image/*" capture="environment">
-<div class="note">Take a photo of the front cover. If the title is empty, the app tries to read the cover and fill in the details.</div><button class="b alt" type="button" data-x="idcover" style="margin-top:6px">Identify from cover</button>
+<div class="note">Take a photo of the front cover. If the title is empty, the app tries to read the cover and fill in the details.</div><button class="b alt" type="button" data-x="idcover" style="margin-top:6px">Identify from cover</button><div class="note" id="idst" role="status"></div>
 <img id="prev" class="cov" style="width:70px;height:96px;margin-top:8px;${coverData?"":"display:none"}" alt="Cover preview" ${coverData?`src="${coverData}"`:""}>
 <label for="f-title">Title</label><input id="f-title" value="${esc(b?.title)}">
 <label for="f-author">Author</label><input id="f-author" value="${esc(b?.author)}">
@@ -521,19 +521,28 @@ ${b.genre?`<div class="s">Genre: ${esc(b.genre)}</div>`:""}${b.shelf?`<div class
 ${!k&&ph.length?`<div class="thumbs">${ph.map(p=>`<img src="${p}" alt="">`).join("")}</div>`:""}
 ${sim.length?`<label>More in this genre</label>${sim.slice(0,6).map(x=>`<div class="s">• ${esc(x.title)} — ${copiesOf(x).some(c=>!c.loan)?"Available":"Borrowed"}</div>`).join("")}`:""}
 <div class="row">${canEdit()?`<button class="b ${b.loan?"alt":""}" data-act="${b.loan?"return":"borrow"}" data-id="${b.id}">${b.loan?"Return":"Lend"}</button><button class="b alt" data-act="editbook" data-id="${b.id}">Edit</button>`:""}<button class="b alt" data-close>Close</button></div>`);dlg.onclick=e=>{if(e.target.dataset.close!==undefined)closeDlg()}}
-async function identifyCover(f){const lk=$("#lk");if(lk)lk.textContent="Reading the cover…";
-try{let code=null;
+async function identifyCover(f){const say=t=>{const a=$("#idst");if(a)a.textContent=t};
+try{say("Looking for a barcode in the photo…");let code=null;
 if("BarcodeDetector"in window){try{const r=await new BarcodeDetector().detect(await createImageBitmap(f));code=r.map(x=>x.rawValue).find(c=>validISBN(c))}catch(e){}}
-if(code){$("#f-isbn").value=code;return autoLookup(code)}
-if(!window.Tesseract)await new Promise((ok,no)=>{const t=document.createElement("script");t.src="https://cdnjs.cloudflare.com/ajax/libs/tesseract.js/5.1.1/tesseract.min.js";t.onload=ok;t.onerror=no;document.head.appendChild(t)});
+if(code){$("#f-isbn").value=code;say("Barcode found. Looking it up…");await autoLookup(code);say("");return}
+say("Loading the text reader. The first time can take a minute…");
+if(!window.Tesseract)await new Promise((ok,no)=>{const t=document.createElement("script");t.src="https://cdnjs.cloudflare.com/ajax/libs/tesseract.js/5.1.1/tesseract.min.js";t.onload=ok;t.onerror=()=>no(new Error("The text reader could not be downloaded. Check the internet connection."));document.head.appendChild(t)});
+say("Reading the cover text…");
 const{data}=await Tesseract.recognize(f,"eng");
-const w=data.text.split(/\n/).map(l=>l.replace(/[^A-Za-z0-9' ]/g," ").trim()).filter(l=>l.replace(/[^A-Za-z]/g,"").length>=3).join(" ").split(/\s+/).slice(0,10).join(" ");
-if(!$("#lk"))return;if(!w){$("#lk").textContent="Could not read any text on the cover. Type the details yourself.";return}
-const d=(await(await fetch("https://openlibrary.org/search.json?q="+encodeURIComponent(w)+"&limit=1&fields=title,author_name,isbn,subject")).json()).docs?.[0];
-if(!$("#f-title"))return;if(!d){$("#lk").textContent="No match found online. Type the title and author yourself.";return}
-if(!$("#f-title").value)$("#f-title").value=d.title||"";if(!$("#f-author").value)$("#f-author").value=(d.author_name||[]).join(", ");
-if(!$("#f-genre").value&&d.subject?.[0])$("#f-genre").value=d.subject[0];if(!$("#f-isbn").value&&d.isbn?.[0])$("#f-isbn").value=d.isbn[0];
-$("#lk").textContent="Details filled in from the cover. Please check them, then save."}catch(e){const l=$("#lk");if(l)l.textContent="Could not read the cover. Type the details yourself."}}
+const lines=data.text.split(/\n/).map(l=>l.replace(/[^A-Za-z0-9' ]/g," ").replace(/\s+/g," ").trim()).filter(l=>l.replace(/[^A-Za-z]/g,"").length>=4);
+if(!lines.length){say("No readable text found. Try a sharper, well-lit, straight-on photo, or type the details yourself.");return}
+say("Read: “"+lines.slice(0,3).join(" / ")+"”. Searching online…");
+const qs=[lines.join(" ").split(" ").slice(0,12).join(" "),lines.slice(0,2).join(" "),lines[0]];let hit=null;
+for(const q of qs){if(hit)break;
+try{const v=(await(await fetch("https://www.googleapis.com/books/v1/volumes?maxResults=1&q="+encodeURIComponent(q))).json()).items?.[0]?.volumeInfo;
+if(v)hit={title:v.title+(v.subtitle?": "+v.subtitle:""),author:(v.authors||[]).join(", "),genre:(v.categories||[])[0]||"",isbn:(v.industryIdentifiers||[]).find(i=>i.type==="ISBN_13")?.identifier||""}}catch(e){}
+if(!hit)try{const d=(await(await fetch("https://openlibrary.org/search.json?limit=1&fields=title,author_name,isbn,subject&q="+encodeURIComponent(q))).json()).docs?.[0];
+if(d)hit={title:d.title||"",author:(d.author_name||[]).join(", "),genre:d.subject?.[0]||"",isbn:d.isbn?.[0]||""}}catch(e){}}
+if(!$("#f-title"))return;
+if(!hit){say("The cover was read, but no matching book was found online. Type the title and author yourself.");return}
+if(!$("#f-title").value)$("#f-title").value=hit.title;if(!$("#f-author").value)$("#f-author").value=hit.author;
+if(!$("#f-genre").value)$("#f-genre").value=hit.genre;if(!$("#f-isbn").value)$("#f-isbn").value=hit.isbn;
+say("Details filled in from the cover. Please check them, then save.")}catch(e){say("Could not identify the cover: "+(e.message||e)+". Type the details yourself.")}}
 function settingsView(m){if(!isAdmin()){tab="dash";render();return}
 if(m.querySelector("#st-ml")&&m.contains(document.activeElement)&&document.activeElement.tagName==="INPUT")return;
 const f=(id,l,v,h,t="number")=>`<label for="${id}">${l}</label><input id="${id}" type="${t}" ${t==="number"?'min="0"':""} value="${esc(v)}">${h?`<div class="note">${h}</div>`:""}`;
