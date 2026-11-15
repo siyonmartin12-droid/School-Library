@@ -46,6 +46,25 @@ label{display:block;font-weight:600;font-size:14px;margin:10px 0 4px}
 video{width:100%;border-radius:8px;background:#000;max-height:50vh}
 .note{font-size:13px;color:var(--mute);margin-top:6px}
 .hide{display:none!important}
+dialog{max-height:90vh;overflow:auto}
+a.b{display:inline-block;text-decoration:none;text-align:center}
+.alert{background:var(--outbg);border:1px solid var(--out);border-radius:8px;padding:10px 12px;margin-bottom:12px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.alert span{flex:1;min-width:150px}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px;align-items:center}
+.chip{font-weight:600;font-size:14px;font-family:inherit;border:1.5px solid var(--line);background:var(--surf);color:var(--ink);border-radius:99px;padding:6px 12px;cursor:pointer}
+.chip[aria-pressed=true]{background:var(--spine);color:var(--onspine);border-color:var(--spine)}
+.selbar{position:fixed;left:0;right:0;bottom:0;background:var(--surf);border-top:2px solid var(--spine);padding:10px 16px calc(10px + env(safe-area-inset-bottom,0px));display:flex;gap:8px;flex-wrap:wrap;align-items:center;justify-content:center;z-index:8}
+.card input[type=checkbox]{width:22px;height:22px;flex:none}
+.tag.cond{background:var(--line);color:var(--ink)}
+.tag.c-new,.tag.c-good{background:var(--okbg);color:var(--ok)}.tag.c-fair{background:var(--outbg);color:var(--out)}.tag.c-poor{background:var(--bad);color:#fff}
+.thumbs{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+.thumbs div{position:relative}.thumbs img{width:76px;height:76px;object-fit:cover;border-radius:6px;display:block}
+.thumbs button{position:absolute;top:-6px;right:-6px;width:24px;height:24px;border-radius:50%;border:0;background:var(--bad);color:#fff;cursor:pointer;font-size:15px;line-height:1}
+.conds{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.conds label{display:flex;gap:8px;align-items:flex-start;font-weight:400;border:1.5px solid var(--line);border-radius:8px;padding:8px;margin:0;cursor:pointer}
+.conds input{width:auto;margin-top:3px}.conds b{display:block}.conds small{color:var(--mute)}
+.linkbtn{background:none;border:0;color:var(--spine);font-weight:600;font-size:14px;font-family:inherit;text-decoration:underline;cursor:pointer;padding:6px 0}
+.big img{width:100%;border-radius:8px;margin-bottom:10px}
 #out{position:absolute;top:14px;right:16px;background:transparent;color:inherit;border:1.5px solid currentColor;padding:6px 10px;font-size:13px}
 .login{max-width:380px;margin:8vh auto;padding:0 16px}
 .login form{background:var(--surf);border:1px solid var(--line);border-radius:12px;padding:20px}
@@ -62,7 +81,7 @@ video{width:100%;border-radius:8px;background:#000;max-height:50vh}
 <section id="login" class="login"><form id="lf"><h2>Shelfmark: teacher sign in</h2>
 <label for="em">Email</label><input id="em" type="email" autocomplete="username" required>
 <label for="pw">Password</label><input id="pw" type="password" autocomplete="current-password" required>
-<div class="note" id="lerr" role="alert"></div><div class="row"><button class="b" type="submit">Sign in</button></div></form></section>
+<div class="note" id="lerr" role="alert"></div><div class="row" style="justify-content:space-between;align-items:center"><button type="button" class="linkbtn" id="fp">Forgot password?</button><button class="b" type="submit">Sign in</button></div></form></section>
 <main id="main"></main>
 <dialog id="dlg"></dialog>
 <div id="toast" role="status"></div>
@@ -70,7 +89,7 @@ video{width:100%;border-radius:8px;background:#000;max-height:50vh}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script type="module">
 import {initializeApp} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import {getAuth,onAuthStateChanged,signInWithEmailAndPassword,signOut} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import {getAuth,onAuthStateChanged,signInWithEmailAndPassword,signOut,sendPasswordResetEmail} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import {initializeFirestore,persistentLocalCache,collection,doc,setDoc,deleteDoc,onSnapshot,writeBatch} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 /* ===== PASTE YOUR FIREBASE SETTINGS HERE (from Project settings > Your apps > Web app) ===== */
@@ -103,53 +122,87 @@ const dlg=$("#dlg");
 function toast(m){const t=$("#toast");t.textContent=m;t.classList.add("on");clearTimeout(t._h);t._h=setTimeout(()=>t.classList.remove("on"),2600)}
 const day=86400000,fmt=d=>new Date(d).toLocaleDateString(undefined,{day:"numeric",month:"short"});
 const stu=id=>S.students.find(s=>s.id===id);
+const CONDS=[["New","Like new, no marks"],["Good","Small marks, pages fine"],["Fair","Visible wear, still usable"],["Poor","Torn, loose or damaged"]];
+let sel=new Set(),selMode=false,filt="all",shownIds=[];
 function status(b){if(!b.loan)return'<span class="tag">Available</span>';const s=stu(b.loan.sid),late=Date.now()>b.loan.due;
 return`<span class="tag ${late?"late":"out"}">${late?"Overdue":"Borrowed"}</span> <span class="s">${esc(s?s.name:"Unknown student")} · due ${fmt(b.loan.due)}</span>`}
-function bookCard(b){return`<div class="card ${b.loan?"out":""}">${b.cover?`<img class="cov" alt="" src="${b.cover}">`:'<div class="cov"></div>'}
-<div class="info"><div class="t">${esc(b.title)}</div><div class="s">${esc(b.author||"Author not set")}${b.isbn?" · "+esc(b.isbn):""}</div><div>${status(b)}</div></div>
-<button class="b ${b.loan?"alt":""}" data-act="${b.loan?"return":"borrow"}" data-id="${b.id}">${b.loan?"Return":"Lend"}</button>
-<button class="b alt" data-act="editbook" data-id="${b.id}" aria-label="Edit ${esc(b.title)}">Edit</button></div>`}
+const isLate=b=>!!b.loan&&Date.now()>b.loan.due;
+const condTag=b=>{if(!b.cond)return"";const k=CONDS.some(c=>c[0]===b.cond);return`<span class="tag cond ${k?"c-"+b.cond.toLowerCase():""}">${esc(b.cond)}</span>`};
+function bookCard(b){const n=(b.photos||[]).length;
+return`<div class="card ${b.loan?"out":""}">${selMode?`<input type="checkbox" data-sel="${b.id}" ${sel.has(b.id)?"checked":""} aria-label="Select ${esc(b.title)}">`:""}${b.cover?`<img class="cov" alt="" src="${b.cover}">`:'<div class="cov"></div>'}
+<div class="info"><div class="t">${esc(b.title)}</div><div class="s">${esc(b.author||"Author not set")}${b.isbn?" · "+esc(b.isbn):""}</div><div>${status(b)}</div>
+<div>${condTag(b)}${n?` <button class="chip" data-act="photos" data-id="${b.id}">${n} photo${n>1?"s":""}</button>`:""}</div></div>
+${selMode?"":`<button class="b ${b.loan?"alt":""}" data-act="${b.loan?"return":"borrow"}" data-id="${b.id}">${b.loan?"Return":"Lend"}</button>
+<button class="b alt" data-act="editbook" data-id="${b.id}" aria-label="Edit ${esc(b.title)}">Edit</button>`}</div>`}
+const selCount=()=>S.books.filter(b=>sel.has(b.id)).length;
+const selBar=()=>selMode?`<div class="selbar"><b>${selCount()} selected</b><button class="b alt" data-act="selall">Select all shown</button><button class="b" data-act="blend">Lend</button><button class="b" data-act="bret">Return</button><button class="b danger" data-act="bdel">Delete</button><button class="b alt" data-act="selexit">Done</button></div>`:"";
+const chipRow=()=>`<button class="chip" data-act="reminders">Reminders</button><span style="flex:1"></span><button class="chip" data-act="${selMode?"selexit":"selmode"}" aria-pressed="${selMode}">${selMode?"Cancel select":"Select"}</button>`;
 function render(){
 document.querySelectorAll("nav button").forEach(b=>b.setAttribute("aria-selected",b.dataset.tab===tab));
-const m=$("#main");
+const m=$("#main");m.style.paddingBottom=selMode?"120px":"";
+const late=S.books.filter(isLate).length;
+const alertHtml=late?`<div class="alert"><span><b>${late} book${late>1?"s are":" is"} overdue.</b></span><button class="b" data-act="reminders">Open reminders</button></div>`:"";
 if(tab==="books"){
-const f=S.books.filter(b=>(b.title+" "+(b.author||"")+" "+(b.isbn||"")).toLowerCase().includes(q.toLowerCase()));
+const f=S.books.filter(b=>(b.title+" "+(b.author||"")+" "+(b.isbn||"")).toLowerCase().includes(q.toLowerCase())).filter(b=>filt==="all"||(filt==="avail"&&!b.loan)||(filt==="out"&&b.loan)||(filt==="late"&&isLate(b)));
+shownIds=f.map(b=>b.id);
 const out=S.books.filter(b=>b.loan).length;
-m.innerHTML=`<div class="stats"><div><b>${S.books.length}</b><span>Books</span></div><div><b>${S.books.length-out}</b><span>Available</span></div><div><b>${out}</b><span>Borrowed</span></div></div>
+m.innerHTML=`<div class="stats"><div><b>${S.books.length}</b><span>Books</span></div><div><b>${S.books.length-out}</b><span>Available</span></div><div><b>${out}</b><span>Borrowed</span></div></div>${alertHtml}
 <div class="bar"><input id="q" type="search" placeholder="Search title, author or barcode" value="${esc(q)}" aria-label="Search books"><button class="b" data-act="scanfind">Scan</button><button class="b alt" data-act="import">Import</button><button class="b" data-act="addbook">Add book</button></div>
-${f.length?f.map(bookCard).join(""):`<div class="empty">${S.books.length?"No books match your search.":"No books yet. Select Add book to register the first one."}</div>`}`;
+<div class="chips">${[["all","All"],["avail","Available"],["out","Borrowed"],["late","Overdue"]].map(([k,l])=>`<button class="chip" data-filt="${k}" aria-pressed="${filt===k}">${l}</button>`).join("")}</div>
+<div class="chips">${chipRow()}</div>
+${f.length?f.map(bookCard).join(""):`<div class="empty">${S.books.length?"No books match your search or filter.":"No books yet. Select Add book to register the first one."}</div>`}${selBar()}`;
 const qi=$("#q");qi.addEventListener("input",e=>{q=e.target.value;const p=e.target.selectionStart;render();const n=$("#q");n.focus();n.setSelectionRange(p,p)});
 }else if(tab==="students"){
 m.innerHTML=`<div class="bar"><button class="b" data-act="addstu">Add student</button></div>`+(S.students.length?S.students.map(s=>{const n=S.books.filter(b=>b.loan&&b.loan.sid===s.id);
-return`<div class="card ${n.length?"out":""}"><div class="info"><div class="t">${esc(s.name)}</div><div class="s">${esc(s.cls||"No class set")}</div><div class="s">${n.length?n.map(b=>esc(b.title)).join(", "):"No books borrowed"}</div></div><button class="b alt" data-act="editstu" data-id="${s.id}">Edit</button></div>`}).join(""):`<div class="empty">No students yet. Add students so you can lend books to them.</div>`);
+return`<div class="card ${n.length?"out":""}"><div class="info"><div class="t">${esc(s.name)}</div><div class="s">${esc(s.cls||"No class set")}${s.contact?" · "+esc(s.contact):""}</div><div class="s">${n.length?n.map(b=>esc(b.title)).join(", "):"No books borrowed"}</div></div><button class="b alt" data-act="editstu" data-id="${s.id}">Edit</button></div>`}).join(""):`<div class="empty">No students yet. Add students so you can lend books to them.</div>`);
 }else{
-const o=S.books.filter(b=>b.loan).sort((a,b)=>a.loan.due-b.loan.due);
-m.innerHTML=o.length?o.map(bookCard).join(""):`<div class="empty">Nothing is borrowed right now.</div>`}}
+const o=S.books.filter(b=>b.loan).sort((a,b)=>a.loan.due-b.loan.due);shownIds=o.map(b=>b.id);
+m.innerHTML=alertHtml+`<div class="chips">${chipRow()}</div>`+(o.length?o.map(bookCard).join(""):`<div class="empty">Nothing is borrowed right now.</div>`)+selBar()}}
 document.addEventListener("click",e=>{
-const t=e.target.closest("[data-tab]");if(t){tab=t.dataset.tab;render();return}
+const t=e.target.closest("[data-tab]");if(t){tab=t.dataset.tab;selMode=false;sel.clear();render();return}
+const fl=e.target.closest("[data-filt]");if(fl){filt=fl.dataset.filt;render();return}
+const sc=e.target.closest("[data-sel]");if(sc){sc.checked?sel.add(sc.dataset.sel):sel.delete(sc.dataset.sel);render();return}
 const a=e.target.closest("[data-act]");if(!a)return;const id=a.dataset.id;
 ({addbook:()=>bookForm(),import:()=>importDlg(),editbook:()=>bookForm(S.books.find(b=>b.id===id)),borrow:()=>lend(id),return:()=>giveBack(id),
-addstu:()=>stuForm(),editstu:()=>stuForm(stu(id)),scanfind:()=>scan(code=>{const b=S.books.find(x=>x.isbn===code);if(b){q=code;render();toast("Found: "+b.title)}else{toast("No book with barcode "+code+". Add it first.");bookForm(null,code)}})})[a.dataset.act]?.()});
+addstu:()=>stuForm(),editstu:()=>stuForm(stu(id)),photos:()=>photoView(id),reminders:()=>remindersDlg(),
+selmode:()=>{selMode=true;sel.clear();render()},selexit:()=>{selMode=false;sel.clear();render()},selall:()=>{shownIds.forEach(i=>sel.add(i));render()},
+blend:()=>bulkLend(),bret:()=>bulkReturn(),bdel:()=>bulkDelete(),
+scanfind:()=>scan(code=>{const b=S.books.find(x=>x.isbn===code);if(b){q=code;render();toast("Found: "+b.title)}else{toast("No book with barcode "+code+". Add it first.");bookForm(null,code)}})})[a.dataset.act]?.()});
 function open(html){dlg.innerHTML=html;if(!dlg.open)dlg.showModal()}
 dlg.addEventListener("click",e=>{if(e.target.dataset.close!==undefined)closeDlg()});
 function closeDlg(){stopScan();dlg.close()}
-let coverData=null;
-function bookForm(b,isbn){coverData=b?b.cover:null;
-open(`<h2>${b?"Edit book":"Add book"}</h2>
+let coverData=null,formPhotos=[];
+function drawThumbs(){const t=$("#thumbs");if(t)t.innerHTML=formPhotos.map((p,i)=>`<div><img src="${p}" alt="Photo ${i+1}"><button type="button" data-x="rm" data-i="${i}" aria-label="Remove photo ${i+1}">×</button></div>`).join("")}
+const readCond=()=>{const r=document.querySelector("input[name=cond]:checked");if(!r)return"";return r.value==="__other"?$("#f-cond").value.trim():r.value};
+function bookForm(b,isbn){coverData=b?b.cover:null;formPhotos=b&&b.photos?[...b.photos]:[];
+const other=!!(b&&b.cond&&!CONDS.some(c=>c[0]===b.cond));
+open(`<h2>${b&&b.id?"Edit book":"Add book"}</h2>
 <label for="f-cover">Cover photo</label><input id="f-cover" type="file" accept="image/*" capture="environment">
 <div class="note">Take a photo of the cover. It is saved with the book so you can recognize it later.</div>
 <img id="prev" class="cov" style="width:70px;height:96px;margin-top:8px;${coverData?"":"display:none"}" alt="Cover preview" ${coverData?`src="${coverData}"`:""}>
 <label for="f-title">Title</label><input id="f-title" value="${esc(b?.title)}">
 <label for="f-author">Author</label><input id="f-author" value="${esc(b?.author)}">
 <label for="f-isbn">Barcode (ISBN)</label><div class="bar" style="margin:0"><input id="f-isbn" value="${esc(isbn||b?.isbn||"")}" inputmode="numeric"><button class="b alt" data-x="scan">Scan</button><button class="b alt" data-x="lookup">Look up</button></div><div class="note" id="lk"></div>
+<label>Condition (optional)</label>
+<div class="conds">${CONDS.map(([n,h])=>`<label><input type="radio" name="cond" value="${n}" ${b?.cond===n?"checked":""}><span><b>${n}</b><small>${h}</small></span></label>`).join("")}<label><input type="radio" name="cond" value="__other" ${other?"checked":""}><span><b>Other</b><small>Type your own</small></span></label></div>
+<input id="f-cond" placeholder="Describe the condition" value="${other?esc(b.cond):""}" style="margin-top:8px;${other?"":"display:none"}" aria-label="Custom condition">
+<button class="linkbtn" type="button" data-x="clearcond">Clear condition</button>
+<label for="f-photos">Extra photos (optional)</label><input id="f-photos" type="file" accept="image/*" multiple>
+<div class="note">Add up to 4 photos to record the condition or other details, such as a torn page or a name written inside.</div><div class="thumbs" id="thumbs"></div>
 <div class="row">${b&&b.id?'<button class="b danger" data-x="del">Delete</button>':""}<button class="b alt" data-close>Cancel</button><button class="b" data-x="save">Save book</button></div>`);
+drawThumbs();
 if(isbn&&!(b&&b.title))autoLookup(isbn);
 $("#f-cover").onchange=async e=>{const f=e.target.files[0];if(!f)return;coverData=await shrink(f);const p=$("#prev");p.src=coverData;p.style.display="block"};
+$("#f-photos").onchange=async e=>{for(const f of [...e.target.files]){if(formPhotos.length>=4){toast("You can add up to 4 photos.");break}const p=await shrink(f,640,.6);if(p)formPhotos.push(p);else toast("One photo could not be read. Try a JPG or PNG.")}e.target.value="";drawThumbs()};
+dlg.onchange=e=>{if(e.target.name==="cond")$("#f-cond").style.display=e.target.value==="__other"?"":"none"};
 dlg.onclick=e=>{const x=e.target.dataset.x;if(e.target.dataset.close!==undefined)return closeDlg();
-if(x==="scan"){const keep={...(b||{}),title:$("#f-title").value,author:$("#f-author").value,id:b?.id,cover:coverData,loan:b?.loan};scan(c=>bookForm(keep,c))}
+if(x==="rm"){formPhotos.splice(+e.target.dataset.i,1);drawThumbs()}
+if(x==="clearcond"){document.querySelectorAll("input[name=cond]").forEach(r=>r.checked=false);$("#f-cond").style.display="none"}
+if(x==="scan"){const keep={...(b||{}),title:$("#f-title").value,author:$("#f-author").value,id:b?.id,cover:coverData,loan:b?.loan,cond:readCond(),photos:formPhotos};scan(c=>bookForm(keep,c))}
 if(x==="lookup")autoLookup($("#f-isbn").value.trim());
 if(x==="save"){const title=$("#f-title").value.trim();if(!title){toast("Enter a title first.");return}
-const d={title,author:$("#f-author").value.trim(),isbn:to13($("#f-isbn").value.trim().replace(/[-\s]/g,"").toUpperCase()),cover:coverData};
+const d={title,author:$("#f-author").value.trim(),isbn:to13($("#f-isbn").value.trim().replace(/[-\s]/g,"").toUpperCase()),cover:coverData,cond:readCond(),photos:formPhotos};
+if(JSON.stringify(d).length>900000){toast("The photos are too large. Remove one and try again.");return}
 const ex=b&&b.id&&S.books.find(z=>z.id===b.id);
 saveBook(ex?{...ex,...d}:{id:uid(),loan:null,addedAt:Date.now(),...d});closeDlg();toast("Book saved.")}
 if(x==="del"&&confirm("Delete this book from the inventory?")){delBook(b.id);closeDlg()}}}
@@ -223,13 +276,15 @@ items.slice(i,i+400).forEach((x,j)=>{const id=uid()+uid();b.set(doc(db,"books",i
 await b.commit()}
 closeDlg();toast("Imported "+items.length+" books.")}
 catch(e){fail(e);out.innerHTML='<div class="note">Import failed: '+esc(e.code||e.message)+'</div>'}}
-function shrink(file){return new Promise(res=>{const i=new Image(),u=URL.createObjectURL(file);i.onload=()=>{const r=Math.min(1,240/i.width),c=document.createElement("canvas");c.width=i.width*r;c.height=i.height*r;c.getContext("2d").drawImage(i,0,0,c.width,c.height);URL.revokeObjectURL(u);res(c.toDataURL("image/jpeg",.7))};i.src=u})}
+function shrink(file,max=240,qual=.7){return new Promise(res=>{const i=new Image(),u=URL.createObjectURL(file);i.onload=()=>{const r=Math.min(1,max/i.width),c=document.createElement("canvas");c.width=i.width*r;c.height=i.height*r;c.getContext("2d").drawImage(i,0,0,c.width,c.height);URL.revokeObjectURL(u);res(c.toDataURL("image/jpeg",qual))};i.onerror=()=>res(null);i.src=u})}
 function stuForm(s){open(`<h2>${s?"Edit student":"Add student"}</h2><label for="s-name">Name</label><input id="s-name" value="${esc(s?.name)}"><label for="s-cls">Class</label><input id="s-cls" value="${esc(s?.cls)}" placeholder="For example, 7B">
+<label for="s-ct">Email or phone for reminders (optional)</label><input id="s-ct" value="${esc(s?.contact)}" placeholder="name@example.com or 9715xxxxxxxx">
 <div class="row">${s?'<button class="b danger" data-x="del">Delete</button>':""}<button class="b alt" data-close>Cancel</button><button class="b" data-x="save">Save student</button></div>`);
 dlg.onclick=e=>{const x=e.target.dataset.x;if(e.target.dataset.close!==undefined)return closeDlg();
-if(x==="save"){const name=$("#s-name").value.trim();if(!name){toast("Enter the student's name.");return}
-saveStu(s?{...s,name,cls:$("#s-cls").value.trim()}:{id:uid(),name,cls:$("#s-cls").value.trim()});closeDlg()}
-if(x==="del"){if(S.books.some(b=>b.loan&&b.loan.sid===s.id)){toast("Return this student's books before deleting.");return}if(confirm("Delete this student?")){delStu(s.id);closeDlg()}}}}
+if(x==="save"){const name=$("#s-name").value.trim();if(!name){toast("Enter the student’s name.");return}
+const d={name,cls:$("#s-cls").value.trim(),contact:$("#s-ct").value.trim()};
+saveStu(s?{...s,...d}:{id:uid(),...d});closeDlg()}
+if(x==="del"){if(S.books.some(b=>b.loan&&b.loan.sid===s.id)){toast("Return this student’s books before deleting.");return}if(confirm("Delete this student?")){delStu(s.id);closeDlg()}}}}
 function lend(id){const b=S.books.find(x=>x.id===id);
 if(!S.students.length){toast("Add a student first.");tab="students";render();return}
 open(`<h2>Lend “${esc(b.title)}”</h2><label for="l-s">Student</label><select id="l-s">${S.students.map(s=>`<option value="${s.id}">${esc(s.name)}${s.cls?" ("+esc(s.cls)+")":""}</option>`).join("")}</select>
@@ -238,6 +293,47 @@ open(`<h2>Lend “${esc(b.title)}”</h2><label for="l-s">Student</label><select
 dlg.onclick=e=>{if(e.target.dataset.close!==undefined)return closeDlg();if(e.target.dataset.x==="ok"){const d=Math.max(1,+$("#l-d").value||14);
 const loan={sid:$("#l-s").value,date:Date.now(),due:Date.now()+d*day};saveBook({...b,loan});closeDlg();toast("Lent to "+stu(loan.sid).name+".")}}}
 function giveBack(id){const b=S.books.find(x=>x.id===id);saveBook({...b,loan:null});toast("Returned. Book is available again.")}
+const selBooks=()=>S.books.filter(b=>sel.has(b.id));
+async function commit(ops){try{for(let i=0;i<ops.length;i+=400){const w=writeBatch(db);ops.slice(i,i+400).forEach(o=>o.del?w.delete(doc(db,"books",o.id)):w.set(doc(db,"books",o.id),clean(o.data)));await w.commit()}return true}catch(e){fail(e);return false}}
+const stuOpts=()=>S.students.map(s=>`<option value="${s.id}">${esc(s.name)}${s.cls?" ("+esc(s.cls)+")":""}</option>`).join("");
+const endSel=()=>{selMode=false;sel.clear();render()};
+function bulkLend(){const all=selBooks(),bs=all.filter(b=>!b.loan);
+if(!all.length){toast("Select some books first.");return}
+if(!bs.length){toast("All the selected books are already borrowed.");return}
+if(!S.students.length){toast("Add a student first.");return}
+open(`<h2>Lend ${bs.length} book${bs.length>1?"s":""}</h2>${bs.length<all.length?`<div class="note">${all.length-bs.length} selected book${all.length-bs.length>1?"s are":" is"} already borrowed and will be skipped.</div>`:""}
+<label for="l-s">Student</label><select id="l-s">${stuOpts()}</select><label for="l-d">Days to keep them</label><input id="l-d" type="number" min="1" value="14">
+<div class="row"><button class="b alt" data-close>Cancel</button><button class="b" data-x="ok">Lend books</button></div>`);
+dlg.onclick=async e=>{if(e.target.dataset.close!==undefined)return closeDlg();if(e.target.dataset.x==="ok"){
+const d=Math.max(1,+$("#l-d").value||14),sid=$("#l-s").value,loan={sid,date:Date.now(),due:Date.now()+d*day};closeDlg();
+if(await commit(bs.map(b=>({id:b.id,data:{...b,loan}})))){toast("Lent "+bs.length+" book"+(bs.length>1?"s":"")+" to "+stu(sid).name+".");endSel()}}}}
+async function bulkReturn(){const all=selBooks(),bs=all.filter(b=>b.loan);
+if(!all.length){toast("Select some books first.");return}
+if(!bs.length){toast("None of the selected books are borrowed.");return}
+if(await commit(bs.map(b=>({id:b.id,data:{...b,loan:null}})))){toast("Returned "+bs.length+" book"+(bs.length>1?"s":"")+".");endSel()}}
+async function bulkDelete(){const all=selBooks();if(!all.length){toast("Select some books first.");return}
+const out=all.filter(b=>b.loan).length;
+if(!confirm("Delete "+all.length+" book"+(all.length>1?"s":"")+" from the inventory? This cannot be undone."+(out?"\n"+out+" of them "+(out>1?"are":"is")+" currently borrowed.":"")))return;
+if(await commit(all.map(b=>({id:b.id,del:true})))){toast("Deleted "+all.length+" book"+(all.length>1?"s":"")+".");endSel()}}
+let remMsgs=[];
+function remindersDlg(){const soon=Date.now()+2*day;
+const late=S.books.filter(isLate),due=S.books.filter(b=>b.loan&&!isLate(b)&&b.loan.due<=soon);remMsgs=[];
+const section=(list,lateFlag)=>{const g={};list.forEach(b=>{(g[b.loan.sid]=g[b.loan.sid]||[]).push(b)});
+return Object.entries(g).map(([sid,bs])=>{const s=stu(sid)||{name:"Student",contact:""},one=bs.length===1;
+const items=bs.map(b=>"“"+b.title+"” ("+fmt(b.loan.due)+")").join(", ");
+const text="Hello "+s.name+", this is a reminder from the school library. "+(lateFlag?(one?"This book was due: "+items+". Please return it as soon as you can.":"These books were due: "+items+". Please return them as soon as you can."):(one?"This book is due soon: "+items+". Please return it on time.":"These books are due soon: "+items+". Please return them on time."))+" Thank you.";
+const i=remMsgs.push(text)-1,ct=(s.contact||"").trim(),digits=ct.replace(/\D/g,"");
+const mail=ct.includes("@")?`<a class="b alt" href="mailto:${esc(ct)}?subject=${encodeURIComponent("Library book reminder")}&body=${encodeURIComponent(text)}">Email</a>`:"";
+const wa=!ct.includes("@")&&digits.length>=8?`<a class="b alt" href="https://wa.me/${digits}?text=${encodeURIComponent(text)}" target="_blank" rel="noopener">WhatsApp</a>`:"";
+return`<div class="card ${lateFlag?"out":""}" style="display:block"><div class="t">${esc(s.name)}${s.cls?" ("+esc(s.cls)+")":""}</div><div class="note">${esc(text)}</div><div class="row" style="justify-content:flex-start;margin-top:8px"><button class="b" data-x="copy" data-i="${i}">Copy message</button>${mail}${wa}</div></div>`}).join("")};
+const a=section(late,true),b=section(due,false);
+open(`<h2>Reminders</h2>${a||b?"":'<div class="empty">Nothing is overdue or due in the next 2 days.</div>'}${a?`<label>Overdue</label>${a}`:""}${b?`<label>Due in the next 2 days</label>${b}`:""}
+<div class="note">The app writes the message for you. Copy it, or use Email or WhatsApp to send it yourself. WhatsApp needs the full number with country code, such as 971….</div><div class="row"><button class="b alt" data-close>Close</button></div>`);
+dlg.onclick=e=>{if(e.target.dataset.close!==undefined)return closeDlg();if(e.target.dataset.x==="copy"){const t=remMsgs[+e.target.dataset.i];
+(navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(()=>toast("Message copied."),()=>toast("Could not copy. Select the message text and copy it yourself."))}}}
+function photoView(id){const b=S.books.find(x=>x.id===id);if(!b)return;
+open(`<h2>${esc(b.title)}</h2>${b.cond?`<div class="note" style="margin:0 0 8px">Condition: ${esc(b.cond)}</div>`:""}<div class="big">${(b.photos||[]).map((p,i)=>`<img src="${p}" alt="Photo ${i+1} of ${esc(b.title)}">`).join("")}</div><div class="row"><button class="b alt" data-close>Close</button></div>`);
+dlg.onclick=e=>{if(e.target.dataset.close!==undefined)closeDlg()}}
 function validISBN(c){c=String(c).replace(/[-\s]/g,"");
 if(/^97[89]\d{10}$/.test(c)){let t=0;for(let i=0;i<12;i++)t+=(+c[i])*(i%2?3:1);return (10-t%10)%10===+c[12]}
 if(/^\d{9}[\dX]$/.test(c)){let t=0;for(let i=0;i<9;i++)t+=(+c[i])*(10-i);t+=c[9]==="X"?10:+c[9];return t%11===0}
@@ -269,6 +365,10 @@ onAuthStateChanged(auth,u=>{if(u){showApp(true);startSync();render()}else{stopSy
 $("#lf").addEventListener("submit",async e=>{e.preventDefault();$("#lerr").textContent="";
 try{await signInWithEmailAndPassword(auth,$("#em").value.trim(),$("#pw").value)}
 catch(err){$("#lerr").textContent=["auth/invalid-credential","auth/wrong-password","auth/user-not-found"].includes(err.code)?"Wrong email or password.":"Could not sign in: "+err.code}});
+$("#fp").addEventListener("click",async()=>{const em=$("#em").value.trim(),le=$("#lerr");
+if(!em){le.textContent="Type your email in the box above first, then click Forgot password.";return}
+try{await sendPasswordResetEmail(auth,em);le.textContent="If an account exists for that email, a reset link has been sent. Check your spam folder too."}
+catch(err){le.textContent=err.code==="auth/invalid-email"?"That email address does not look right.":"Could not send the email. Try again in a minute."}});
 $("#out").addEventListener("click",()=>signOut(auth));
 }
 </script>
