@@ -87,7 +87,7 @@ video{width:100%;border-radius:12px;background:#000;max-height:50vh}
 </head>
 <body>
 <header id="hdr"><div class="hbar"><div class="brand"><svg viewBox="0 0 32 32" width="38" height="38" aria-hidden="true"><rect width="32" height="32" rx="9" fill="#e0a526"/><path d="M8 9.5c3-1 6-.7 8 1 2-1.7 5-2 8-1v13c-3-1-6-.7-8 1-2-1.7-5-2-8-1z" fill="#14337a"/><path d="M16 10.5v13" stroke="#e0a526" stroke-width="1.4"/></svg><div><b>Indian Public High School</b><span>Library Management</span></div></div><span class="who" id="who"></span><button class="b" id="out">Sign out</button></div>
-<nav role="tablist"><button role="tab" data-tab="books">Books <span class="n" id="n-books"></span></button><button role="tab" data-tab="students">Students <span class="n" id="n-students"></span></button><button role="tab" data-tab="loans">Borrowed <span class="n" id="n-loans"></span></button></nav></header>
+<nav role="tablist"><button role="tab" data-tab="dash">Dashboard</button><button role="tab" data-tab="books">Books <span class="n" id="n-books"></span></button><button role="tab" data-tab="students">Students <span class="n" id="n-students"></span></button><button role="tab" data-tab="loans">Borrowed <span class="n" id="n-loans"></span></button><button role="tab" data-tab="logs">Audit log</button><button role="tab" data-tab="users" id="t-users" class="hide">Users</button></nav></header>
 <section id="login" class="login"><div class="login-art" role="img" aria-label="Main gate of Indian Public High School"><div><h1>School Library Management</h1><p>Indian Public High School, since 1986. Keep every book and every borrower organised in one place.</p></div></div>
 <div class="login-panel"><form id="lf"><div class="brand"><svg viewBox="0 0 32 32" width="38" height="38" aria-hidden="true"><rect width="32" height="32" rx="9" fill="#e0a526"/><path d="M8 9.5c3-1 6-.7 8 1 2-1.7 5-2 8-1v13c-3-1-6-.7-8 1-2-1.7-5-2-8-1z" fill="#14337a"/><path d="M16 10.5v13" stroke="#e0a526" stroke-width="1.4"/></svg><div><b>Indian Public High School</b><span>Library Management</span></div></div>
 <h2>Welcome back</h2><p class="sub">Sign in with the email and password your library administrator gave you.</p>
@@ -103,8 +103,8 @@ video{width:100%;border-radius:12px;background:#000;max-height:50vh}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script type="module">
 import {initializeApp} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import {getAuth,onAuthStateChanged,signInWithEmailAndPassword,signOut,sendPasswordResetEmail} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-import {initializeFirestore,persistentLocalCache,collection,doc,setDoc,deleteDoc,onSnapshot,writeBatch} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import {getAuth,onAuthStateChanged,signInWithEmailAndPassword,signOut,sendPasswordResetEmail,createUserWithEmailAndPassword} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import {initializeFirestore,persistentLocalCache,collection,doc,setDoc,deleteDoc,onSnapshot,writeBatch,getDoc,getDocs,query,orderBy,limit} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 /* ===== PASTE YOUR FIREBASE SETTINGS HERE (from Project settings > Your apps > Web app) ===== */
 const firebaseConfig={
@@ -117,7 +117,7 @@ const firebaseConfig={
 };
 /* ========================================================================================= */
 
-let S={books:[],students:[]},tab="books",q="",unsubs=[],db,auth;
+let S={books:[],students:[],logs:[],users:[]},tab="dash",q="",unsubs=[],db,auth,me=null;
 const configured=!firebaseConfig.apiKey.startsWith("PASTE");
 if(configured){const app=initializeApp(firebaseConfig);auth=getAuth(app);db=initializeFirestore(app,{localCache:persistentLocalCache()})}
 const clean=o=>JSON.parse(JSON.stringify(o));
@@ -126,10 +126,17 @@ const saveBook=b=>setDoc(doc(db,"books",b.id),clean(b)).catch(fail);
 const delBook=id=>deleteDoc(doc(db,"books",id)).catch(fail);
 const saveStu=x=>setDoc(doc(db,"students",x.id),clean(x)).catch(fail);
 const delStu=id=>deleteDoc(doc(db,"students",id)).catch(fail);
+const addLog=e=>{const id=Date.now().toString(36)+uid();return setDoc(doc(db,"logs",id),clean({id,at:Date.now(),by:auth.currentUser?.email||"",...e})).catch(()=>{})};
+const RL={admin:"Administrator",staff:"Librarian",viewer:"Read-only"},GENRES=["Fiction","Non-fiction","Science","Mathematics","History","Biography","Fantasy","Mystery","Poetry","Reference","Religion","Comics","Children","Technology"];
+const role=()=>me?.role||"viewer",isAdmin=()=>role()==="admin",canEdit=()=>role()!=="viewer";
+const applyRole=()=>{$("#t-users").classList.toggle("hide",!isAdmin());$("#who").textContent=(auth.currentUser?.email||"")+" · "+RL[role()]};
 function startSync(){stopSync();unsubs=[
 onSnapshot(collection(db,"books"),r=>{S.books=r.docs.map(d=>d.data()).sort((a,b)=>(b.addedAt||0)-(a.addedAt||0));render()},fail),
-onSnapshot(collection(db,"students"),r=>{S.students=r.docs.map(d=>d.data()).sort((a,b)=>a.name.localeCompare(b.name));render()},fail)]}
-function stopSync(){unsubs.forEach(f=>f());unsubs=[]}
+onSnapshot(collection(db,"students"),r=>{S.students=r.docs.map(d=>d.data()).sort((a,b)=>a.name.localeCompare(b.name));render()},fail),
+onSnapshot(query(collection(db,"logs"),orderBy("at","desc"),limit(600)),r=>{S.logs=r.docs.map(d=>d.data());render()},()=>{}),
+onSnapshot(doc(db,"users",auth.currentUser.uid),d=>{if(!d.exists()||d.data().active===false){signOut(auth);return}me=d.data();applyRole();render()},()=>{}),
+isAdmin()?onSnapshot(collection(db,"users"),r=>{S.users=r.docs.map(d=>d.data()).sort((a,b)=>(a.name||"").localeCompare(b.name||""));render()},fail):null]}
+function stopSync(){unsubs.forEach(f=>f&&f());unsubs=[]}
 const $=s=>document.querySelector(s),uid=()=>Math.random().toString(36).slice(2,10);
 const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const dlg=$("#dlg");
@@ -142,15 +149,16 @@ function status(b){if(!b.loan)return'<span class="tag">Available</span>';const s
 return`<span class="tag ${late?"late":"out"}">${late?"Overdue":"Borrowed"}</span> <span class="s">${esc(s?s.name+(gr(s)?" ("+gr(s)+")":""):"Unknown student")} · due ${fmt(b.loan.due)}</span>`}
 const isLate=b=>!!b.loan&&Date.now()>b.loan.due;
 const condTag=b=>{if(!b.cond)return"";const k=CONDS.some(c=>c[0]===b.cond);return`<span class="tag cond ${k?"c-"+b.cond.toLowerCase():""}">${esc(b.cond)}</span>`};
+const stars=b=>b.rN?` <span class="s">★ ${(b.rSum/b.rN).toFixed(1)} (${b.rN})</span>`:"";
 function bookCard(b){const n=(b.photos||[]).length;
 return`<div class="card ${b.loan?"out":""}">${selMode?`<input type="checkbox" data-sel="${b.id}" ${sel.has(b.id)?"checked":""} aria-label="Select ${esc(b.title)}">`:""}${b.cover?`<img class="cov" alt="" src="${b.cover}">`:'<div class="cov"></div>'}
-<div class="info"><div class="t">${esc(b.title)}</div><div class="s">${esc(b.author||"Author not set")}${b.isbn?" · "+esc(b.isbn):""}</div><div>${status(b)}</div>
-<div>${condTag(b)}${n?` <button class="chip" data-act="photos" data-id="${b.id}">${n} photo${n>1?"s":""}</button>`:""}</div></div>
-${selMode?"":`<div class="acts"><button class="b ${b.loan?"alt":""}" data-act="${b.loan?"return":"borrow"}" data-id="${b.id}">${b.loan?"Return":"Lend"}</button>
+<div class="info"><div class="t">${esc(b.title)}${stars(b)}</div><div class="s">${esc(b.author||"Author not set")}${b.isbn?" · "+esc(b.isbn):""}</div>${b.genre||b.shelf?`<div class="s">${b.genre?esc(b.genre):""}${b.genre&&b.shelf?" · ":""}${b.shelf?"Shelf "+esc(b.shelf):""}</div>`:""}<div>${status(b)}</div>
+<div>${condTag(b)}${n?` <button class="chip" data-act="photos" data-id="${b.id}">${n} photo${n>1?"s":""}</button>`:""}${b.genre?` <button class="chip" data-act="similar" data-id="${b.id}">Similar</button>`:""} <button class="chip" data-act="bhist" data-id="${b.id}">History</button></div></div>
+${selMode||!canEdit()?"":`<div class="acts"><button class="b ${b.loan?"alt":""}" data-act="${b.loan?"return":"borrow"}" data-id="${b.id}">${b.loan?"Return":"Lend"}</button>
 <button class="b alt" data-act="editbook" data-id="${b.id}" aria-label="Edit ${esc(b.title)}">Edit</button></div>`}</div>`}
 const selCount=()=>S.books.filter(b=>sel.has(b.id)).length;
-const selBar=()=>selMode?`<div class="selbar"><b>${selCount()} selected</b><button class="b alt" data-act="selall">Select all shown</button><button class="b" data-act="blend">Lend</button><button class="b" data-act="bret">Return</button><button class="b danger" data-act="bdel">Delete</button><button class="b alt" data-act="selexit">Done</button></div>`:"";
-const chipRow=()=>`<button class="chip" data-act="reminders">Reminders</button><span style="flex:1"></span><button class="chip" data-act="${selMode?"selexit":"selmode"}" aria-pressed="${selMode}">${selMode?"Cancel select":"Select"}</button>`;
+const selBar=()=>selMode?`<div class="selbar"><b>${selCount()} selected</b><button class="b alt" data-act="selall">Select all shown</button><button class="b" data-act="blend">Lend</button><button class="b" data-act="bret">Return</button>${isAdmin()?'<button class="b danger" data-act="bdel">Delete</button>':""}<button class="b alt" data-act="selexit">Done</button></div>`:"";
+const chipRow=()=>`<button class="chip" data-act="reminders">Reminders</button><span style="flex:1"></span>${canEdit()?`<button class="chip" data-act="${selMode?"selexit":"selmode"}" aria-pressed="${selMode}">${selMode?"Cancel select":"Select"}</button>`:""}`;
 function render(){
 document.querySelectorAll("nav button").forEach(b=>b.setAttribute("aria-selected",b.dataset.tab===tab));
 const m=$("#main");m.style.paddingBottom=selMode?"120px":"";
@@ -158,19 +166,22 @@ const late=S.books.filter(isLate).length;
 const setN=(k,v,c)=>{const e=document.getElementById("n-"+k);if(e){e.textContent=v;e.classList.toggle("late",!!c)}};
 setN("books",S.books.length);setN("students",S.students.length);setN("loans",S.books.filter(b=>b.loan).length,late>0);
 const alertHtml=late?`<div class="alert"><span><b>${late} book${late>1?"s are":" is"} overdue.</b></span><button class="b" data-act="reminders">Open reminders</button></div>`:"";
+if(tab==="dash"){m.innerHTML=dashHtml(alertHtml);return}
+if(tab==="logs"){logsView(m);return}
+if(tab==="users"){usersView(m);return}
 if(tab==="books"){
-const f=S.books.filter(b=>(b.title+" "+(b.author||"")+" "+(b.isbn||"")).toLowerCase().includes(q.toLowerCase())).filter(b=>filt==="all"||(filt==="avail"&&!b.loan)||(filt==="out"&&b.loan)||(filt==="late"&&isLate(b)));
+const f=S.books.filter(b=>(b.title+" "+(b.author||"")+" "+(b.isbn||"")+" "+(b.genre||"")+" "+(b.shelf||"")).toLowerCase().includes(q.toLowerCase())).filter(b=>filt==="all"||(filt==="avail"&&!b.loan)||(filt==="out"&&b.loan)||(filt==="late"&&isLate(b)));
 shownIds=f.map(b=>b.id);
 const out=S.books.filter(b=>b.loan).length;
 m.innerHTML=`<div class="stats"><div><b>${S.books.length}</b><span>Books</span></div><div><b>${S.books.length-out}</b><span>Available</span></div><div><b>${out}</b><span>Borrowed</span></div></div>${alertHtml}
-<div class="bar"><input id="q" type="search" placeholder="Search title, author or barcode" value="${esc(q)}" aria-label="Search books"><button class="b" data-act="scanfind">Scan</button><button class="b alt" data-act="import">Import</button><button class="b" data-act="addbook">Add book</button></div>
+<div class="bar"><input id="q" type="search" placeholder="Search title, author or barcode" value="${esc(q)}" aria-label="Search books"><button class="b" data-act="scanfind">Scan</button>${canEdit()?`<button class="b alt" data-act="import">Import</button><button class="b" data-act="addbook">Add book</button>`:""}</div>
 <div class="chips">${[["all","All"],["avail","Available"],["out","Borrowed"],["late","Overdue"]].map(([k,l])=>`<button class="chip" data-filt="${k}" aria-pressed="${filt===k}">${l}</button>`).join("")}</div>
 <div class="chips">${chipRow()}</div>
 ${f.length?f.map(bookCard).join(""):`<div class="empty">${S.books.length?"No books match your search or filter.":"No books yet. Select Add book to register the first one."}</div>`}${selBar()}`;
 const qi=$("#q");qi.addEventListener("input",e=>{q=e.target.value;const p=e.target.selectionStart;render();const n=$("#q");n.focus();n.setSelectionRange(p,p)});
 }else if(tab==="students"){
 const f=S.students.filter(x=>(x.name+" "+(x.adm||"")+" "+gr(x)+" "+(x.email||"")).toLowerCase().includes(sq.toLowerCase())).sort((a,b)=>a.name.localeCompare(b.name));
-m.innerHTML=`<div class="bar"><input id="sq" type="search" placeholder="Search name, grade or admission number" value="${esc(sq)}" aria-label="Search students"><button class="b alt" data-act="impstu">Import from Excel</button><button class="b" data-act="addstu">Add student</button></div>`+(f.length?f.map(studentCard).join(""):`<div class="empty">${S.students.length?"No students match your search.":"No students yet. Add one, or import a list from Excel."}</div>`);
+m.innerHTML=`<div class="bar"><input id="sq" type="search" placeholder="Search name, grade or admission number" value="${esc(sq)}" aria-label="Search students">${canEdit()?`<button class="b alt" data-act="impstu">Import from Excel</button><button class="b" data-act="addstu">Add student</button>`:""}</div>`+(f.length?f.map(studentCard).join(""):`<div class="empty">${S.students.length?"No students match your search.":"No students yet. Add one, or import a list from Excel."}</div>`);
 const si=$("#sq");si.addEventListener("input",e=>{sq=e.target.value;const p=e.target.selectionStart;render();const n=$("#sq");n.focus();n.setSelectionRange(p,p)});
 }else{
 const o=S.books.filter(b=>b.loan).sort((a,b)=>a.loan.due-b.loan.due);shownIds=o.map(b=>b.id);
@@ -178,10 +189,12 @@ m.innerHTML=alertHtml+`<div class="chips">${chipRow()}</div>`+(o.length?o.map(bo
 document.addEventListener("click",e=>{
 const t=e.target.closest("[data-tab]");if(t){tab=t.dataset.tab;selMode=false;sel.clear();render();return}
 const fl=e.target.closest("[data-filt]");if(fl){filt=fl.dataset.filt;render();return}
+const lf=e.target.closest("[data-lf]");if(lf){logF=lf.dataset.lf;render();return}
 const sc=e.target.closest("[data-sel]");if(sc){sc.checked?sel.add(sc.dataset.sel):sel.delete(sc.dataset.sel);render();return}
 const a=e.target.closest("[data-act]");if(!a)return;const id=a.dataset.id;
+if(["addbook","import","editbook","borrow","return","addstu","impstu","editstu","selmode","blend","bret","bdel"].includes(a.dataset.act)&&!canEdit()){toast("Your account is read-only.");return}
 ({addbook:()=>bookForm(),import:()=>importDlg(),editbook:()=>bookForm(S.books.find(b=>b.id===id)),borrow:()=>lend(id),return:()=>giveBack(id),
-addstu:()=>stuForm(),impstu:()=>importStudentsDlg(),editstu:()=>stuForm(stu(id)),photos:()=>photoView(id),reminders:()=>remindersDlg(),
+addstu:()=>stuForm(),impstu:()=>importStudentsDlg(),editstu:()=>stuForm(stu(id)),photos:()=>photoView(id),reminders:()=>remindersDlg(),similar:()=>similarDlg(id),bhist:()=>histDlg("History: "+S.books.find(b=>b.id===id)?.title,l=>l.bid===id),shist:()=>histDlg("History: "+stu(id)?.name,l=>l.sid===id),adduser:()=>userForm(),edituser:()=>userForm(S.users.find(u=>u.id===id)),
 selmode:()=>{selMode=true;sel.clear();render()},selexit:()=>{selMode=false;sel.clear();render()},selall:()=>{shownIds.forEach(i=>sel.add(i));render()},
 blend:()=>bulkLend(),bret:()=>bulkReturn(),bdel:()=>bulkDelete(),
 scanfind:()=>scan(code=>{const b=S.books.find(x=>x.isbn===code);if(b){q=code;render();toast("Found: "+b.title)}else{toast("No book with barcode "+code+". Add it first.");bookForm(null,code)}})})[a.dataset.act]?.()});
@@ -199,6 +212,8 @@ open(`<h2>${b&&b.id?"Edit book":"Add book"}</h2>
 <img id="prev" class="cov" style="width:70px;height:96px;margin-top:8px;${coverData?"":"display:none"}" alt="Cover preview" ${coverData?`src="${coverData}"`:""}>
 <label for="f-title">Title</label><input id="f-title" value="${esc(b?.title)}">
 <label for="f-author">Author</label><input id="f-author" value="${esc(b?.author)}">
+<label for="f-genre">Genre (optional)</label><input id="f-genre" list="genres" value="${esc(b?.genre)}"><datalist id="genres">${GENRES.map(g=>`<option>${g}</option>`).join("")}</datalist>
+<label for="f-shelf">Shelf location (optional)</label><input id="f-shelf" value="${esc(b?.shelf)}" placeholder="For example, A-3 or Science, row 2">
 <label for="f-isbn">Barcode (ISBN)</label><div class="bar" style="margin:0"><input id="f-isbn" value="${esc(isbn||b?.isbn||"")}" inputmode="numeric"><button class="b alt" data-x="scan">Scan</button><button class="b alt" data-x="lookup">Look up</button></div><div class="note" id="lk"></div>
 <label>Condition (optional)</label>
 <div class="conds">${CONDS.map(([n,h])=>`<label><input type="radio" name="cond" value="${n}" ${b?.cond===n?"checked":""}><span><b>${n}</b><small>${h}</small></span></label>`).join("")}<label><input type="radio" name="cond" value="__other" ${other?"checked":""}><span><b>Other</b><small>Type your own</small></span></label></div>
@@ -206,7 +221,7 @@ open(`<h2>${b&&b.id?"Edit book":"Add book"}</h2>
 <button class="linkbtn" type="button" data-x="clearcond">Clear condition</button>
 <label for="f-photos">Extra photos (optional)</label><input id="f-photos" type="file" accept="image/*" multiple>
 <div class="note">Add up to 4 photos to record the condition or other details, such as a torn page or a name written inside.</div><div class="thumbs" id="thumbs"></div>
-<div class="row">${b&&b.id?'<button class="b danger" data-x="del">Delete</button>':""}<button class="b alt" data-close>Cancel</button><button class="b" data-x="save">Save book</button></div>`);
+<div class="row">${b&&b.id&&isAdmin()?'<button class="b danger" data-x="del">Delete</button>':""}<button class="b alt" data-close>Cancel</button><button class="b" data-x="save">Save book</button></div>`);
 drawThumbs();
 if(isbn&&!(b&&b.title))autoLookup(isbn);
 $("#f-cover").onchange=async e=>{const f=e.target.files[0];if(!f)return;coverData=await shrink(f);const p=$("#prev");p.src=coverData;p.style.display="block"};
@@ -215,26 +230,26 @@ dlg.onchange=e=>{if(e.target.name==="cond")$("#f-cond").style.display=e.target.v
 dlg.onclick=e=>{const x=e.target.dataset.x;if(e.target.dataset.close!==undefined)return closeDlg();
 if(x==="rm"){formPhotos.splice(+e.target.dataset.i,1);drawThumbs()}
 if(x==="clearcond"){document.querySelectorAll("input[name=cond]").forEach(r=>r.checked=false);$("#f-cond").style.display="none"}
-if(x==="scan"){const keep={...(b||{}),title:$("#f-title").value,author:$("#f-author").value,id:b?.id,cover:coverData,loan:b?.loan,cond:readCond(),photos:formPhotos};scan(c=>bookForm(keep,c))}
+if(x==="scan"){const keep={...(b||{}),title:$("#f-title").value,author:$("#f-author").value,id:b?.id,cover:coverData,loan:b?.loan,cond:readCond(),photos:formPhotos,genre:$("#f-genre").value,shelf:$("#f-shelf").value};scan(c=>bookForm(keep,c))}
 if(x==="lookup")autoLookup($("#f-isbn").value.trim());
 if(x==="save"){const title=$("#f-title").value.trim();if(!title){toast("Enter a title first.");return}
-const d={title,author:$("#f-author").value.trim(),isbn:to13($("#f-isbn").value.trim().replace(/[-\s]/g,"").toUpperCase()),cover:coverData,cond:readCond(),photos:formPhotos};
+const d={title,author:$("#f-author").value.trim(),isbn:to13($("#f-isbn").value.trim().replace(/[-\s]/g,"").toUpperCase()),cover:coverData,cond:readCond(),photos:formPhotos,genre:$("#f-genre").value.trim(),shelf:$("#f-shelf").value.trim()};
 if(JSON.stringify(d).length>900000){toast("The photos are too large. Remove one and try again.");return}
 const ex=b&&b.id&&S.books.find(z=>z.id===b.id);
-saveBook(ex?{...ex,...d}:{id:uid(),loan:null,addedAt:Date.now(),...d});closeDlg();toast("Book saved.")}
-if(x==="del"&&confirm("Delete this book from the inventory?")){delBook(b.id);closeDlg()}}}
+const nb=ex?{...ex,...d}:{id:uid(),loan:null,addedAt:Date.now(),...d};saveBook(nb);addLog({type:ex?"book_edit":"book_add",bid:nb.id,bt:nb.title});closeDlg();toast("Book saved.")}
+if(x==="del"&&confirm("Delete this book from the inventory?")){delBook(b.id);addLog({type:"book_del",bid:b.id,bt:b.title});closeDlg()}}}
 async function lookupISBN(isbn){
 try{const r=await fetch(`https://openlibrary.org/api/books?bibkeys=ISBN:${isbn}&format=json&jscmd=data`);const d=(await r.json())["ISBN:"+isbn];
-if(d)return{title:d.title+(d.subtitle?": "+d.subtitle:""),author:(d.authors||[]).map(a=>a.name).join(", "),cover:d.cover?.medium||""}}catch(e){}
+if(d)return{title:d.title+(d.subtitle?": "+d.subtitle:""),author:(d.authors||[]).map(a=>a.name).join(", "),cover:d.cover?.medium||"",genre:d.subjects?.[0]?.name||""}}catch(e){}
 try{const r=await fetch(`https://www.googleapis.com/books/v1/volumes?q=isbn:${isbn}`);const v=(await r.json()).items?.[0]?.volumeInfo;
-if(v)return{title:v.title,author:(v.authors||[]).join(", "),cover:(v.imageLinks?.thumbnail||"").replace("http://","https://")}}catch(e){}
+if(v)return{title:v.title,author:(v.authors||[]).join(", "),cover:(v.imageLinks?.thumbnail||"").replace("http://","https://"),genre:(v.categories||[])[0]||""}}catch(e){}
 return null}
 async function autoLookup(isbn){
 const lk=$("#lk");if(!/^\d{8,13}$/.test(isbn)){if(lk)lk.textContent="Enter the barcode digits first (8 to 13 numbers).";return}
 if(lk)lk.textContent="Looking up this book…";
 const r=await lookupISBN(isbn);if(!$("#f-title"))return;
 if(!r){$("#lk").textContent="Book not found online. Type the title and author yourself.";return}
-if(!$("#f-title").value)$("#f-title").value=r.title||"";if(!$("#f-author").value)$("#f-author").value=r.author||"";
+if(!$("#f-title").value)$("#f-title").value=r.title||"";if(!$("#f-author").value)$("#f-author").value=r.author||"";if(r.genre&&!$("#f-genre").value)$("#f-genre").value=r.genre;
 if(r.cover&&!coverData){coverData=r.cover;const p=$("#prev");p.src=r.cover;p.style.display="block"}
 $("#lk").textContent="Found. Check the details, then save."}
 function importDlg(){
@@ -274,7 +289,7 @@ if(isbn)seen.add(isbn);
 list.push({title,author,isbn})}
 const todo=list.filter(x=>x.isbn&&!x.title);let k=0,n=0;
 const run=async()=>{while(k<todo.length){const x=todo[k++];const r=await lookupISBN(x.isbn);
-if(r){x.title=r.title;if(!x.author)x.author=r.author;if(r.cover)x.cover=r.cover}
+if(r){x.title=r.title;x.genre=r.genre||"";if(!x.author)x.author=r.author;if(r.cover)x.cover=r.cover}
 n++;out.innerHTML=`<div class="note">Looking up titles… ${n} of ${todo.length}</div>`}};
 await Promise.all([run(),run(),run(),run()]);
 let unknown=0;
@@ -289,7 +304,7 @@ if(!pending.length)return;const out=$("#imp-out");const items=pending.slice();pe
 out.innerHTML='<div class="note">Importing… please keep this page open.</div>';
 const base=Date.now();
 try{for(let i=0;i<items.length;i+=400){const b=writeBatch(db);
-items.slice(i,i+400).forEach((x,j)=>{const id=uid()+uid();b.set(doc(db,"books",id),clean({id,title:x.title,author:x.author||"",isbn:x.isbn||"",cover:x.cover||"",loan:null,addedAt:base-(i+j)}))});
+items.slice(i,i+400).forEach((x,j)=>{const id=uid()+uid();b.set(doc(db,"books",id),clean({id,title:x.title,author:x.author||"",isbn:x.isbn||"",cover:x.cover||"",genre:x.genre||"",loan:null,addedAt:base-(i+j)}))});
 await b.commit()}
 closeDlg();toast("Imported "+items.length+" books.")}
 catch(e){fail(e);out.innerHTML='<div class="note">Import failed: '+esc(e.code||e.message)+'</div>'}}
@@ -299,8 +314,8 @@ const gr=s=>s.grade||s.cls||"";
 const initials=n=>String(n||"?").trim().split(/\s+/).slice(0,2).map(w=>w[0]).join("").toUpperCase();
 const EMAIL_RE=/^[^@\s]+@[^@\s]+\.[^@\s]+$/;
 function studentCard(s){const n=S.books.filter(b=>b.loan&&b.loan.sid===s.id),late=n.filter(isLate).length;
-const has=n.length?(late?`<span class="tag late">${late} overdue</span> `:"")+"Has: "+n.map(b=>esc(b.title)).join(", "):"No books borrowed";
-return`<div class="card ${n.length?"out":""}"><div class="av" aria-hidden="true">${esc(initials(s.name))}</div><div class="info"><div class="t">${esc(s.name)}</div><div class="s">${gr(s)?esc(gr(s))+" · ":""}${s.adm?"Adm "+esc(s.adm):'<span class="tag late">Needs admission number</span>'}${s.email?" · "+esc(s.email):""}</div><div class="s">${has}</div></div><div class="acts"><button class="b alt" data-act="editstu" data-id="${s.id}">Edit</button></div></div>`}
+const lr=S.logs.filter(l=>l.type==="return"&&l.late&&l.sid===s.id).length;const has=(lr?`<span class="tag c-fair">${lr} late return${lr>1?"s":""} on record</span> `:"")+(n.length?(late?`<span class="tag late">${late} overdue</span> `:"")+"Has: "+n.map(b=>esc(b.title)).join(", "):"No books borrowed");
+return`<div class="card ${n.length?"out":""}"><div class="av" aria-hidden="true">${esc(initials(s.name))}</div><div class="info"><div class="t">${esc(s.name)}</div><div class="s">${gr(s)?esc(gr(s))+" · ":""}${s.adm?"Adm "+esc(s.adm):'<span class="tag late">Needs admission number</span>'}${s.email?" · "+esc(s.email):""}</div><div class="s">${has}</div></div><div class="acts"><button class="b alt" data-act="shist" data-id="${s.id}">History</button>${canEdit()?`<button class="b alt" data-act="editstu" data-id="${s.id}">Edit</button>`:""}</div></div>`}
 function stuForm(s){const em=s?(s.email||(s.contact&&s.contact.includes("@")?s.contact:"")):"";
 open(`<h2>${s?"Edit student":"Add student"}</h2>
 <label for="s-name">Full name</label><input id="s-name" value="${esc(s?.name)}" autocomplete="off">
@@ -309,18 +324,18 @@ open(`<h2>${s?"Edit student":"Add student"}</h2>
 <label for="s-adm">Admission number</label><input id="s-adm" value="${esc(s?.adm)}" ${s&&s.adm?"disabled":""} autocomplete="off">
 <div class="note">${s&&s.adm?"This number identifies the student and cannot be changed.":"Must be unique for each student. It cannot be changed later."}</div>
 <label for="s-em">Email</label><input id="s-em" type="email" value="${esc(em)}" autocomplete="off">
-<div class="row">${s?'<button class="b danger" data-x="del">Delete</button>':""}<button class="b alt" data-close>Cancel</button><button class="b" data-x="save">Save student</button></div>`);
+<div class="row">${s&&isAdmin()?'<button class="b danger" data-x="del">Delete</button>':""}<button class="b alt" data-close>Cancel</button><button class="b" data-x="save">Save student</button></div>`);
 dlg.onclick=async e=>{const x=e.target.dataset.x;if(e.target.dataset.close!==undefined)return closeDlg();
 if(x==="save"){const name=$("#s-name").value.trim(),grade=$("#s-grade").value.trim(),adm=(s&&s.adm?s.adm:$("#s-adm").value.trim().toUpperCase()),email=$("#s-em").value.trim();
 if(!name||!adm){toast("Enter the student’s name and admission number.");return}
 if(email&&!EMAIL_RE.test(email)){toast("That email address does not look right.");return}
 const key=encodeURIComponent(adm);
-if(!s){if(S.students.some(z=>z.id===key||z.adm===adm)){toast("A student with this admission number already exists.");return}saveStu({id:key,adm,name,grade,email});closeDlg();return}
+if(!s){if(S.students.some(z=>z.id===key||z.adm===adm)){toast("A student with this admission number already exists.");return}saveStu({id:key,adm,name,grade,email});addLog({type:"stu_add",sid:key,sn:name});closeDlg();return}
 if(s.adm){saveStu({...s,name,grade,email});closeDlg();return}
 if(S.students.some(z=>z.id===key)){toast("A student with this admission number already exists.");return}
 try{const w=writeBatch(db);w.set(doc(db,"students",key),clean({id:key,adm,name,grade,email}));w.delete(doc(db,"students",s.id));
 S.books.filter(b=>b.loan&&b.loan.sid===s.id).forEach(b=>w.set(doc(db,"books",b.id),clean({...b,loan:{...b.loan,sid:key}})));await w.commit();closeDlg()}catch(err){fail(err)}}
-if(x==="del"){if(S.books.some(b=>b.loan&&b.loan.sid===s.id)){toast("Return this student’s books before deleting.");return}if(confirm("Delete this student?")){delStu(s.id);closeDlg()}}}}
+if(x==="del"){if(S.books.some(b=>b.loan&&b.loan.sid===s.id)){toast("Return this student’s books before deleting.");return}if(confirm("Delete this student?")){delStu(s.id);addLog({type:"stu_del",sid:s.id,sn:s.name});closeDlg()}}}}
 function importStudentsDlg(){
 open(`<h2>Import students from Excel</h2><p class="note" style="margin-top:0">Put these column names in the first row: <b>Name</b>, <b>Grade</b>, <b>Admission Number</b> and <b>Email</b>. The admission number identifies each student. If it is already in the app, that student is <b>updated</b> (for example, to a new grade) and keeps any books they have borrowed. Excel (.xlsx, .xls) and CSV files work.</p>
 <input id="si-f" type="file" accept=".xlsx,.xls,.csv" aria-label="Choose an Excel or CSV file"><div id="si-out"></div>
@@ -367,8 +382,12 @@ if(!S.students.length){toast("Add a student first.");tab="students";render();ret
 open(`<h2>Lend “${esc(b.title)}”</h2>${pickerHtml()}<label for="l-d">Days to keep it</label><input id="l-d" type="number" min="1" value="14">
 <div class="row"><button class="b alt" data-close>Cancel</button><button class="b" data-x="ok">Lend book</button></div>`);bindPicker();
 dlg.onclick=e=>{if(e.target.dataset.close!==undefined)return closeDlg();if(e.target.dataset.x==="ok"){const sid=$("#l-s").value;if(!sid){toast("Choose a student from the list.");return}
-const d=Math.max(1,+$("#l-d").value||14),loan={sid,date:Date.now(),due:Date.now()+d*day};saveBook({...b,loan});closeDlg();toast("Lent to "+stu(sid).name+".")}}}
-function giveBack(id){const b=S.books.find(x=>x.id===id);saveBook({...b,loan:null});toast("Returned. Book is available again.")}
+const d=Math.max(1,+$("#l-d").value||14),loan={sid,date:Date.now(),due:Date.now()+d*day};saveBook({...b,loan,borrows:(b.borrows||0)+1});addLog({type:"lend",bid:b.id,bt:b.title,sid,sn:stu(sid).name,due:loan.due});closeDlg();toast("Lent to "+stu(sid).name+".")}}}
+const retLog=(b,r)=>{const l=b.loan,late=Date.now()>l.due;addLog({type:"return",bid:b.id,bt:b.title,sid:l.sid,sn:stu(l.sid)?.name||"Unknown student",due:l.due,late,dl:late?Math.ceil((Date.now()-l.due)/day):0,rating:r||null})};
+function giveBack(id){const b=S.books.find(x=>x.id===id);if(!b)return;
+open(`<h2>Return “${esc(b.title)}”</h2><label>Rate this book (optional)</label><div class="chips">${[1,2,3,4,5].map(n=>`<button class="chip" data-x="r" data-n="${n}">${n} ★</button>`).join("")}</div><div class="row"><button class="b alt" data-close>Cancel</button><button class="b" data-x="r" data-n="0">Return without rating</button></div>`);
+dlg.onclick=e=>{if(e.target.dataset.close!==undefined)return closeDlg();if(e.target.dataset.x!=="r")return;const r=+e.target.dataset.n,nb={...b,loan:null};
+if(r){nb.rSum=(b.rSum||0)+r;nb.rN=(b.rN||0)+1}retLog(b,r);saveBook(nb);closeDlg();toast("Returned. Book is available again.")}}
 const selBooks=()=>S.books.filter(b=>sel.has(b.id));
 async function commit(ops){try{for(let i=0;i<ops.length;i+=400){const w=writeBatch(db);ops.slice(i,i+400).forEach(o=>o.del?w.delete(doc(db,"books",o.id)):w.set(doc(db,"books",o.id),clean(o.data)));await w.commit()}return true}catch(e){fail(e);return false}}
 const stuOpts=()=>S.students.map(s=>`<option value="${s.id}">${esc(s.name)}${s.cls?" ("+esc(s.cls)+")":""}</option>`).join("");
@@ -382,15 +401,15 @@ ${pickerHtml()}<label for="l-d">Days to keep them</label><input id="l-d" type="n
 <div class="row"><button class="b alt" data-close>Cancel</button><button class="b" data-x="ok">Lend books</button></div>`);bindPicker();
 dlg.onclick=async e=>{if(e.target.dataset.close!==undefined)return closeDlg();if(e.target.dataset.x==="ok"){const sid=$("#l-s").value;if(!sid){toast("Choose a student from the list.");return}
 const d=Math.max(1,+$("#l-d").value||14),loan={sid,date:Date.now(),due:Date.now()+d*day};closeDlg();
-if(await commit(bs.map(b=>({id:b.id,data:{...b,loan}})))){toast("Lent "+bs.length+" book"+(bs.length>1?"s":"")+" to "+stu(sid).name+".");endSel()}}}}
+if(await commit(bs.map(b=>({id:b.id,data:{...b,loan,borrows:(b.borrows||0)+1}})))){bs.forEach(b=>addLog({type:"lend",bid:b.id,bt:b.title,sid,sn:stu(sid).name,due:loan.due}));toast("Lent "+bs.length+" book"+(bs.length>1?"s":"")+" to "+stu(sid).name+".");endSel()}}}}
 async function bulkReturn(){const all=selBooks(),bs=all.filter(b=>b.loan);
 if(!all.length){toast("Select some books first.");return}
 if(!bs.length){toast("None of the selected books are borrowed.");return}
-if(await commit(bs.map(b=>({id:b.id,data:{...b,loan:null}})))){toast("Returned "+bs.length+" book"+(bs.length>1?"s":"")+".");endSel()}}
+if(await commit(bs.map(b=>({id:b.id,data:{...b,loan:null}})))){bs.forEach(b=>retLog(b,0));toast("Returned "+bs.length+" book"+(bs.length>1?"s":"")+".");endSel()}}
 async function bulkDelete(){const all=selBooks();if(!all.length){toast("Select some books first.");return}
 const out=all.filter(b=>b.loan).length;
 if(!confirm("Delete "+all.length+" book"+(all.length>1?"s":"")+" from the inventory? This cannot be undone."+(out?"\n"+out+" of them "+(out>1?"are":"is")+" currently borrowed.":"")))return;
-if(await commit(all.map(b=>({id:b.id,del:true})))){toast("Deleted "+all.length+" book"+(all.length>1?"s":"")+".");endSel()}}
+if(await commit(all.map(b=>({id:b.id,del:true})))){all.forEach(b=>addLog({type:"book_del",bid:b.id,bt:b.title}));toast("Deleted "+all.length+" book"+(all.length>1?"s":"")+".");endSel()}}
 let remMsgs=[];
 function remindersDlg(){const soon=Date.now()+2*day;
 const late=S.books.filter(isLate),due=S.books.filter(b=>b.loan&&!isLate(b)&&b.loan.due<=soon);remMsgs=[];
@@ -432,12 +451,54 @@ await zxr.decodeFromConstraints({video:{facingMode:"environment"}},v,res=>{if(re
 }catch(e){toast("Camera could not start. Allow camera access and check your internet connection, then try again.");closeDlg()}}
 function stopScan(){scanning=false;if(zxr){try{zxr.reset()}catch(e){}zxr=null}if(stream){stream.getTracks().forEach(t=>t.stop());stream=null}}
 dlg.addEventListener("close",stopScan);
+const LT={lend:"Borrowed",return:"Returned",book_add:"Book added",book_edit:"Book edited",book_del:"Book deleted",stu_add:"Student added",stu_del:"Student deleted",user_add:"User added",user_edit:"User changed",user_del:"User removed"};
+const logLine=l=>{const ex=l.type==="lend"?"due "+fmt(l.due):l.type==="return"?"was due "+fmt(l.due)+(l.rating?" · rated "+l.rating+" ★":""):"";
+return`<div class="card" style="display:block;padding:10px 14px"><div class="t">${LT[l.type]||esc(l.type)}${l.type==="return"&&l.late?` <span class="tag late">${l.dl} day${l.dl>1?"s":""} late</span>`:""}</div><div class="s">${[l.bt,l.sn,l.note].filter(Boolean).map(esc).join(" · ")}${ex?" · "+ex:""}</div><div class="s">${new Date(l.at).toLocaleString()} · by ${esc(l.by||"unknown")}</div></div>`};
+function dashHtml(al){const B=S.books,late=B.filter(isLate);
+const top=B.filter(b=>b.borrows).sort((a,c)=>c.borrows-a.borrows).slice(0,5),rated=B.filter(b=>b.rN).sort((a,c)=>c.rSum/c.rN-a.rSum/a.rN||c.rN-a.rN).slice(0,5);
+const row=(b,i,r)=>`<div class="card" style="padding:10px 14px"><div class="av" style="width:34px;height:34px">${i+1}</div><div class="info"><div class="t">${esc(b.title)}</div><div class="s">${esc(b.author||"")}${b.genre?" · "+esc(b.genre):""}</div></div><b>${r}</b></div>`;
+const h=t=>`<h2 style="font-size:17px;margin:18px 0 8px">${t}</h2>`;
+return`<div class="stats" style="grid-template-columns:repeat(auto-fit,minmax(130px,1fr))"><div><b>${B.length}</b><span>Books</span></div><div><b>${B.filter(b=>b.loan).length}</b><span>Borrowed</span></div><div><b>${late.length}</b><span>Overdue</span></div><div><b>${S.students.length}</b><span>Students</span></div></div>${al}
+${h("Most borrowed")}${top.length?top.map((b,i)=>row(b,i,b.borrows+(b.borrows>1?" loans":" loan"))).join(""):'<div class="empty">No borrowing counted yet. Counts start from the next loan.</div>'}
+${h("Top rated")}${rated.length?rated.map((b,i)=>row(b,i,"★ "+(b.rSum/b.rN).toFixed(1)+" ("+b.rN+")")).join(""):'<div class="empty">No ratings yet. Readers can be rated when a book is returned.</div>'}
+${late.length?h("Overdue now")+late.slice(0,5).map(b=>`<div class="card out" style="padding:10px 14px"><div class="info"><div class="t">${esc(b.title)}</div><div class="s">${status(b)}</div></div></div>`).join(""):""}`}
+function similarDlg(id){const b=S.books.find(x=>x.id===id),g=(b.genre||"").toLowerCase(),l=S.books.filter(x=>x.id!==id&&(x.genre||"").toLowerCase()===g);
+open(`<h2>More in “${esc(b.genre)}”</h2>${l.length?l.map(x=>`<div class="card" style="padding:10px 14px"><div class="info"><div class="t">${esc(x.title)}${stars(x)}</div><div class="s">${esc(x.author||"")}${x.shelf?" · Shelf "+esc(x.shelf):""}</div><div>${status(x)}</div></div></div>`).join(""):'<div class="empty">No other books with this genre yet.</div>'}<div class="row"><button class="b alt" data-close>Close</button></div>`);dlg.onclick=e=>{if(e.target.dataset.close!==undefined)closeDlg()}}
+function histDlg(t,fn){const L=S.logs.filter(fn);open(`<h2>${esc(t)}</h2>${L.length?L.map(logLine).join(""):'<div class="empty">No records yet.</div>'}<div class="row"><button class="b alt" data-close>Close</button></div>`);dlg.onclick=e=>{if(e.target.dataset.close!==undefined)closeDlg()}}
+let logF="all",lq="";
+function logsView(m){const L=S.logs.filter(l=>logF==="all"||(logF==="late"?l.type==="return"&&l.late:logF==="chg"?!["lend","return"].includes(l.type):l.type===logF)).filter(l=>[l.bt,l.sn,l.note,l.by].join(" ").toLowerCase().includes(lq.toLowerCase()));
+const lateN=S.logs.filter(l=>l.type==="return"&&l.late).length;
+m.innerHTML=`<div class="bar"><input id="lq" type="search" placeholder="Search book, student or user" value="${esc(lq)}" aria-label="Search audit log"></div><div class="chips">${[["all","All"],["lend","Borrowed"],["return","Returned"],["late","Late returns ("+lateN+")"],["chg","Changes"]].map(([k,l])=>`<button class="chip" data-lf="${k}" aria-pressed="${logF===k}">${l}</button>`).join("")}</div>${L.length?L.slice(0,200).map(logLine).join(""):'<div class="empty">No records yet. Borrowing, returns and changes will appear here.</div>'}<div class="note">Showing the latest ${Math.min(L.length,200)} of the last 600 records.</div>`;
+$("#lq").addEventListener("input",e=>{lq=e.target.value;const p=e.target.selectionStart;render();const n=$("#lq");n.focus();n.setSelectionRange(p,p)})}
+function usersView(m){if(!isAdmin()){tab="dash";render();return}
+m.innerHTML=`<div class="bar"><span class="s" style="flex:1;align-self:center">Accounts that can sign in to this app.</span><button class="b" data-act="adduser">Add user</button></div>`+(S.users.length?S.users.map(u=>`<div class="card ${u.active===false?"":"out"}"><div class="av" aria-hidden="true">${esc(initials(u.name||u.email))}</div><div class="info"><div class="t">${esc(u.name||u.email)}</div><div class="s">${esc(u.email)}</div><div><span class="tag cond">${RL[u.role]||esc(u.role)}</span>${u.active===false?' <span class="tag late">Disabled</span>':""}</div></div><div class="acts"><button class="b alt" data-act="edituser" data-id="${u.id}">Edit</button></div></div>`).join(""):'<div class="empty">No users loaded.</div>')}
+function userForm(u){const self=u&&u.id===auth.currentUser.uid;
+open(`<h2>${u?"Edit user":"Add user"}</h2><label for="u-n">Name</label><input id="u-n" value="${esc(u?.name)}" autocomplete="off"><label for="u-e">Email</label><input id="u-e" type="email" value="${esc(u?.email)}" ${u?"disabled":""} autocomplete="off">
+${u?"":'<label for="u-p">Temporary password</label><input id="u-p" type="text" autocomplete="off" placeholder="At least 6 characters">'}
+<label for="u-r">Role</label><select id="u-r" ${self?"disabled":""}>${Object.entries(RL).map(([k,v])=>`<option value="${k}" ${u?.role===k?"selected":""}>${v}</option>`).join("")}</select>
+<div class="note">Administrator: everything, including users and deleting. Librarian: add, edit, lend and return, but no deleting. Read-only: view only.</div>
+${u?`<label style="display:flex;gap:8px;align-items:center"><input type="checkbox" id="u-a" ${u.active===false?"":"checked"} ${self?"disabled":""}> Account active</label>`:""}
+<div class="row">${u&&!self?'<button class="b danger" data-x="del">Remove</button>':""}${u?'<button class="b alt" data-x="reset">Send password reset</button>':""}<button class="b alt" data-close>Cancel</button><button class="b" data-x="save">Save</button></div>`);
+dlg.onclick=async e=>{const x=e.target.dataset.x;if(e.target.dataset.close!==undefined)return closeDlg();
+if(x==="reset"){try{await sendPasswordResetEmail(auth,u.email);toast("Reset email sent.")}catch(er){fail(er)}}
+if(x==="del"&&confirm("Remove this user's access to the app?")){await deleteDoc(doc(db,"users",u.id)).catch(fail);addLog({type:"user_del",note:u.email});closeDlg()}
+if(x==="save"){const name=$("#u-n").value.trim(),rl=$("#u-r").value;if(!name){toast("Enter a name.");return}
+if(u){const act=self?true:$("#u-a").checked;await setDoc(doc(db,"users",u.id),{...u,name,role:self?u.role:rl,active:act}).catch(fail);addLog({type:"user_edit",note:u.email+" is now "+RL[self?u.role:rl]+(act?"":" (disabled)")});closeDlg();return}
+const email=$("#u-e").value.trim(),pw=$("#u-p").value;if(!EMAIL_RE.test(email)||pw.length<6){toast("Enter a valid email and a password of 6 or more characters.");return}
+try{const a2=getAuth(initializeApp(firebaseConfig,"sec"+Date.now()));const c=await createUserWithEmailAndPassword(a2,email,pw);await signOut(a2);
+await setDoc(doc(db,"users",c.user.uid),{id:c.user.uid,email,name,role:rl,active:true,createdAt:Date.now()});addLog({type:"user_add",note:email+" as "+RL[rl]});closeDlg();toast("User added.")}catch(er){toast("Could not add user: "+(er.code||er.message))}}}}
+async function loadMe(u){const s=await getDoc(doc(db,"users",u.uid));
+if(!s.exists()){const any=await getDocs(query(collection(db,"users"),limit(1)));
+if(any.empty){const p={id:u.uid,email:u.email,name:u.email,role:"admin",active:true,createdAt:Date.now()};await setDoc(doc(db,"users",u.uid),p);return p}return null}
+const p=s.data();return p.active===false?null:p}
 const loginEl=$("#login"),hdr=$("#hdr"),mainEl=$("#main");
 function showApp(on){loginEl.classList.toggle("hide",on);hdr.classList.toggle("hide",!on);mainEl.classList.toggle("hide",!on)}
 showApp(false);
 if(!configured){$("#lerr").textContent="Firebase is not set up yet. Paste your Firebase settings into the marked section at the top of the script in this file."}
 else{
-onAuthStateChanged(auth,u=>{if(u){$("#who").textContent=u.email||"";showApp(true);startSync();render()}else{stopSync();S={books:[],students:[]};showApp(false)}});
+onAuthStateChanged(auth,async u=>{if(u){let p=null;try{p=await loadMe(u)}catch(e){$("#lerr").textContent="Could not check your access: "+(e.code||e.message)}
+if(!p){await signOut(auth);if(!$("#lerr").textContent)$("#lerr").textContent="This account has no access. Ask an administrator to add you.";return}
+me=p;tab="dash";applyRole();showApp(true);startSync();render()}else{stopSync();me=null;S={books:[],students:[],logs:[],users:[]};showApp(false)}});
 $("#lf").addEventListener("submit",async e=>{e.preventDefault();$("#lerr").textContent="";
 try{await signInWithEmailAndPassword(auth,$("#em").value.trim(),$("#pw").value)}
 catch(err){$("#lerr").textContent=["auth/invalid-credential","auth/wrong-password","auth/user-not-found"].includes(err.code)?"Wrong email or password.":"Could not sign in: "+err.code}});
