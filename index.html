@@ -275,7 +275,9 @@ dialog h2{font-size:20px;margin:0 0 12px}
 .tl li.late::before{border-color:var(--bad)}.tl li.ret::before{border-color:var(--ok)}
 .selbar{position:fixed;left:var(--sideW);right:0;bottom:0;background:var(--surf);border-top:3px solid var(--brand);padding:10px 16px calc(10px + env(safe-area-inset-bottom,0px));display:flex;gap:8px;flex-wrap:wrap;align-items:center;justify-content:center;z-index:18;box-shadow:0 -6px 20px rgba(8,17,42,.15)}
 @media (max-width:900px){.selbar{left:0}}
-video{width:100%;border-radius:12px;background:#000;max-height:50vh}
+video{width:100%;border-radius:12px;background:#000;max-height:50vh;display:block}
+.scanbox{position:relative;border-radius:12px;overflow:hidden;background:#000}
+.scanframe{position:absolute;left:15%;right:15%;top:22%;bottom:22%;border:3px solid var(--gold);border-radius:12px;box-shadow:0 0 0 999px rgba(0,0,0,.28);pointer-events:none}
 .conds{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .conds label{display:flex;gap:8px;align-items:flex-start;font-weight:400;color:var(--ink);border:1.5px solid var(--line);border-radius:10px;padding:8px;margin:0;cursor:pointer}
 .conds input{margin-top:3px}.conds b{display:block;font-size:14px}.conds small{color:var(--mute)}
@@ -415,8 +417,8 @@ const firebaseConfig={
 const REQUIRE_2FA=true;
 /* ========================================================================================= */
 
-const APP={version:"2.1.0",released:"16 November 2026",firebase:"10.12.2",sheetjs:"0.20.3",zxing:"0.21.3",tesseract:"5.1.1",qr:"qrcode-generator 1.4.4",rules:"2.0 (16 November 2026)",issuer:"IPHS Library"};
-const CHANGES=["New design: sidebar menu that can be collapsed (and slides out on phones), welcome dashboard, grid view for books, student profiles, step-by-step Borrow & Return, notification centre, activity log table with date filters.","Students tab (was Borrowers), settings behind the gear icon, light and dark mode switch.","Interactive dashboard with charts.","Two-step sign-in with an authenticator app, automatic sign-out when idle, strong passwords.","School ID card scanning by GR No., and filling in a new student from a photo of their card.","Reports: monthly report, overdue list by grade, collection insights, top readers and badges, Excel export.","Kiosk: new arrivals, most popular, top readers, suggestions, reviews and recommendations, without showing who borrowed what.","Overdue notices, editable message templates, weekly summary email, optional server sending.","Bulk edit, backup, academic year rollover, Genre, Shelf, Mobile and Staff columns in imports, option to hide student names from read-only accounts."];
+const APP={version:"2.1.1",released:"16 November 2026",firebase:"10.12.2",sheetjs:"0.20.3",zxing:"0.21.3",tesseract:"5.1.1",qr:"qrcode-generator 1.4.4",rules:"2.0 (16 November 2026)",issuer:"IPHS Library"};
+const CHANGES=["2.1.1: much better barcode scanning on laptops and webcams, a guide box, “Take a photo instead”, and typing the ISBN by hand.","New design: sidebar menu that can be collapsed (and slides out on phones), welcome dashboard, grid view for books, student profiles, step-by-step Borrow & Return, notification centre, activity log table with date filters.","Students tab (was Borrowers), settings behind the gear icon, light and dark mode switch.","Interactive dashboard with charts.","Two-step sign-in with an authenticator app, automatic sign-out when idle, strong passwords.","School ID card scanning by GR No., and filling in a new student from a photo of their card.","Reports: monthly report, overdue list by grade, collection insights, top readers and badges, Excel export.","Kiosk: new arrivals, most popular, top readers, suggestions, reviews and recommendations, without showing who borrowed what.","Overdue notices, editable message templates, weekly summary email, optional server sending.","Bulk edit, backup, academic year rollover, Genre, Shelf, Mobile and Staff columns in imports, option to hide student names from read-only accounts."];
 
 let S={books:[],students:[],logs:[],users:[],holds:[],sugg:[],stats:{},pub:null,ready:{}},CAT=new Map();
 let tab="dash",q="",sq="",lq="",kq="",kg="",filt="all",logF="all",showArch=false,unsubs=[],db,auth,me=null,limitedMode=false;
@@ -1416,28 +1418,43 @@ ${L.length?L.slice(0,browsing?30:100).map(b=>`<div class="card ${copiesOf(b).som
 let stream=null,scanning=false,zxr=null;
 const isIsbnLike=c=>/^97[89]\d{10}$/.test(c)||validISBN(c);
 /* ID cards: the barcode above the photo holds the GR No. (for example 9281). Book barcodes are refused in this mode. */
-const okCode=c=>idScan?(/^[A-Za-z0-9\-\/]{1,15}$/.test(c)&&!isIsbnLike(c)):(validISBN(c)||S.books.some(b=>b.isbn===c));
+const okCode=c=>idScan?(/^[A-Za-z0-9\-\/]{1,15}$/.test(c)&&!isIsbnLike(c)):(validISBN(c)||S.books.some(b=>b.isbn===c)||/^\d{8,14}$/.test(c));
 const zxHints=()=>{if(!window.ZXing)return null;const h=new Map();h.set(ZXing.DecodeHintType.TRY_HARDER,true);return h};
 async function scan(cb){
  if(!navigator.mediaDevices?.getUserMedia){toast("The camera needs a secure page. Open the app from its https:// address.");return}
- open(`<h2>${idScan?"Scan ID card":"Scan barcode"}</h2><video id="vid" playsinline muted></video><div class="note">${idScan?"Hold the school ID card so the barcode above the photo is in the middle of the picture. The card can be upright or sideways.":"Point the camera at the long barcode on the back cover, the one with the number starting 978 or 979."}</div>
-${idScan?`<div class="row" style="justify-content:flex-start;margin-top:8px"><button class="b alt" type="button" data-x="ocr">Read the card text instead</button></div><div class="note" id="sc-st" role="status"></div><label for="sc-man">Or type the GR No.</label><div class="bar" style="margin:0"><input id="sc-man" inputmode="numeric" maxlength="15" autocomplete="off"><button class="b" type="button" data-x="man">Use</button></div>`:""}
+ const tipTxt=idScan?"Hold the ID card so the barcode above the photo sits inside the box. Upright or sideways both work.":"Hold the barcode on the back cover inside the box, about 15 cm from the camera, in good light.";
+ open(`<h2>${idScan?"Scan ID card":"Scan ISBN barcode"}</h2><div class="scanbox"><video id="vid" playsinline muted></video><div class="scanframe" aria-hidden="true"></div></div>
+<div class="note" id="sc-st" role="status">${tipTxt}</div>
+<div class="row" style="justify-content:flex-start;margin-top:10px"><label class="b alt" style="margin:0;color:var(--brand)">${ico("upload")}Take a photo instead<input type="file" id="sc-file" accept="image/*" capture="environment" hidden></label>${idScan?`<button class="b alt" type="button" data-x="ocr">Read the card text</button>`:""}</div>
+<label for="sc-man">Or type the ${idScan?"GR No.":"ISBN"}</label><div class="bar" style="margin:0"><input id="sc-man" inputmode="numeric" maxlength="20" autocomplete="off"><button class="b" type="button" data-x="man">Use</button></div>
 <div class="row"><button class="b alt" data-close>Cancel</button></div>`);
+ const say=t=>{const a=$("#sc-st");if(a)a.textContent=t};
  const done=code=>{stopScan();if(dlg.open)dlg.close();cb(code)};
- dlg.onclick=async e=>{if(e.target.dataset.close!==undefined)return closeDlg();const x=e.target.dataset.x;
-  if(x==="man"){const v=normId($("#sc-man").value);if(v)done(v);return}
-  if(x==="ocr"){const v=$("#vid"),st=$("#sc-st");if(!v||!v.videoWidth){st.textContent="The camera is not ready yet.";return}const c=document.createElement("canvas");c.width=v.videoWidth;c.height=v.videoHeight;c.getContext("2d").drawImage(v,0,0);
-   st.textContent="Reading the card… hold still.";try{const r=await readCard(c,t=>st.textContent=t);if(r.gr)done(r.gr);else st.textContent="Could not find the GR No. Try better light, or type it below."}catch(err){st.textContent="Could not read the card: "+(err.message||err)}}};
+ const fin=v=>done(idScan?normId(v):v);
+ $("#sc-file").onchange=async e=>{const f=e.target.files[0];if(!f)return;say("Reading the photo…");
+  try{const c=await toCanvas(f,2000);let v=null;
+   if("BarcodeDetector" in window){try{const r=await new BarcodeDetector().detect(c);v=r.map(x=>String(x.rawValue).trim()).find(okCode)||null}catch(er){}}
+   if(!v)v=zxStill(c,okCode);
+   if(v)fin(v);else say("No barcode found in that photo. Take it straight on, close enough that the barcode fills about half the picture, without glare.")}catch(er){say("That photo could not be opened.")}e.target.value=""};
+ dlg.onclick=async e=>{if(e.target.dataset.close!==undefined)return closeDlg();const x=e.target.closest("[data-x]")?.dataset.x;
+  if(x==="man"){const raw=$("#sc-man").value.trim(),v=idScan?normId(raw):to13(raw.replace(/[-\s]/g,"").toUpperCase());if(v)done(v);return}
+  if(x==="ocr"){const v=$("#vid");if(!v||!v.videoWidth){say("The camera is not ready yet.");return}const c=document.createElement("canvas");c.width=v.videoWidth;c.height=v.videoHeight;c.getContext("2d").drawImage(v,0,0);
+   say("Reading the card… hold still.");try{const r=await readCard(c,say);if(r.gr)done(r.gr);else say("Could not find the GR No. Try better light, or type it below.")}catch(err){say("Could not read the card: "+(err.message||err))}}};
  try{const v=$("#vid");scanning=true;
-  if("BarcodeDetector" in window){
-   stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:"environment",width:{ideal:1280},height:{ideal:720}}});v.srcObject=stream;await v.play();
-   let fm=["ean_13","ean_8","upc_a","upc_e","code_128","code_39","code_93","codabar","itf","qr_code"];try{const sup=await BarcodeDetector.getSupportedFormats();fm=fm.filter(f=>sup.includes(f))}catch(e){}
-   const det=new BarcodeDetector({formats:fm});
-   const loop=async()=>{if(!scanning)return;try{const r=await det.detect(v);const hit=r.find(x=>okCode(String(x.rawValue).trim()));if(hit){done(idScan?normId(hit.rawValue):String(hit.rawValue).trim());return}}catch(e){}setTimeout(()=>requestAnimationFrame(loop),60)};loop()
-  }else{if(!window.ZXing)throw new Error("scanner library missing");
-   zxr=new ZXing.BrowserMultiFormatReader(zxHints(),300);
-   await zxr.decodeFromConstraints({video:{facingMode:"environment"}},v,res=>{if(res&&scanning){const code=String(res.getText()).trim();if(okCode(code))done(idScan?normId(code):code)}})}
- }catch(e){if(idScan&&$("#sc-st")){$("#sc-st").textContent="The camera could not start. Type the GR No. below, or allow camera access and try again.";return}toast("Camera could not start. Allow camera access and check your internet connection, then try again.");closeDlg()}}
+  stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:"environment",width:{ideal:1920},height:{ideal:1080},advanced:[{focusMode:"continuous"}]}});
+  v.srcObject=stream;await v.play();
+  let det=null;if("BarcodeDetector" in window){let fm=["ean_13","ean_8","upc_a","upc_e","code_128","code_39","code_93","codabar","itf"];try{const sup=await BarcodeDetector.getSupportedFormats();fm=fm.filter(f=>sup.includes(f))}catch(e){}try{det=new BarcodeDetector({formats:fm})}catch(e){det=null}}
+  if(!det&&!window.ZXing)throw new Error("scanner library missing");
+  /* each pass looks at a different part of the picture: whole, middle, close-up middle, then left and right halves */
+  const W=[[0,0,1,1],[.15,.2,.7,.6],[.28,.3,.44,.4],[0,.15,.6,.7],[.4,.15,.6,.7]];for(const y of [0,.25,.5])for(const x of [0,.25,.5])W.push([x,y,.5,.5]);let n=0;const t0=Date.now();
+  const loop=async()=>{if(!scanning)return;
+   try{if(v.videoWidth){let hit=null;
+    if(det){const r=await det.detect(v);hit=r.map(x=>String(x.rawValue).trim()).find(okCode)}
+    else{const A=[0,-8,8,-15,15],w=W[n%W.length],ang=A[Math.floor(n/W.length)%A.length];n++;const c=cropTo(v,v.videoWidth,v.videoHeight,w,w[2]<.5?900:1100,ang);const t=zxDecode(c);if(t&&okCode(t))hit=t}
+    if(hit){fin(hit);return}
+    if(Date.now()-t0>9000&&n%40===1)say("Still looking… Move the book a little closer or further away, tilt it to avoid glare, or use “Take a photo instead”.")}}catch(e){}
+   setTimeout(loop,det?60:40)};loop()
+ }catch(e){say(e&&e.name==="NotAllowedError"?"Camera access is blocked. Allow the camera for this site, or take a photo or type the number below.":"The camera could not start. Take a photo or type the number below instead.")}}
 function stopScan(){scanning=false;if(zxr){try{zxr.reset()}catch(e){}zxr=null}if(stream){stream.getTracks().forEach(t=>t.stop());stream=null}}
 function idScanPick(){const c=lendCtx;idScan=true;scan(code=>{idScan=false;const p=findPerson(code);const back=pid=>c?(c.k==="one"?lend(c.id,pid):bulkLend(pid)):0;if(!p){toast("No student found for GR No. "+code+".");back();return}if(p.archived){toast(p.name+" is marked as having left the school.");back();return}back(p.id)})}
 function idScanSearch(){lendCtx=null;idScan=true;scan(code=>{idScan=false;const p=findPerson(code);if(!p){toast("No student found for GR No. "+code+".");if(canEdit())ask("No student has GR No. "+code+". Add a new student with this number?",{title:"Student not found",ok:"Add student"}).then(ok=>{if(ok){stuForm();setTimeout(()=>{const a=$("#s-adm");if(a)a.value=code},50)}});return}sq=p.adm||p.name;showArch=!!p.archived;tab="students";render();histDlg("History: "+p.name,l=>l.sid===p.id)})}
@@ -1454,9 +1471,7 @@ function parseCard(text){const T=String(text||"").replace(/[|]/g,"I"),lines=T.sp
 function toCanvas(src,max=1600){return new Promise((ok,no)=>{if(src instanceof HTMLCanvasElement)return ok(src);const i=new Image(),u=URL.createObjectURL(src);i.onload=()=>{const r=Math.min(1,max/Math.max(i.width,i.height)),c=document.createElement("canvas");c.width=Math.round(i.width*r);c.height=Math.round(i.height*r);c.getContext("2d").drawImage(i,0,0,c.width,c.height);URL.revokeObjectURL(u);ok(c)};i.onerror=()=>{URL.revokeObjectURL(u);no(new Error("this photo could not be opened"))};i.src=u})}
 function rotate(c,deg){if(!deg)return c;const o=document.createElement("canvas");o.width=c.height;o.height=c.width;const x=o.getContext("2d");x.translate(o.width/2,o.height/2);x.rotate(deg*Math.PI/180);x.drawImage(c,-c.width/2,-c.height/2);return o}
 /* The card's barcode (Code 128, the GR No.) is small in a photo of the whole card, so try the whole photo and then overlapping crops, upright and sideways. */
-async function zxCard(c){const rd=new ZXing.BrowserMultiFormatReader(zxHints()),wins=[[0,0,1,1]];for(const y of [0,.3,.6])for(const x of [0,.3,.6])wins.push([x,y,.4,.4]);for(const y of [0,.5])for(const x of [0,.5])wins.push([x,y,.5,.5]);
- for(const [x,y,w,h] of wins){const k=document.createElement("canvas"),sw=Math.round(c.width*w),sh=Math.round(c.height*h);k.width=sw;k.height=sh;k.getContext("2d").drawImage(c,Math.round(c.width*x),Math.round(c.height*y),sw,sh,0,0,sw,sh);
-  for(const deg of [90,0]){try{const r=await rd.decodeFromImageUrl(rotate(k,deg).toDataURL("image/jpeg",.9));const v=String(r.getText()).trim();if(/^[A-Za-z0-9\-\/]{1,15}$/.test(v)&&!isIsbnLike(v))return v}catch(e){}}}return null}
+async function zxCard(c){return zxStill(c,v=>/^[A-Za-z0-9\-\/]{1,15}$/.test(v)&&!isIsbnLike(v))}
 async function readCard(src,say=()=>{}){const c=await toCanvas(src);let bar=null;
  if("BarcodeDetector" in window){try{const r=await new BarcodeDetector().detect(c);bar=r.map(x=>String(x.rawValue).trim()).find(v=>/^[A-Za-z0-9\-\/]{1,15}$/.test(v)&&!isIsbnLike(v))||null}catch(e){}}
  if(!bar&&window.ZXing){say("Looking for the barcode…");bar=await zxCard(c)}
@@ -1464,6 +1479,16 @@ async function readCard(src,say=()=>{}){const c=await toCanvas(src);let bar=null
  try{await loadTess()}catch(e){if(bar)return{gr:normId(bar)};throw e}
  let best={};for(const deg of [0,90,270]){say("Reading the card text…");const{data}=await Tesseract.recognize(rotate(c,deg),"eng");const r=parseCard(data.text);if(Object.keys(r).length>Object.keys(best).length)best=r;if(r.gr&&(r.name||r.grade))break}
  if(bar&&!best.gr)best.gr=normId(bar);if(bar&&best.gr&&normId(bar)!==best.gr)best.gr=normId(bar);return best}
+
+const zxR={};
+function zxDecode(c){if(!window.ZXing)return null;const F=ZXing.BarcodeFormat,k=idScan?"id":"book";
+ if(!zxR[k]){const r=new ZXing.MultiFormatReader(),h=new Map();h.set(ZXing.DecodeHintType.TRY_HARDER,true);h.set(ZXing.DecodeHintType.POSSIBLE_FORMATS,idScan?[F.CODE_128,F.CODE_39,F.CODE_93,F.CODABAR,F.ITF]:[F.EAN_13,F.EAN_8,F.UPC_A,F.UPC_E,F.CODE_128]);r.setHints(h);zxR[k]=r}
+ try{const bmp=new ZXing.BinaryBitmap(new ZXing.HybridBinarizer(new ZXing.HTMLCanvasElementLuminanceSource(c)));return String(zxR[k].decodeWithState(bmp).getText()).trim()}catch(e){return null}}
+function tilt(c,deg){if(!deg)return c;const r=deg*Math.PI/180,cw=Math.ceil(c.width*Math.abs(Math.cos(r))+c.height*Math.abs(Math.sin(r))),ch=Math.ceil(c.width*Math.abs(Math.sin(r))+c.height*Math.abs(Math.cos(r))),o=document.createElement("canvas");o.width=cw;o.height=ch;const x=o.getContext("2d",{willReadFrequently:true});x.fillStyle="#fff";x.fillRect(0,0,cw,ch);x.translate(cw/2,ch/2);x.rotate(r);x.drawImage(c,-c.width/2,-c.height/2);return o}
+function cropTo(src,sw,sh,[x,y,w,h],max=1000,deg=0){const cw=Math.round(sw*w),ch=Math.round(sh*h),k=Math.min(1,max/Math.max(cw,ch)),c=document.createElement("canvas");c.width=Math.max(1,Math.round(cw*k));c.height=Math.max(1,Math.round(ch*k));
+ c.getContext("2d",{willReadFrequently:true}).drawImage(src,Math.round(sw*x),Math.round(sh*y),cw,ch,0,0,c.width,c.height);return deg%90===0?(deg?rotate(c,deg):c):tilt(c,deg)}
+function zxStill(c,accept){const wins=[[0,0,1,1],[.15,.15,.7,.7],[.3,.3,.4,.4]];for(const y of [0,.3,.6])for(const x of [0,.3,.6])wins.push([x,y,.4,.4]);
+ for(const deg of [0,90,-8,8,82,98])for(const wdw of wins){const v=zxDecode(cropTo(c,c.width,c.height,wdw,1100,deg));if(v&&accept(v))return v}return null}
 
 /* ================= SETTINGS (gear icon) ================= */
 let sTab="account";
