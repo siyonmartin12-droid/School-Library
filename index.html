@@ -87,7 +87,7 @@ video{width:100%;border-radius:12px;background:#000;max-height:50vh}
 </head>
 <body>
 <header id="hdr"><div class="hbar"><div class="brand"><svg viewBox="0 0 32 32" width="38" height="38" aria-hidden="true"><rect width="32" height="32" rx="9" fill="#e0a526"/><path d="M8 9.5c3-1 6-.7 8 1 2-1.7 5-2 8-1v13c-3-1-6-.7-8 1-2-1.7-5-2-8-1z" fill="#14337a"/><path d="M16 10.5v13" stroke="#e0a526" stroke-width="1.4"/></svg><div><b>Indian Public High School</b><span>Library Management</span></div></div><span class="who" id="who"></span><button class="b" id="out">Sign out</button></div>
-<nav role="tablist"><button role="tab" data-tab="dash">Dashboard</button><button role="tab" data-tab="books">Books <span class="n" id="n-books"></span></button><button role="tab" data-tab="students">Borrowers <span class="n" id="n-students"></span></button><button role="tab" data-tab="loans">Borrowed <span class="n" id="n-loans"></span></button><button role="tab" data-tab="logs">Audit log</button><button role="tab" data-tab="users" id="t-users" class="hide">Users</button><button role="tab" data-tab="settings" id="t-set" class="hide">Settings</button></nav></header>
+<nav role="tablist"><button role="tab" data-tab="dash">Dashboard</button><button role="tab" data-tab="books">Books <span class="n" id="n-books"></span></button><button role="tab" data-tab="students">Borrowers <span class="n" id="n-students"></span></button><button role="tab" data-tab="loans">Borrowed <span class="n" id="n-loans"></span></button><button role="tab" data-tab="holds">Holds <span class="n" id="n-holds"></span></button><button role="tab" data-tab="logs">Audit log</button><button role="tab" data-tab="users" id="t-users" class="hide">Users</button><button role="tab" data-tab="settings" id="t-set" class="hide">Settings</button></nav></header>
 <section id="login" class="login"><div class="login-art" role="img" aria-label="Main gate of Indian Public High School"><div><h1>School Library Management</h1><p>Indian Public High School, since 1986. Keep every book and every borrower organised in one place.</p></div></div>
 <div class="login-panel"><form id="lf"><div class="brand"><svg viewBox="0 0 32 32" width="38" height="38" aria-hidden="true"><rect width="32" height="32" rx="9" fill="#e0a526"/><path d="M8 9.5c3-1 6-.7 8 1 2-1.7 5-2 8-1v13c-3-1-6-.7-8 1-2-1.7-5-2-8-1z" fill="#14337a"/><path d="M16 10.5v13" stroke="#e0a526" stroke-width="1.4"/></svg><div><b>Indian Public High School</b><span>Library Management</span></div></div>
 <h2>Welcome back</h2><p class="sub">Sign in with the email and password your library administrator gave you.</p>
@@ -117,7 +117,7 @@ const firebaseConfig={
 };
 /* ========================================================================================= */
 
-let S={books:[],students:[],logs:[],users:[]},tab="dash",q="",unsubs=[],db,auth,me=null;
+let S={books:[],students:[],logs:[],users:[],holds:[]},tab="dash",q="",unsubs=[],db,auth,me=null;
 const configured=!firebaseConfig.apiKey.startsWith("PASTE");
 if(configured){const app=initializeApp(firebaseConfig);auth=getAuth(app);db=initializeFirestore(app,{localCache:persistentLocalCache()})}
 const clean=o=>JSON.parse(JSON.stringify(o));
@@ -129,7 +129,7 @@ const delStu=id=>deleteDoc(doc(db,"students",id)).catch(fail);
 const addLog=e=>{const id=Date.now().toString(36)+uid();return setDoc(doc(db,"logs",id),clean({id,at:Date.now(),by:auth.currentUser?.email||"",...e})).catch(()=>{})};
 const RL={admin:"Administrator",staff:"Librarian",viewer:"Read-only",kiosk:"Kiosk (students)"},GENRES=["Fiction","Non-fiction","Science","Mathematics","History","Biography","Fantasy","Mystery","Poetry","Reference","Religion","Comics","Children","Technology"];
 const role=()=>me?.role||"viewer",isAdmin=()=>role()==="admin",canEdit=()=>["admin","staff"].includes(role());
-const ST0={maxLoans:3,maxLoansStaff:5,loanDays:14,remindDays:2,autoEmail:false,ejService:"",ejTemplate:"",ejKey:""};let ST={...ST0},remT=null;
+const ST0={maxLoans:3,maxLoansStaff:5,loanDays:14,remindDays:2,maxRenewals:2,renewDays:7,autoEmail:false,ejService:"",ejTemplate:"",ejKey:""};let ST={...ST0},remT=null;
 const maxFor=p=>{const v=p.maxLoans!=null&&p.maxLoans!==""?+p.maxLoans:(p.kind==="staff"?ST.maxLoansStaff:ST.maxLoans);return v||0};
 const overLimit=(sid,add)=>{const p=S.students.find(x=>x.id===sid);if(!p)return 0;const m=maxFor(p);return m>0&&S.books.filter(b=>b.loan&&b.loan.sid===sid).length+add>m?m:0};
 const root=b=>b.copyOf||b.id,copiesOf=b=>S.books.filter(x=>root(x)===root(b));
@@ -137,6 +137,7 @@ const applyRole=()=>{$("#t-users").classList.toggle("hide",!isAdmin());$("#t-set
 function startSync(){stopSync();unsubs=[
 onSnapshot(collection(db,"books"),r=>{S.books=r.docs.map(d=>d.data()).sort((a,b)=>(b.addedAt||0)-(a.addedAt||0));render();if(ST.autoEmail&&canEdit()){clearTimeout(remT);remT=setTimeout(()=>sendReminders(false),4000)}},fail),
 role()==="kiosk"?null:onSnapshot(collection(db,"students"),r=>{S.students=r.docs.map(d=>d.data()).sort((a,b)=>a.name.localeCompare(b.name));render()},fail),
+role()==="kiosk"?null:onSnapshot(collection(db,"holds"),r=>{S.holds=r.docs.map(d=>d.data()).filter(h=>h.status==="waiting").sort((a,b)=>a.at-b.at);render()},()=>{}),
 role()==="kiosk"?null:onSnapshot(query(collection(db,"logs"),orderBy("at","desc"),limit(600)),r=>{S.logs=r.docs.map(d=>d.data());render()},()=>{}),
 onSnapshot(doc(db,"users",auth.currentUser.uid),d=>{if(!d.exists()||d.data().active===false){signOut(auth);return}me=d.data();applyRole();render()},()=>{}),
 onSnapshot(doc(db,"settings","app"),d=>{ST={...ST0,...(d.exists()?d.data():{})};render()},()=>{}),
@@ -150,8 +151,8 @@ const day=86400000,fmt=d=>new Date(d).toLocaleDateString(undefined,{day:"numeric
 const stu=id=>S.students.find(s=>s.id===id);
 const CONDS=[["New","Like new, no marks"],["Good","Small marks, pages fine"],["Fair","Visible wear, still usable"],["Poor","Torn, loose or damaged"]];
 let sel=new Set(),selMode=false,filt="all",shownIds=[];
-function status(b){if(role()==="kiosk")return b.loan?'<span class="tag out">Borrowed</span>':'<span class="tag">Available</span>';if(!b.loan)return'<span class="tag">Available</span>';const s=stu(b.loan.sid),late=Date.now()>b.loan.due;
-return`<span class="tag ${late?"late":"out"}">${late?"Overdue":"Borrowed"}</span> <span class="s">${esc(s?s.name+(gr(s)?" ("+gr(s)+")":""):"Unknown student")} · due ${fmt(b.loan.due)}</span>`}
+function status(b){if(role()==="kiosk")return b.state||b.loan?'<span class="tag out">'+(b.state?"Not available":"Borrowed")+'</span>':'<span class="tag">Available</span>';const SL=b.state?`<span class="tag late">${STL[b.state]}</span> ${b.snote?`<span class="s">${esc(b.snote)}${b.scost?" · cost "+esc(b.scost):""}</span> `:""}`:"";if(!b.loan)return SL||'<span class="tag">Available</span>';const s=stu(b.loan.sid),late=Date.now()>b.loan.due;
+return SL+`<span class="tag ${late?"late":"out"}">${late?"Overdue":"Borrowed"}</span> <span class="s">${esc(s?s.name+(gr(s)?" ("+gr(s)+")":""):"Unknown student")} · due ${fmt(b.loan.due)}</span>`}
 const isLate=b=>!!b.loan&&Date.now()>b.loan.due;
 const condTag=b=>{if(!b.cond)return"";const k=CONDS.some(c=>c[0]===b.cond);return`<span class="tag cond ${k?"c-"+b.cond.toLowerCase():""}">${esc(b.cond)}</span>`};
 const stars=b=>b.rN?` <span class="s">★ ${(b.rSum/b.rN).toFixed(1)} (${b.rN})</span>`:"";
@@ -159,7 +160,7 @@ function bookCard(b){const n=(b.photos||[]).length;
 return`<div class="card ${b.loan?"out":""}">${selMode?`<input type="checkbox" data-sel="${b.id}" ${sel.has(b.id)?"checked":""} aria-label="Select ${esc(b.title)}">`:""}${cov(b)}
 <div class="info"><div class="t">${esc(b.title)}${stars(b)}${copiesOf(b).length>1?` <span class="tag cond">Copy ${copyNo(b)} of ${copiesOf(b).length}</span>`:""}</div><div class="s">${esc(b.author||"Author not set")}${b.isbn?" · "+esc(b.isbn):""}</div>${b.genre||b.shelf?`<div class="s">${b.genre?esc(b.genre):""}${b.genre&&b.shelf?" · ":""}${b.shelf?"Shelf "+esc(b.shelf):""}</div>`:""}<div>${status(b)}</div>
 <div>${condTag(b)}${n?` <button class="chip" data-act="photos" data-id="${b.id}">${n} photo${n>1?"s":""}</button>`:""}${b.genre?` <button class="chip" data-act="similar" data-id="${b.id}">Similar</button>`:""} <button class="chip" data-act="bhist" data-id="${b.id}">History</button></div></div>
-${selMode||!canEdit()?"":`<div class="acts"><button class="b ${b.loan?"alt":""}" data-act="${b.loan?"return":"borrow"}" data-id="${b.id}">${b.loan?"Return":"Lend"}</button>
+${selMode||!canEdit()?"":`<div class="acts">${actBtns(b)}
 <button class="b alt" data-act="editbook" data-id="${b.id}" aria-label="Edit ${esc(b.title)}">Edit</button></div>`}</div>`}
 const selCount=()=>S.books.filter(b=>sel.has(b.id)).length;
 const selBar=()=>selMode?`<div class="selbar"><b>${selCount()} selected</b><button class="b alt" data-act="selall">Select all shown</button><button class="b" data-act="blend">Lend</button><button class="b" data-act="bret">Return</button>${isAdmin()?'<button class="b danger" data-act="bdel">Delete</button>':""}<button class="b alt" data-act="selexit">Done</button></div>`:"";
@@ -169,18 +170,19 @@ document.querySelectorAll("nav button").forEach(b=>b.setAttribute("aria-selected
 const m=$("#main");m.style.paddingBottom=selMode?"120px":"";
 const late=S.books.filter(isLate).length;
 const setN=(k,v,c)=>{const e=document.getElementById("n-"+k);if(e){e.textContent=v;e.classList.toggle("late",!!c)}};
-setN("books",S.books.length);setN("students",S.students.length);setN("loans",S.books.filter(b=>b.loan).length,late>0);
+setN("books",S.books.length);setN("holds",S.holds.length);setN("students",S.students.length);setN("loans",S.books.filter(b=>b.loan).length,late>0);
 const alertHtml=late?`<div class="alert"><span><b>${late} book${late>1?"s are":" is"} overdue.</b></span><button class="b" data-act="reminders">Open reminders</button></div>`:"";
 if(role()==="kiosk"){kioskView(m);return}
 if(tab==="settings"){settingsView(m);return}
+if(tab==="holds"){holdsView(m);return}
 if(tab==="dash"){m.innerHTML=dashHtml(alertHtml);return}
 if(tab==="logs"){logsView(m);return}
 if(tab==="users"){usersView(m);return}
 if(tab==="books"){
-const f=S.books.filter(b=>(b.title+" "+(b.author||"")+" "+(b.isbn||"")+" "+(b.genre||"")+" "+(b.shelf||"")).toLowerCase().includes(q.toLowerCase())).filter(b=>filt==="all"||(filt==="avail"&&!b.loan)||(filt==="out"&&b.loan)||(filt==="late"&&isLate(b)));
+const f=S.books.filter(b=>(b.title+" "+(b.author||"")+" "+(b.isbn||"")+" "+(b.genre||"")+" "+(b.shelf||"")).toLowerCase().includes(q.toLowerCase())).filter(b=>filt==="all"||(filt==="avail"&&!b.loan&&!b.state)||(filt==="out"&&b.loan)||(filt==="late"&&isLate(b)));
 shownIds=f.map(b=>b.id);
 const out=S.books.filter(b=>b.loan).length;
-m.innerHTML=`<div class="stats"><div><b>${S.books.length}</b><span>Books</span></div><div><b>${S.books.length-out}</b><span>Available</span></div><div><b>${out}</b><span>Borrowed</span></div></div>${alertHtml}
+m.innerHTML=`<div class="stats"><div><b>${S.books.length}</b><span>Books</span></div><div><b>${S.books.filter(b=>!b.loan&&!b.state).length}</b><span>Available</span></div><div><b>${out}</b><span>Borrowed</span></div></div>${alertHtml}
 <div class="bar"><input id="q" type="search" placeholder="Search title, author or barcode" value="${esc(q)}" aria-label="Search books"><button class="b" data-act="scanfind">Scan</button>${canEdit()?`<button class="b alt" data-act="import">Import</button><button class="b" data-act="addbook">Add book</button>`:""}</div>
 <div class="chips">${[["all","All"],["avail","Available"],["out","Borrowed"],["late","Overdue"]].map(([k,l])=>`<button class="chip" data-filt="${k}" aria-pressed="${filt===k}">${l}</button>`).join("")}</div>
 <div class="chips">${chipRow()}</div>
@@ -188,7 +190,7 @@ ${f.length?f.map(bookCard).join(""):`<div class="empty">${S.books.length?"No boo
 const qi=$("#q");qi.addEventListener("input",e=>{q=e.target.value;const p=e.target.selectionStart;render();const n=$("#q");n.focus();n.setSelectionRange(p,p)});
 }else if(tab==="students"){
 const f=S.students.filter(x=>(x.name+" "+(x.adm||"")+" "+gr(x)+" "+(x.email||"")).toLowerCase().includes(sq.toLowerCase())).sort((a,b)=>a.name.localeCompare(b.name));
-m.innerHTML=`<div class="bar"><input id="sq" type="search" placeholder="Search name, grade or admission number" value="${esc(sq)}" aria-label="Search students">${canEdit()?`<button class="b alt" data-act="impstu">Import from Excel</button><button class="b" data-act="addstu">Add borrower</button>`:""}</div>`+(f.length?f.map(studentCard).join(""):`<div class="empty">${S.students.length?"No students match your search.":"No students yet. Add one, or import a list from Excel."}</div>`);
+m.innerHTML=`<div class="bar"><input id="sq" type="search" placeholder="Search name, grade or admission number" value="${esc(sq)}" aria-label="Search students"><button class="b" data-act="idsearch">Scan ID</button>${canEdit()?`<button class="b alt" data-act="impstu">Import from Excel</button><button class="b" data-act="addstu">Add borrower</button>`:""}</div>`+(f.length?f.map(studentCard).join(""):`<div class="empty">${S.students.length?"No students match your search.":"No students yet. Add one, or import a list from Excel."}</div>`);
 const si=$("#sq");si.addEventListener("input",e=>{sq=e.target.value;const p=e.target.selectionStart;render();const n=$("#sq");n.focus();n.setSelectionRange(p,p)});
 }else{
 const o=S.books.filter(b=>b.loan).sort((a,b)=>a.loan.due-b.loan.due);shownIds=o.map(b=>b.id);
@@ -200,9 +202,9 @@ const lf=e.target.closest("[data-lf]");if(lf){logF=lf.dataset.lf;render();return
 const kgb=e.target.closest("[data-kg]");if(kgb){kg=kgb.dataset.kg;render();return}
 const sc=e.target.closest("[data-sel]");if(sc){sc.checked?sel.add(sc.dataset.sel):sel.delete(sc.dataset.sel);render();return}
 const a=e.target.closest("[data-act]");if(!a)return;const id=a.dataset.id;
-if(["addbook","import","editbook","borrow","return","addstu","impstu","editstu","selmode","blend","bret","bdel"].includes(a.dataset.act)&&!canEdit()){toast("Your account is read-only.");return}
+if(["addbook","import","editbook","borrow","return","addstu","impstu","editstu","selmode","blend","bret","bdel","renew","holdlend","holdcancel"].includes(a.dataset.act)&&!canEdit()){toast("Your account is read-only.");return}
 ({addbook:()=>bookForm(),import:()=>importDlg(),editbook:()=>bookForm(S.books.find(b=>b.id===id)),borrow:()=>lend(id),return:()=>giveBack(id),
-addstu:()=>stuForm(),impstu:()=>importStudentsDlg(),editstu:()=>stuForm(stu(id)),photos:()=>photoView(id),reminders:()=>remindersDlg(),similar:()=>similarDlg(id),detail:()=>detailsDlg(id),savest:()=>saveSettings(),sendrem:()=>sendReminders(true),bhist:()=>histDlg("History: "+S.books.find(b=>b.id===id)?.title,l=>l.bid===id),shist:()=>histDlg("History: "+stu(id)?.name,l=>l.sid===id),adduser:()=>userForm(),edituser:()=>userForm(S.users.find(u=>u.id===id)),
+addstu:()=>stuForm(),impstu:()=>importStudentsDlg(),editstu:()=>stuForm(stu(id)),photos:()=>photoView(id),reminders:()=>remindersDlg(),similar:()=>similarDlg(id),detail:()=>detailsDlg(id),hold:()=>holdDlg(id),holdlend:()=>holdLend(id),holdcancel:()=>holdCancel(id),renew:()=>renew(id),idscan:()=>idScanPick(),idsearch:()=>idScanSearch(),savest:()=>saveSettings(),sendrem:()=>sendReminders(true),bhist:()=>histDlg("History: "+S.books.find(b=>b.id===id)?.title,l=>l.bid===id),shist:()=>histDlg("History: "+stu(id)?.name,l=>l.sid===id),adduser:()=>userForm(),edituser:()=>userForm(S.users.find(u=>u.id===id)),
 selmode:()=>{selMode=true;sel.clear();render()},selexit:()=>{selMode=false;sel.clear();render()},selall:()=>{shownIds.forEach(i=>sel.add(i));render()},
 blend:()=>bulkLend(),bret:()=>bulkReturn(),bdel:()=>bulkDelete(),
 scanfind:()=>scan(code=>{const b=S.books.find(x=>x.isbn===code);if(b){q=code;render();toast("Found: "+b.title)}else{toast("No book with barcode "+code+". Add it first.");bookForm(null,code)}})})[a.dataset.act]?.()});
@@ -223,6 +225,9 @@ open(`<h2>${b&&b.id?"Edit book":"Add book"}</h2>
 <label for="f-genre">Genre (optional)</label><input id="f-genre" list="genres" value="${esc(b?.genre)}"><datalist id="genres">${GENRES.map(g=>`<option>${g}</option>`).join("")}</datalist>
 <label for="f-shelf">Shelf location (optional)</label><input id="f-shelf" value="${esc(b?.shelf)}" placeholder="For example, A-3 or Science, row 2">
 <label for="f-isbn">Barcode (ISBN)</label><div class="bar" style="margin:0"><input id="f-isbn" value="${esc(isbn||b?.isbn||"")}" inputmode="numeric"><button class="b alt" data-x="scan">Scan</button><button class="b alt" data-x="lookup">Look up</button></div><div class="note" id="lk"></div>
+<label for="f-state">Library status</label><select id="f-state"><option value="">In circulation</option>${Object.entries(STL).map(([k,v])=>`<option value="${k}" ${b?.state===k?"selected":""}>${v}</option>`).join("")}</select>
+<label for="f-snote">Status note (optional)</label><input id="f-snote" value="${esc(b?.snote)}" placeholder="For example, water damage or lost by a student">
+<label for="f-scost">Replacement cost (optional)</label><input id="f-scost" value="${esc(b?.scost)}" inputmode="decimal">
 <label>Condition (optional)</label>
 <div class="conds">${CONDS.map(([n,h])=>`<label><input type="radio" name="cond" value="${n}" ${b?.cond===n?"checked":""}><span><b>${n}</b><small>${h}</small></span></label>`).join("")}<label><input type="radio" name="cond" value="__other" ${other?"checked":""}><span><b>Other</b><small>Type your own</small></span></label></div>
 <input id="f-cond" placeholder="Describe the condition" value="${other?esc(b.cond):""}" style="margin-top:8px;${other?"":"display:none"}" aria-label="Custom condition">
@@ -238,16 +243,16 @@ dlg.onchange=e=>{if(e.target.name==="cond")$("#f-cond").style.display=e.target.v
 dlg.onclick=e=>{const x=e.target.dataset.x;if(e.target.dataset.close!==undefined)return closeDlg();
 if(x==="rm"){formPhotos.splice(+e.target.dataset.i,1);drawThumbs()}
 if(x==="clearcond"){document.querySelectorAll("input[name=cond]").forEach(r=>r.checked=false);$("#f-cond").style.display="none"}
-if(x==="scan"){const keep={...(b||{}),title:$("#f-title").value,author:$("#f-author").value,id:b?.id,cover:coverData,loan:b?.loan,cond:readCond(),photos:formPhotos,genre:$("#f-genre").value,shelf:$("#f-shelf").value};scan(c=>bookForm(keep,c))}
+if(x==="scan"){const keep={...(b||{}),title:$("#f-title").value,author:$("#f-author").value,id:b?.id,cover:coverData,loan:b?.loan,cond:readCond(),photos:formPhotos,genre:$("#f-genre").value,shelf:$("#f-shelf").value,state:$("#f-state").value,snote:$("#f-snote").value,scost:$("#f-scost").value};scan(c=>bookForm(keep,c))}
 if(x==="lookup")autoLookup($("#f-isbn").value.trim());
 if(x==="idcover"){if(lastCover)identifyCover(lastCover);else toast("Take or choose a cover photo first.")}
 if(x==="save"){const title=$("#f-title").value.trim();if(!title){toast("Enter a title first.");return}
-const d={title,author:$("#f-author").value.trim(),isbn:to13($("#f-isbn").value.trim().replace(/[-\s]/g,"").toUpperCase()),cover:coverData,cond:readCond(),photos:formPhotos,genre:$("#f-genre").value.trim(),shelf:$("#f-shelf").value.trim()};
+const d={title,author:$("#f-author").value.trim(),isbn:to13($("#f-isbn").value.trim().replace(/[-\s]/g,"").toUpperCase()),cover:coverData,cond:readCond(),photos:formPhotos,genre:$("#f-genre").value.trim(),shelf:$("#f-shelf").value.trim(),state:$("#f-state").value,snote:$("#f-snote").value.trim(),scost:$("#f-scost").value.trim()};
 if(JSON.stringify(d).length>900000){toast("The photos are too large. Remove one and try again.");return}
 const ex=b&&b.id&&S.books.find(z=>z.id===b.id);
 let cp=null;if(!ex){const dup=S.books.find(x=>(d.isbn&&x.isbn===d.isbn)||(x.title.toLowerCase()===d.title.toLowerCase()&&(x.author||"").toLowerCase()===(d.author||"").toLowerCase()));
 if(dup){const n=copiesOf(dup).length;if(confirm("“"+dup.title+"” is already in the library ("+n+" cop"+(n>1?"ies":"y")+").\n\nOK = save this as another copy of it.\nCancel = choose something else."))cp=root(dup);else if(!confirm("Save it as a separate, unrelated book instead?"))return}}
-const nb=ex?{...ex,...d}:{id:uid(),loan:null,addedAt:Date.now(),...d,...(cp?{copyOf:cp}:{})};saveBook(nb);addLog({type:ex?"book_edit":"book_add",bid:nb.id,bt:nb.title});closeDlg();toast("Book saved.")}
+const nb=ex?{...ex,...d}:{id:uid(),loan:null,addedAt:Date.now(),...d,...(cp?{copyOf:cp}:{})};saveBook(nb);addLog({type:ex?"book_edit":"book_add",bid:nb.id,bt:nb.title});if((ex?.state||"")!==(nb.state||""))addLog({type:"book_state",bid:nb.id,bt:nb.title,note:(nb.state?STL[nb.state]:"Back in circulation")+(nb.snote?" · "+nb.snote:"")+(nb.scost?" · cost "+nb.scost:"")});closeDlg();toast("Book saved.")}
 if(x==="del"&&confirm("Delete this book from the inventory?")){delBook(b.id);addLog({type:"book_del",bid:b.id,bt:b.title});closeDlg()}}}
 async function lookupISBN(isbn){
 try{const r=await fetch(`https://openlibrary.org/api/books?bibkeys=ISBN:${isbn}&format=json&jscmd=data`);const d=(await r.json())["ISBN:"+isbn];
@@ -386,32 +391,32 @@ out.innerHTML='<div class="note">Importing… please keep this page open.</div>'
 try{for(let i=0;i<items.length;i+=400){const w=writeBatch(db);items.slice(i,i+400).forEach(x=>w.set(doc(db,"students",x.id),clean(x),{merge:true}));await w.commit()}
 closeDlg();toast("Imported "+items.length+" students.")}catch(e){fail(e);out.innerHTML='<div class="note">Import failed: '+esc(e.code||e.message)+'</div>'}}
 const stuLabel=z=>esc(z.name)+(z.kind==="staff"?" (staff)":"")+" · "+(gr(z)?esc(gr(z))+" · ":"")+(z.adm?"Adm "+esc(z.adm):"no admission number");
-const pickerHtml=()=>`<label for="l-q">Student</label><input id="l-q" type="search" placeholder="Search by name or admission number" autocomplete="off"><select id="l-s" size="6" style="margin-top:6px" aria-label="Students"></select>`;
+const pickerHtml=()=>`<label for="l-q">Student</label><input id="l-q" type="search" placeholder="Search by name or admission number" autocomplete="off"><select id="l-s" size="6" style="margin-top:6px" aria-label="Students"></select><button class="b alt" type="button" data-act="idscan" style="margin-top:6px">Scan ID card</button>`;
 function fillPicker(){const qv=($("#l-q").value||"").toLowerCase();const list=S.students.filter(z=>(z.name+" "+(z.adm||"")+" "+gr(z)).toLowerCase().includes(qv)).sort((a,b)=>a.name.localeCompare(b.name)).slice(0,60);
 $("#l-s").innerHTML=list.map(z=>`<option value="${z.id}">${stuLabel(z)}</option>`).join("");if(list.length)$("#l-s").selectedIndex=0}
-function bindPicker(){fillPicker();$("#l-q").addEventListener("input",fillPicker)}
-function lend(id){const b=S.books.find(x=>x.id===id);
+function bindPicker(pre){fillPicker();$("#l-q").addEventListener("input",fillPicker);if(pre&&stu(pre)){$("#l-q").value=stu(pre).adm||stu(pre).name;fillPicker();$("#l-s").value=pre}}
+function lend(id,pre){const b=S.books.find(x=>x.id===id);if(b&&b.state){toast("This book is marked "+STL[b.state].toLowerCase()+" and can't be lent.");return}lendCtx={k:"one",id};
 if(!S.students.length){toast("Add a student first.");tab="students";render();return}
 open(`<h2>Lend “${esc(b.title)}”</h2>${pickerHtml()}<label for="l-d">Days to keep it</label><input id="l-d" type="number" min="1" value="${ST.loanDays}">
-<div class="row"><button class="b alt" data-close>Cancel</button><button class="b" data-x="ok">Lend book</button></div>`);bindPicker();
+<div class="row"><button class="b alt" data-close>Cancel</button><button class="b" data-x="ok">Lend book</button></div>`);bindPicker(pre);
 dlg.onclick=e=>{if(e.target.dataset.close!==undefined)return closeDlg();if(e.target.dataset.x==="ok"){const sid=$("#l-s").value;if(!sid){toast("Choose a student from the list.");return}
-const d=Math.max(1,+$("#l-d").value||14),loan={sid,date:Date.now(),due:Date.now()+d*day},lim=overLimit(sid,1);if(lim){toast(stu(sid).name+" can borrow up to "+lim+" book"+(lim>1?"s":"")+" at a time.");return}saveBook({...b,loan,borrows:(b.borrows||0)+1});addLog({type:"lend",bid:b.id,bt:b.title,sid,sn:stu(sid).name,due:loan.due});closeDlg();toast("Lent to "+stu(sid).name+".")}}}
+const d=Math.max(1,+$("#l-d").value||14),loan={sid,date:Date.now(),due:Date.now()+d*day},lim=overLimit(sid,1);if(lim){toast(stu(sid).name+" can borrow up to "+lim+" book"+(lim>1?"s":"")+" at a time.");return}const fh=S.holds.find(h=>h.root===root(b));if(fh&&fh.sid!==sid&&fh.adm!==stu(sid).adm&&!confirm("Someone else is first in line for this book. Lend it anyway?"))return;saveBook({...b,loan,borrows:(b.borrows||0)+1});addLog({type:"lend",bid:b.id,bt:b.title,sid,sn:stu(sid).name,due:loan.due});holdDone(b,sid);closeDlg();toast("Lent to "+stu(sid).name+".")}}}
 const retLog=(b,r)=>{const l=b.loan,late=Date.now()>l.due;addLog({type:"return",bid:b.id,bt:b.title,sid:l.sid,sn:stu(l.sid)?.name||"Unknown student",due:l.due,late,dl:late?Math.ceil((Date.now()-l.due)/day):0,rating:r||null})};
 function giveBack(id){const b=S.books.find(x=>x.id===id);if(!b)return;
 open(`<h2>Return “${esc(b.title)}”</h2><label>Rate this book (optional)</label><div class="chips">${[1,2,3,4,5].map(n=>`<button class="chip" data-x="r" data-n="${n}">${n} ★</button>`).join("")}</div><div class="row"><button class="b alt" data-close>Cancel</button><button class="b" data-x="r" data-n="0">Return without rating</button></div>`);
 dlg.onclick=e=>{if(e.target.dataset.close!==undefined)return closeDlg();if(e.target.dataset.x!=="r")return;const r=+e.target.dataset.n,nb={...b,loan:null};
-if(r){nb.rSum=(b.rSum||0)+r;nb.rN=(b.rN||0)+1}retLog(b,r);saveBook(nb);closeDlg();toast("Returned. Book is available again.")}}
+if(r){nb.rSum=(b.rSum||0)+r;nb.rN=(b.rN||0)+1}retLog(b,r);saveBook(nb);closeDlg();const hn=S.holds.find(x=>x.root===root(b));toast(hn?"Returned. Next in line: "+(stu(hn.sid)?.name||"ID "+hn.adm)+".":"Returned. Book is available again.")}}
 const selBooks=()=>S.books.filter(b=>sel.has(b.id));
 async function commit(ops){try{for(let i=0;i<ops.length;i+=400){const w=writeBatch(db);ops.slice(i,i+400).forEach(o=>o.del?w.delete(doc(db,"books",o.id)):w.set(doc(db,"books",o.id),clean(o.data)));await w.commit()}return true}catch(e){fail(e);return false}}
 const stuOpts=()=>S.students.map(s=>`<option value="${s.id}">${esc(s.name)}${s.cls?" ("+esc(s.cls)+")":""}</option>`).join("");
 const endSel=()=>{selMode=false;sel.clear();render()};
-function bulkLend(){const all=selBooks(),bs=all.filter(b=>!b.loan);
+function bulkLend(pre){const all=selBooks(),bs=all.filter(b=>!b.loan&&!b.state);lendCtx={k:"bulk"};
 if(!all.length){toast("Select some books first.");return}
 if(!bs.length){toast("All the selected books are already borrowed.");return}
 if(!S.students.length){toast("Add a student first.");return}
 open(`<h2>Lend ${bs.length} book${bs.length>1?"s":""}</h2>${bs.length<all.length?`<div class="note">${all.length-bs.length} selected book${all.length-bs.length>1?"s are":" is"} already borrowed and will be skipped.</div>`:""}
 ${pickerHtml()}<label for="l-d">Days to keep them</label><input id="l-d" type="number" min="1" value="${ST.loanDays}">
-<div class="row"><button class="b alt" data-close>Cancel</button><button class="b" data-x="ok">Lend books</button></div>`);bindPicker();
+<div class="row"><button class="b alt" data-close>Cancel</button><button class="b" data-x="ok">Lend books</button></div>`);bindPicker(pre);
 dlg.onclick=async e=>{if(e.target.dataset.close!==undefined)return closeDlg();if(e.target.dataset.x==="ok"){const sid=$("#l-s").value;if(!sid){toast("Choose a student from the list.");return}
 const d=Math.max(1,+$("#l-d").value||14),loan={sid,date:Date.now(),due:Date.now()+d*day},lim=overLimit(sid,bs.length);if(lim){toast(stu(sid).name+" can borrow up to "+lim+" book"+(lim>1?"s":"")+" at a time.");return}closeDlg();
 if(await commit(bs.map(b=>({id:b.id,data:{...b,loan,borrows:(b.borrows||0)+1}})))){bs.forEach(b=>addLog({type:"lend",bid:b.id,bt:b.title,sid,sn:stu(sid).name,due:loan.due}));toast("Lent "+bs.length+" book"+(bs.length>1?"s":"")+" to "+stu(sid).name+".");endSel()}}}}
@@ -446,11 +451,11 @@ function validISBN(c){c=String(c).replace(/[-\s]/g,"");
 if(/^97[89]\d{10}$/.test(c)){let t=0;for(let i=0;i<12;i++)t+=(+c[i])*(i%2?3:1);return (10-t%10)%10===+c[12]}
 if(/^\d{9}[\dX]$/.test(c)){let t=0;for(let i=0;i<9;i++)t+=(+c[i])*(10-i);t+=c[9]==="X"?10:+c[9];return t%11===0}
 return false}
-const okCode=c=>validISBN(c)||S.books.some(b=>b.isbn===c);
+const okCode=c=>idScan||validISBN(c)||S.books.some(b=>b.isbn===c);
 let stream=null,scanning=false,zxr=null;
 async function scan(cb,keep){
 if(!navigator.mediaDevices){toast("The camera needs a secure page. Open the app from its https:// address.");return}
-open(`<h2>Scan barcode</h2><video id="vid" playsinline muted></video><div class="note">Point the camera at the long barcode on the back cover, the one with the number starting 978 or 979.</div><div class="row"><button class="b alt" data-close>Cancel</button></div>`);
+open(`<h2>${idScan?"Scan ID card":"Scan barcode"}</h2><video id="vid" playsinline muted></video><div class="note">${idScan?"Hold the student or staff ID card steady in front of the camera, with its barcode or QR code showing.":"Point the camera at the long barcode on the back cover, the one with the number starting 978 or 979."}</div><div class="row"><button class="b alt" data-close>Cancel</button></div>`);
 dlg.onclick=e=>{if(e.target.dataset.close!==undefined)closeDlg()};
 try{const v=$("#vid");scanning=true;
 if("BarcodeDetector" in window){
@@ -464,7 +469,7 @@ await zxr.decodeFromConstraints({video:{facingMode:"environment"}},v,res=>{if(re
 }catch(e){toast("Camera could not start. Allow camera access and check your internet connection, then try again.");closeDlg()}}
 function stopScan(){scanning=false;if(zxr){try{zxr.reset()}catch(e){}zxr=null}if(stream){stream.getTracks().forEach(t=>t.stop());stream=null}}
 dlg.addEventListener("close",stopScan);
-const LT={lend:"Borrowed",return:"Returned",book_add:"Book added",book_edit:"Book edited",book_del:"Book deleted",stu_add:"Student added",stu_del:"Student deleted",user_add:"User added",user_edit:"User changed",user_del:"User removed",email:"Email reminder sent"};
+const LT={lend:"Borrowed",return:"Returned",book_add:"Book added",book_edit:"Book edited",book_del:"Book deleted",stu_add:"Student added",stu_del:"Student deleted",user_add:"User added",user_edit:"User changed",user_del:"User removed",email:"Email reminder sent",renew:"Loan renewed",book_state:"Status changed",hold_add:"Book reserved",hold_cancel:"Reservation cancelled"};
 const logLine=l=>{const ex=l.type==="lend"?"due "+fmt(l.due):l.type==="return"?"was due "+fmt(l.due)+(l.rating?" · rated "+l.rating+" ★":""):"";
 return`<div class="card" style="display:block;padding:10px 14px"><div class="t">${LT[l.type]||esc(l.type)}${l.type==="return"&&l.late?` <span class="tag late">${l.dl} day${l.dl>1?"s":""} late</span>`:""}</div><div class="s">${[l.bt,l.sn,l.note].filter(Boolean).map(esc).join(" · ")}${ex?" · "+ex:""}</div><div class="s">${new Date(l.at).toLocaleString()} · by ${esc(l.by||"unknown")}</div></div>`};
 function dashHtml(al){const B=S.books,late=B.filter(isLate);
@@ -507,20 +512,20 @@ const p=s.data();return p.active===false?null:p}
 let lastCover=null,kq="",kg="";
 const cov=b=>b.cover?`<img class="cov" style="cursor:pointer" data-act="detail" data-id="${b.id}" alt="Open details for ${esc(b.title)}" src="${b.cover}">`:`<div class="cov" style="cursor:pointer" data-act="detail" data-id="${b.id}"></div>`;
 const copyNo=b=>copiesOf(b).sort((x,y)=>(x.addedAt||0)-(y.addedAt||0)).findIndex(x=>x.id===b.id)+1;
-const avTag=(cp)=>{const av=cp.filter(c=>!c.loan).length;return(av?'<span class="tag">Available</span>':'<span class="tag out">Borrowed</span>')+(cp.length>1?` <span class="s">${av} of ${cp.length} copies available</span>`:"")};
+const avTag=(cp)=>{const av=cp.filter(c=>!c.loan&&!c.state).length;return(av?'<span class="tag">Available</span>':'<span class="tag out">Borrowed</span>')+(cp.length>1?` <span class="s">${av} of ${cp.length} copies available</span>`:"")};
 function kioskView(m){const gs=[...new Set(S.books.map(b=>b.genre).filter(Boolean))].sort(),seen=new Set(),L=[];
 S.books.filter(b=>(!kg||b.genre===kg)&&(b.title+" "+(b.author||"")+" "+(b.isbn||"")+" "+(b.genre||"")).toLowerCase().includes(kq.toLowerCase())).forEach(b=>{if(!seen.has(root(b))){seen.add(root(b));L.push(b)}});
 m.innerHTML=`<h2 style="font-size:22px;margin:0 0 10px">Find a book</h2><div class="bar"><input id="kq" type="search" style="font-size:18px;padding:14px" placeholder="Search by title, author or subject" value="${esc(kq)}" aria-label="Search books"></div><div class="chips"><button class="chip" data-kg="" aria-pressed="${!kg}">All categories</button>${gs.map(g=>`<button class="chip" data-kg="${esc(g)}" aria-pressed="${kg===g}">${esc(g)}</button>`).join("")}</div>
-${L.length?L.slice(0,100).map(b=>`<div class="card ${copiesOf(b).some(c=>!c.loan)?"":"out"}">${cov(b)}<div class="info"><div class="t" style="font-size:17px">${esc(b.title)}</div><div class="s">${esc(b.author||"")}</div><div class="s">${b.genre?esc(b.genre):""}${b.genre&&b.shelf?" · ":""}${b.shelf?"Shelf "+esc(b.shelf):""}</div><div>${avTag(copiesOf(b))}</div></div><div class="acts"><button class="b alt" data-act="detail" data-id="${b.id}">Details</button></div></div>`).join(""):'<div class="empty">No books match. Try another word or category.</div>'}`;
+${L.length?L.slice(0,100).map(b=>`<div class="card ${copiesOf(b).some(c=>!c.loan&&!c.state)?"":"out"}">${cov(b)}<div class="info"><div class="t" style="font-size:17px">${esc(b.title)}</div><div class="s">${esc(b.author||"")}</div><div class="s">${b.genre?esc(b.genre):""}${b.genre&&b.shelf?" · ":""}${b.shelf?"Shelf "+esc(b.shelf):""}</div><div>${avTag(copiesOf(b))}</div></div><div class="acts">${canHold(b)?`<button class="b" data-act="hold" data-id="${b.id}">Reserve</button>`:""}<button class="b alt" data-act="detail" data-id="${b.id}">Details</button></div></div>`).join(""):'<div class="empty">No books match. Try another word or category.</div>'}`;
 $("#kq").addEventListener("input",e=>{kq=e.target.value;const p=e.target.selectionStart;render();const n=$("#kq");n.focus();n.setSelectionRange(p,p)})}
 function detailsDlg(id){const b=S.books.find(x=>x.id===id);if(!b)return;const cp=copiesOf(b),k=role()==="kiosk",ph=(b.photos||[]);
 const sim=b.genre?S.books.filter(x=>root(x)!==root(b)&&(x.genre||"").toLowerCase()===b.genre.toLowerCase()):[];
 open(`${b.cover?`<div class="big"><img src="${b.cover}" alt="Cover of ${esc(b.title)}" style="max-width:190px;display:block;margin:0 auto 10px"></div>`:""}<h2>${esc(b.title)}${stars(b)}</h2><div class="s">${esc(b.author||"Author not set")}${b.isbn?" · ISBN "+esc(b.isbn):""}</div>
-<div style="margin:8px 0">${k?avTag(cp):status(b)+(cp.length>1?` <span class="s">${cp.filter(c=>!c.loan).length} of ${cp.length} copies available</span>`:"")}</div>
+<div style="margin:8px 0">${k?avTag(cp):status(b)+(cp.length>1?` <span class="s">${cp.filter(c=>!c.loan&&!c.state).length} of ${cp.length} copies available</span>`:"")}</div>
 ${b.genre?`<div class="s">Genre: ${esc(b.genre)}</div>`:""}${b.shelf?`<div class="s">Shelf: ${esc(b.shelf)}</div>`:""}${!k&&b.cond?`<div class="s">Condition: ${esc(b.cond)}</div>`:""}
 ${!k&&ph.length?`<div class="thumbs">${ph.map(p=>`<img src="${p}" alt="">`).join("")}</div>`:""}
-${sim.length?`<label>More in this genre</label>${sim.slice(0,6).map(x=>`<div class="s">• ${esc(x.title)} — ${copiesOf(x).some(c=>!c.loan)?"Available":"Borrowed"}</div>`).join("")}`:""}
-<div class="row">${canEdit()?`<button class="b ${b.loan?"alt":""}" data-act="${b.loan?"return":"borrow"}" data-id="${b.id}">${b.loan?"Return":"Lend"}</button><button class="b alt" data-act="editbook" data-id="${b.id}">Edit</button>`:""}<button class="b alt" data-close>Close</button></div>`);dlg.onclick=e=>{if(e.target.dataset.close!==undefined)closeDlg()}}
+${sim.length?`<label>More in this genre</label>${sim.slice(0,6).map(x=>`<div class="s">• ${esc(x.title)} — ${copiesOf(x).some(c=>!c.loan&&!c.state)?"Available":"Borrowed"}</div>`).join("")}`:""}
+<div class="row">${canEdit()?`${actBtns(b)}<button class="b alt" data-act="editbook" data-id="${b.id}">Edit</button>`:""}${canHold(b)?`<button class="b alt" data-act="hold" data-id="${b.id}">Reserve</button>`:""}<button class="b alt" data-close>Close</button></div>`);dlg.onclick=e=>{if(e.target.dataset.close!==undefined)closeDlg()}}
 async function identifyCover(f){const say=t=>{const a=$("#idst");if(a)a.textContent=t};
 try{say("Looking for a barcode in the photo…");let code=null;
 if("BarcodeDetector"in window){try{const r=await new BarcodeDetector().detect(await createImageBitmap(f));code=r.map(x=>x.rawValue).find(c=>validISBN(c))}catch(e){}}
@@ -549,7 +554,7 @@ const f=(id,l,v,h,t="number")=>`<label for="${id}">${l}</label><input id="${id}"
 m.innerHTML=`<h2 style="font-size:20px;margin:0 0 10px">Settings</h2><div class="card" style="display:block"><h3>Borrowing</h3>
 ${f("st-ml","Maximum books per student",ST.maxLoans,"The default for every student. Use 0 for no limit. You can override it for one person on their profile.")}
 ${f("st-ms","Maximum books per staff member",ST.maxLoansStaff,"")}
-${f("st-ld","Default days to keep a book",ST.loanDays,"Pre-filled when lending.")}</div>
+${f("st-ld","Default days to keep a book",ST.loanDays,"Pre-filled when lending.")}${f("st-mr","Times a loan can be renewed",ST.maxRenewals,"Use 0 to turn renewals off.")}${f("st-rn","Days added by each renewal",ST.renewDays,"")}</div>
 <div class="card" style="display:block"><h3>Email reminders</h3>
 ${f("st-rd","Remind this many days before the return date",ST.remindDays,"Also sets the window shown in the Reminders list.")}
 <label style="display:flex;gap:8px;align-items:center"><input type="checkbox" id="st-auto" ${ST.autoEmail?"checked":""}> Send reminders automatically while the app is open</label>
@@ -557,7 +562,7 @@ ${f("st-es","EmailJS service ID",ST.ejService,"","text")}${f("st-et","EmailJS te
 <div class="row"><button class="b alt" data-act="sendrem">Send due reminders now</button></div></div>
 <div class="row"><button class="b" data-act="savest">Save settings</button></div>`}
 function saveSettings(){const n=(i,d)=>{const v=parseInt($(i).value,10);return isNaN(v)||v<0?d:v},g=i=>$(i).value.trim();
-setDoc(doc(db,"settings","app"),{maxLoans:n("#st-ml",3),maxLoansStaff:n("#st-ms",5),loanDays:Math.max(1,n("#st-ld",14)),remindDays:n("#st-rd",2),autoEmail:$("#st-auto").checked,ejService:g("#st-es"),ejTemplate:g("#st-et"),ejKey:g("#st-ek")}).then(()=>toast("Settings saved.")).catch(fail)}
+setDoc(doc(db,"settings","app"),{maxLoans:n("#st-ml",3),maxLoansStaff:n("#st-ms",5),loanDays:Math.max(1,n("#st-ld",14)),maxRenewals:n("#st-mr",2),renewDays:Math.max(1,n("#st-rn",7)),remindDays:n("#st-rd",2),autoEmail:$("#st-auto").checked,ejService:g("#st-es"),ejTemplate:g("#st-et"),ejKey:g("#st-ek")}).then(()=>toast("Settings saved.")).catch(fail)}
 async function sendReminders(manual){if(!canEdit())return;if(!ST.ejService||!ST.ejTemplate||!ST.ejKey){if(manual)toast("Fill in the EmailJS settings and save first.");return}
 const soon=Date.now()+ST.remindDays*day;let n=0;
 for(const b of S.books){const l=b.loan;if(!l||l.rem||l.due<Date.now()||l.due>soon)continue;const p=stu(l.sid);if(!p||!p.email)continue;
@@ -565,6 +570,34 @@ try{const dd=new Date(l.due).toLocaleDateString(undefined,{day:"numeric",month:"
 const r=await fetch("https://api.emailjs.com/api/v1.0/email/send",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({service_id:ST.ejService,template_id:ST.ejTemplate,user_id:ST.ejKey,template_params:{to_email:p.email,to_name:p.name,book_title:b.title,due_date:dd,message:"Hello "+p.name+", this is a reminder from the school library. “"+b.title+"” is due back on "+dd+". Please return it on time. Thank you."}})});
 if(r.ok){await saveBook({...b,loan:{...l,rem:Date.now()}});addLog({type:"email",bid:b.id,bt:b.title,sid:l.sid,sn:p.name,due:l.due});n++}}catch(e){}}
 if(manual)toast(n?n+" reminder"+(n>1?"s":"")+" sent.":"No reminders to send right now.")}
+let idScan=false,lendCtx=null;
+const STL={lost:"Lost",damaged:"Damaged",withdrawn:"Withdrawn"};
+const holdsFor=b=>S.holds.filter(h=>h.root===root(b));
+const canRenew=b=>b.loan&&ST.maxRenewals>0&&(b.loan.renewals||0)<ST.maxRenewals&&!holdsFor(b).length;
+const actBtns=b=>b.loan?`<button class="b alt" data-act="return" data-id="${b.id}">Return</button>${canRenew(b)?`<button class="b alt" data-act="renew" data-id="${b.id}">Renew</button>`:""}`:b.state?"":`<button class="b" data-act="borrow" data-id="${b.id}">Lend</button>`;
+const canHold=b=>role()!=="viewer"&&!copiesOf(b).some(c=>!c.loan&&!c.state)&&copiesOf(b).some(c=>!c.state);
+const findPerson=c=>{c=String(c).trim().toLowerCase();return S.students.find(s=>(s.adm||"").toLowerCase()===c||s.id.toLowerCase()===encodeURIComponent(c).toLowerCase())};
+function renew(id){const b=S.books.find(x=>x.id===id);if(!b||!b.loan)return;
+if((b.loan.renewals||0)>=ST.maxRenewals){toast("This loan can only be renewed "+ST.maxRenewals+" time"+(ST.maxRenewals>1?"s":"")+".");return}
+if(holdsFor(b).length){toast("Someone is waiting for this book, so it can't be renewed.");return}
+const due=Math.max(b.loan.due,Date.now())+ST.renewDays*day;
+saveBook({...b,loan:{...b.loan,due,renewals:(b.loan.renewals||0)+1,rem:null}});addLog({type:"renew",bid:b.id,bt:b.title,sid:b.loan.sid,sn:stu(b.loan.sid)?.name||"",due});toast("Renewed until "+fmt(due)+".")}
+function holdDlg(id){const b=S.books.find(x=>x.id===id);if(!b)return;const k=role()==="kiosk";
+open(`<h2>Reserve “${esc(b.title)}”</h2><p class="note" style="margin-top:0">We'll keep a place in line for you. Enter ${k?"your":"the borrower's"} admission or staff ID number.</p><label for="h-id">Admission or staff ID</label><input id="h-id" autocomplete="off"><div class="row"><button class="b alt" data-close>Cancel</button><button class="b" data-x="ok">Reserve</button></div>`);
+dlg.onclick=async e=>{if(e.target.dataset.close!==undefined)return closeDlg();if(e.target.dataset.x!=="ok")return;const adm=$("#h-id").value.trim();if(!adm){toast("Enter the ID number.");return}
+const p=k?null:findPerson(adm);if(!k&&!p){toast("No borrower has that ID.");return}
+const sid=p?p.id:encodeURIComponent(adm);if(!k&&S.holds.some(h=>h.root===root(b)&&h.sid===sid)){toast("Already in line for this book.");return}
+const h={id:Date.now().toString(36)+uid(),root:root(b),bid:b.id,bt:b.title,sid,adm:p?p.adm:adm,sn:p?p.name:"",at:Date.now(),status:"waiting",by:auth.currentUser?.email||""};
+try{await setDoc(doc(db,"holds",h.id),h);if(!k)addLog({type:"hold_add",bid:b.id,bt:b.title,sid,sn:p.name});closeDlg();toast(k?"Reserved. The librarian will see your request.":"Reserved for "+p.name+".")}catch(er){fail(er)}}}
+function holdsView(m){const L=S.holds;
+m.innerHTML=L.length?L.map(h=>{const b=S.books.find(x=>x.id===h.bid)||S.books.find(x=>root(x)===h.root),free=b&&copiesOf(b).find(c=>!c.loan&&!c.state),p=stu(h.sid)||S.students.find(s=>s.adm===h.adm),pos=L.filter(x=>x.root===h.root).findIndex(x=>x.id===h.id)+1,ready=free&&pos===1;
+return`<div class="card ${ready?"":"out"}"><div class="info"><div class="t">${esc(h.bt)}</div><div class="s">${esc(p?p.name:"Unknown ID")}${p&&gr(p)?" · "+esc(gr(p)):""}${h.adm?" · ID "+esc(h.adm):""}</div><div class="s">#${pos} in line · requested ${fmt(h.at)}</div><div>${ready?'<span class="tag">A copy is ready</span>':'<span class="tag out">Waiting</span>'}</div></div><div class="acts">${ready&&p&&canEdit()?`<button class="b" data-act="holdlend" data-id="${h.id}">Lend now</button>`:""}${canEdit()?`<button class="b alt" data-act="holdcancel" data-id="${h.id}">Cancel</button>`:""}</div></div>`}).join(""):'<div class="empty">No reservations. When every copy of a book is out, students can reserve it from the kiosk.</div>'}
+function holdLend(id){const h=S.holds.find(x=>x.id===id);if(!h)return;const b=S.books.find(x=>x.id===h.bid)||S.books.find(x=>root(x)===h.root),f=b&&copiesOf(b).find(c=>!c.loan&&!c.state),p=stu(h.sid)||S.students.find(s=>s.adm===h.adm);if(f&&p)lend(f.id,p.id);else toast("No copy is available yet.")}
+function holdCancel(id){const h=S.holds.find(x=>x.id===id);if(!h||!confirm("Cancel this reservation?"))return;setDoc(doc(db,"holds",id),{...h,status:"cancelled"}).then(()=>{addLog({type:"hold_cancel",bid:h.bid,bt:h.bt,sid:h.sid,sn:h.sn});toast("Reservation cancelled.")}).catch(fail)}
+function holdDone(b,sid){const h=S.holds.find(x=>x.root===root(b)&&(x.sid===sid||x.adm===stu(sid)?.adm));if(h)setDoc(doc(db,"holds",h.id),{...h,status:"done"}).catch(()=>{})}
+function idScanPick(){const c=lendCtx;idScan=true;scan(code=>{idScan=false;const p=findPerson(code);const back=pid=>c?(c.k==="one"?lend(c.id,pid):bulkLend(pid)):0;if(!p){toast("No borrower found for ID "+code+".");back();return}back(p.id)})}
+function idScanSearch(){lendCtx=null;idScan=true;scan(code=>{idScan=false;const p=findPerson(code);if(!p){toast("No borrower found for ID "+code+".");return}histDlg("History: "+p.name,l=>l.sid===p.id)})}
+dlg.addEventListener("close",()=>{idScan=false});
 const loginEl=$("#login"),hdr=$("#hdr"),mainEl=$("#main");
 function showApp(on){loginEl.classList.toggle("hide",on);hdr.classList.toggle("hide",!on);mainEl.classList.toggle("hide",!on)}
 showApp(false);
@@ -572,7 +605,7 @@ if(!configured){$("#lerr").textContent="Firebase is not set up yet. Paste your F
 else{
 onAuthStateChanged(auth,async u=>{if(u){let p=null;try{p=await loadMe(u)}catch(e){$("#lerr").textContent="Could not check your access: "+(e.code||e.message)}
 if(!p){await signOut(auth);if(!$("#lerr").textContent)$("#lerr").textContent="This account has no access. Ask an administrator to add you.";return}
-me=p;tab="dash";applyRole();showApp(true);startSync();render()}else{stopSync();me=null;S={books:[],students:[],logs:[],users:[]};showApp(false)}});
+me=p;tab="dash";applyRole();showApp(true);startSync();render()}else{stopSync();me=null;S={books:[],students:[],logs:[],users:[],holds:[]};showApp(false)}});
 $("#lf").addEventListener("submit",async e=>{e.preventDefault();$("#lerr").textContent="";
 try{await signInWithEmailAndPassword(auth,$("#em").value.trim(),$("#pw").value)}
 catch(err){$("#lerr").textContent=["auth/invalid-credential","auth/wrong-password","auth/user-not-found"].includes(err.code)?"Wrong email or password.":"Could not sign in: "+err.code}});
