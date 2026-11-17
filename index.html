@@ -8,7 +8,7 @@
 <meta name="theme-color" content="#14337a">
 <script>try{var t=localStorage.getItem("lib-theme");if(t==="light"||t==="dark")document.documentElement.dataset.theme=t}catch(e){}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%2314337a'/%3E%3Cpath d='M8 9.5c3-1 6-.7 8 1 2-1.7 5-2 8-1v13c-3-1-6-.7-8 1-2-1.7-5-2-8-1z' fill='%23e0a526'/%3E%3C/svg%3E">
 <style>
 /* ============ Design tokens ============ */
@@ -16,9 +16,9 @@
  --ok:#0e7a55;--okbg:#e1f5ec;--warn:#9a5a06;--warnbg:#fdf0d6;--bad:#b3261e;--badbg:#fde9e7;--onbad:#fff;--info:#1d5fbf;--infobg:#e6effc;--violet:#5b43c9;--violetbg:#eeeafd;
  --s1:#2a78d6;--crit:#d03b3b;--side:#14337a;--sidehi:rgba(255,255,255,.12);--sideon:#fff;
  --r:14px;--r-sm:10px;--shadow:0 1px 2px rgba(15,27,51,.05),0 4px 16px rgba(15,27,51,.06);--shadow-hi:0 4px 10px rgba(15,27,51,.08),0 14px 34px rgba(15,27,51,.10);
- --sideW:248px;--topH:64px;color-scheme:light}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0b1324;--surf:#131f38;--surf2:#17254a;--ink:#e8eefb;--mute:#97a6c4;--line:#24345a;--brand:#7ea4ff;--brand2:#9bb8ff;--onbrand:#08112a;--goldbg:#3a2c10;--ok:#5fd6a8;--okbg:#10372b;--warn:#f0b04a;--warnbg:#3a2c10;--bad:#ff8a80;--badbg:#3d1714;--onbad:#2a0a07;--info:#8db6ff;--infobg:#162c55;--violet:#b3a5ff;--violetbg:#272052;--s1:#3987e5;--crit:#e66767;--side:#0e2252;--sidehi:rgba(255,255,255,.08);--shadow:0 1px 2px rgba(0,0,0,.4);--shadow-hi:0 8px 28px rgba(0,0,0,.45);color-scheme:dark}}
-:root[data-theme="dark"]{--bg:#0b1324;--surf:#131f38;--surf2:#17254a;--ink:#e8eefb;--mute:#97a6c4;--line:#24345a;--brand:#7ea4ff;--brand2:#9bb8ff;--onbrand:#08112a;--goldbg:#3a2c10;--ok:#5fd6a8;--okbg:#10372b;--warn:#f0b04a;--warnbg:#3a2c10;--bad:#ff8a80;--badbg:#3d1714;--onbad:#2a0a07;--info:#8db6ff;--infobg:#162c55;--violet:#b3a5ff;--violetbg:#272052;--s1:#3987e5;--crit:#e66767;--side:#0e2252;--sidehi:rgba(255,255,255,.08);--shadow:0 1px 2px rgba(0,0,0,.4);--shadow-hi:0 8px 28px rgba(0,0,0,.45);color-scheme:dark}
+ --sideW:248px;--topH:64px;--serif:"Fraunces",Georgia,"Times New Roman",serif;color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#070d1c;--surf:#0e1830;--surf2:#14203d;--ink:#eef2fb;--mute:#97a4c0;--line:#1f2d4f;--brand:#8fb0ff;--brand2:#a9c3ff;--onbrand:#06102a;--gold:#e8b545;--goldbg:#33270c;--ok:#5fd6a8;--okbg:#0f3328;--warn:#f0b04a;--warnbg:#33270c;--bad:#ff8a80;--badbg:#3a1513;--onbad:#2a0a07;--info:#8db6ff;--infobg:#142a52;--violet:#b3a5ff;--violetbg:#241d4d;--s1:#3987e5;--crit:#e66767;--side:#081129;--sidehi:rgba(255,255,255,.07);--shadow:0 1px 2px rgba(0,0,0,.5),0 0 0 1px rgba(255,255,255,.025);--shadow-hi:0 10px 34px rgba(0,0,0,.55);color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#070d1c;--surf:#0e1830;--surf2:#14203d;--ink:#eef2fb;--mute:#97a4c0;--line:#1f2d4f;--brand:#8fb0ff;--brand2:#a9c3ff;--onbrand:#06102a;--gold:#e8b545;--goldbg:#33270c;--ok:#5fd6a8;--okbg:#0f3328;--warn:#f0b04a;--warnbg:#33270c;--bad:#ff8a80;--badbg:#3a1513;--onbad:#2a0a07;--info:#8db6ff;--infobg:#142a52;--violet:#b3a5ff;--violetbg:#241d4d;--s1:#3987e5;--crit:#e66767;--side:#081129;--sidehi:rgba(255,255,255,.07);--shadow:0 1px 2px rgba(0,0,0,.5),0 0 0 1px rgba(255,255,255,.025);--shadow-hi:0 10px 34px rgba(0,0,0,.55);color-scheme:dark}
 *{box-sizing:border-box}html{scroll-padding-top:80px}
 body{margin:0;background:var(--bg);color:var(--ink);font:400 15px/1.5 "Plus Jakarta Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-webkit-font-smoothing:antialiased}
 h1,h2,h3{margin:0;letter-spacing:-.01em}.hide{display:none!important}
@@ -423,6 +423,158 @@ kbd{font:600 11px/1 ui-monospace,Menlo,Consolas,monospace;border:1px solid var(-
  .lab{padding:2mm 3mm;overflow:hidden;display:flex;flex-direction:column;color:#000;font-family:Arial,sans-serif;break-inside:avoid}
  .lab .lh{font-size:7pt;font-weight:700;color:#14337a;text-transform:uppercase;letter-spacing:.04em}.lab .lt{font-size:8.5pt;font-weight:700;line-height:1.15;max-height:2.3em;overflow:hidden;margin:1mm 0}
  .lab svg{width:100%;height:auto;max-height:20mm}}
+
+/* ============ 2.3 design ============ */
+/* signature serif for headings, titles and big numbers */
+h1,h2,#pageTitle,.sect,.welcome h2,.khero h2,.spot h2,.bd h2,.prof h2,.attr-in h2,.stats b,.kpi b,.bbody .t,.minibook .t,.tile .t,.rh h2,.panel h3,.lc-name,.wr-big,.wr-title{font-family:var(--serif);font-optical-sizing:auto;letter-spacing:-.01em}
+.panel h3{font-weight:700}.stats b,.kpi b{font-weight:700}
+/* refined dark mode details */
+:root[data-theme="dark"] #side nav button[aria-selected=true]{background:rgba(232,181,69,.14);color:#f3c766}
+:root[data-theme="dark"] #side nav button[aria-selected=true] .n{background:#f3c766;color:#1b1300}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) #side nav button[aria-selected=true]{background:rgba(232,181,69,.14);color:#f3c766}:root:not([data-theme="light"]) #side nav button[aria-selected=true] .n{background:#f3c766;color:#1b1300}}
+:root[data-theme="dark"] .welcome,:root[data-theme="dark"] .khero{background:linear-gradient(120deg,#0b1d4a,#123276 70%,#18408c)}
+/* text size and contrast (per device) */
+html[data-size="lg"] body{zoom:1.12}html[data-size="xl"] body{zoom:1.25}body.kiosk-lg.nosider{zoom:1.15}
+.khero .b.alt{background:rgba(255,255,255,.14);color:#fff;border-color:rgba(255,255,255,.28);padding:7px 12px;font-size:13.5px}.khero .b.alt:hover{border-color:#fff}
+html[data-contrast="high"]{--mute:#33405c;--line:#8e9ab3}html[data-contrast="high"][data-theme="dark"]{--mute:#c7d2ea;--line:#4c5f8a}
+html[data-contrast="high"] .card,html[data-contrast="high"] .panel,html[data-contrast="high"] .kpi,html[data-contrast="high"] .stats>div{border-width:2px}
+/* motion: dialogs grow from the button that opened them; lists rise in */
+dialog[open]{animation:dlgGrow .22s cubic-bezier(.2,.8,.2,1)}
+@keyframes dlgGrow{from{opacity:0;transform:scale(.88)}to{opacity:1;transform:none}}
+.anim .card,.anim .bcard,.anim .kpi,.anim .stats>div,.anim .bento>*,.anim .spine{animation:riseIn .45s cubic-bezier(.2,.8,.2,1) both}
+.anim .card:nth-child(2),.anim .bcard:nth-child(2),.anim .bento>*:nth-child(2){animation-delay:.04s}.anim .card:nth-child(3),.anim .bcard:nth-child(3),.anim .bento>*:nth-child(3){animation-delay:.08s}.anim .card:nth-child(4),.anim .bcard:nth-child(4),.anim .bento>*:nth-child(4){animation-delay:.12s}.anim .card:nth-child(5),.anim .bcard:nth-child(5),.anim .bento>*:nth-child(5){animation-delay:.16s}.anim .card:nth-child(n+6),.anim .bcard:nth-child(n+6),.anim .bento>*:nth-child(n+6){animation-delay:.2s}
+@keyframes riseIn{from{opacity:0;transform:translateY(10px)}}
+.card{transition:box-shadow .15s,border-color .15s,transform .15s}.card:hover{transform:translateY(-1px)}
+/* smarter toasts */
+#toast{padding:0;overflow:hidden;flex-direction:column;align-items:stretch;gap:0}#toast::before{display:none}
+#toast .tb{display:flex;gap:10px;align-items:center;padding:11px 14px}#toast .ti{width:22px;height:22px;border-radius:50%;display:grid;place-items:center;flex:none}#toast .ti svg{width:14px;height:14px;stroke-width:3}
+#toast .ti.ok{background:#1baf7a;color:#fff}#toast .ti.warn{background:#eda100;color:#1b1300}#toast .ti.info{background:#3987e5;color:#fff}
+#toast .ta{margin-left:6px;background:rgba(255,255,255,.14);border:0;color:inherit;font:inherit;font-weight:700;padding:5px 10px;border-radius:8px;cursor:pointer}
+#toast.has-act{pointer-events:auto}#toast .tp{height:3px;background:var(--gold);transform-origin:left;width:100%}
+:root[data-theme="dark"] #toast .ta{background:rgba(0,0,0,.08)}
+/* bento dashboard */
+.bento{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-bottom:16px}
+.bento>*{min-width:0;margin:0}
+.b-hero{grid-column:span 2;grid-row:span 2;margin:0!important;flex-direction:column;align-items:stretch!important;justify-content:space-between}
+.b-hero .today{display:flex;gap:18px;flex-wrap:wrap;margin:16px 0 4px;position:relative;z-index:1}.b-hero .today div{min-width:90px}.b-hero .today b{display:block;font-family:var(--serif);font-size:40px;line-height:1}.b-hero .today span{font-size:12.5px;opacity:.85}
+.b-tile{background:var(--surf);border:1px solid var(--line);border-radius:var(--r);padding:16px;box-shadow:var(--shadow);display:flex;flex-direction:column;justify-content:space-between;gap:6px;min-height:120px;position:relative;overflow:hidden}
+.b-tile b{font-family:var(--serif);font-size:34px;line-height:1}.b-tile .l{font-size:13px;color:var(--mute);font-weight:600}.b-tile .si{width:40px;height:40px;border-radius:11px;display:grid;place-items:center}.b-tile .si svg{width:20px;height:20px}
+.b-tile.crit{box-shadow:inset 0 3px 0 var(--crit),var(--shadow)}
+.b-wide{grid-column:span 4}.b-half{grid-column:span 2}
+@media (max-width:1100px){.bento{grid-template-columns:repeat(2,minmax(0,1fr))}.b-hero{grid-column:span 2;grid-row:auto}.b-wide{grid-column:span 2}.b-half{grid-column:span 2}}
+@media (max-width:560px){.bento{grid-template-columns:minmax(0,1fr)}.b-hero,.b-wide,.b-half{grid-column:auto}}
+/* live ticker */
+.ticker{position:relative;z-index:1;overflow:hidden;border-top:1px solid rgba(255,255,255,.18);margin-top:16px;padding-top:10px;white-space:nowrap;mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent)}
+.ticker .tk{display:inline-flex;gap:28px;animation:tick 40s linear infinite;padding-left:100%}.ticker:hover .tk{animation-play-state:paused}
+.ticker .tk span{font-size:13px;opacity:.92}.ticker .tk b{color:#f3c766;font-weight:700}
+@keyframes tick{to{transform:translateX(-100%)}}
+@media (prefers-reduced-motion:reduce){.ticker .tk{padding-left:0;animation:none}}
+/* today timeline */
+.tline{position:relative;height:96px;margin:6px 6px 0}
+.tline .ax{position:absolute;left:0;right:0;top:48px;height:2px;background:var(--line);border-radius:2px}
+.tline .hr{position:absolute;top:56px;font-size:11px;color:var(--mute);transform:translateX(-50%)}.tline .hr::before{content:"";position:absolute;left:50%;top:-12px;width:1px;height:8px;background:var(--line)}
+.tline .ev{position:absolute;width:12px;height:12px;border-radius:50%;transform:translate(-50%,-50%);border:2px solid var(--surf);cursor:default}
+.tline .ev.l{background:var(--s1);top:34px}.tline .ev.r{background:#1baf7a;top:62px}.tline .ev.late{background:var(--crit)}
+.tline .now{position:absolute;top:14px;bottom:24px;width:2px;background:var(--gold);border-radius:2px}.tline .now span{position:absolute;top:-14px;left:50%;transform:translateX(-50%);font-size:10.5px;font-weight:700;color:var(--warn);white-space:nowrap}
+.tline .cl{position:absolute;top:2px;font-size:11px;font-weight:700;color:var(--info);transform:translateX(-50%);white-space:nowrap}
+.tleg{display:flex;gap:14px;font-size:12px;color:var(--mute);margin-top:6px}.tleg i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:5px;vertical-align:-1px}
+/* school map of classes */
+.smap{display:grid;grid-template-columns:repeat(auto-fill,minmax(92px,1fr));gap:8px}
+.smap button{border:0;border-radius:12px;padding:10px;text-align:left;cursor:pointer;font:inherit;min-height:70px;display:flex;flex-direction:column;justify-content:space-between;transition:transform .12s}
+.smap button:hover{transform:translateY(-2px)}.smap b{font-size:15px}.smap span{font-size:11.5px}
+.smap .q0{background:var(--surf2);color:var(--mute);border:1px dashed var(--line)}.smap .q1{background:#c6dcf6;color:#0c2f5c}.smap .q2{background:#85b7eb;color:#0c2f5c}.smap .q3{background:#378add;color:#fff}.smap .q4{background:#185fa5;color:#fff}
+/* 3D books */
+.b3d{display:inline-block;perspective:900px;flex:none}
+.b3d-in{display:block;position:relative;transform:rotateY(-24deg);transform-style:preserve-3d;transition:transform .35s cubic-bezier(.2,.8,.2,1);border-radius:2px 6px 6px 2px;box-shadow:10px 12px 22px rgba(8,17,42,.28)}
+.b3d-in>.cov,.b3d-in>.bigcov{display:block;border-radius:2px 6px 6px 2px!important;margin:0!important}
+.b3d-in::before{content:"";position:absolute;top:3px;bottom:3px;right:-11px;width:12px;background:repeating-linear-gradient(90deg,#f4efe4 0 1px,#ddd5c3 1px 2px);transform:rotateY(90deg) translateZ(0);transform-origin:left;border-radius:0 2px 2px 0}
+.b3d-in::after{content:"";position:absolute;inset:0;border-radius:2px 6px 6px 2px;background:linear-gradient(90deg,rgba(0,0,0,.28) 0,rgba(255,255,255,.18) 4%,rgba(0,0,0,.05) 7%,transparent 12%);pointer-events:none}
+.b3d:hover .b3d-in,.minibook:hover .b3d-in,.tile:hover .b3d-in{transform:rotateY(-8deg)}
+.minibook .b3d,.tile .b3d{display:block;margin:6px 10px 10px 4px}.minibook .b3d .cov,.tile .b3d .cov{height:150px;margin:0}
+/* shelf view */
+.shelves{display:flex;flex-direction:column;gap:26px;margin-bottom:12px}
+.shelf h3{font-size:15px;margin:0 0 8px;display:flex;gap:8px;align-items:center}
+.shelf .srow{display:flex;align-items:flex-end;gap:3px;padding:0 14px;min-height:200px;overflow-x:auto;position:relative}
+.shelf .plank{height:16px;margin-top:-2px;border-radius:3px;background:linear-gradient(180deg,#b9874f,#8a5a2b 60%,#6d4421);box-shadow:0 10px 18px rgba(80,45,10,.25)}
+:root[data-theme="dark"] .shelf .plank{background:linear-gradient(180deg,#6e5133,#4c3520 60%,#3a2716)}
+.spine{flex:none;border:0;padding:8px 0;border-radius:3px 3px 1px 1px;cursor:pointer;color:#fff;font:inherit;display:flex;flex-direction:column;align-items:center;justify-content:space-between;position:relative;transition:transform .18s cubic-bezier(.2,.8,.2,1);box-shadow:inset -3px 0 6px rgba(0,0,0,.18),inset 2px 0 3px rgba(255,255,255,.15)}
+.spine:hover,.spine:focus-visible{transform:translateY(-10px) rotate(-2deg);z-index:2}
+.spine .st{writing-mode:vertical-rl;transform:rotate(180deg);font-size:12px;font-weight:700;line-height:1.1;max-height:calc(100% - 26px);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-shadow:0 1px 1px rgba(0,0,0,.25)}
+.spine .bd1,.spine .bd2{width:70%;height:3px;border-radius:2px;background:rgba(255,255,255,.55)}.spine .bd2{background:rgba(0,0,0,.2)}
+.spine.out{opacity:.6}.spine.out::after{content:"out";position:absolute;top:-16px;font-size:10px;color:var(--mute);font-weight:700}
+/* ambient book page */
+dialog.amb{padding:0;overflow:hidden}dialog.amb .ambbg{position:absolute;inset:0;background-size:cover;background-position:center;filter:blur(46px) saturate(1.4);opacity:.32;transform:scale(1.3);pointer-events:none}
+dialog.amb .ambin{position:relative;padding:24px;max-height:90vh;overflow:auto;border-top:6px solid var(--amb,#14337a)}
+dialog.amb .bd h2{color:color-mix(in srgb,var(--amb,#14337a) 55%,var(--ink))}
+/* cover wall */
+#wall{position:fixed;inset:0;z-index:75;background:#070d1c;color:#fff;overflow:auto;padding:20px}
+#wall .wtop{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:14px;position:sticky;top:-20px;background:#070d1c;padding:10px 0;z-index:2}
+#wall .wtop h2{flex:1;font-size:24px}#wall .chip{background:rgba(255,255,255,.08);color:#fff;border-color:rgba(255,255,255,.15)}#wall .chip[aria-pressed=true]{background:var(--gold);color:#1b1300;border-color:var(--gold)}
+#wall .wgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:10px}
+#wall .wgrid button{border:0;padding:0;background:none;cursor:pointer;border-radius:8px;overflow:hidden;aspect-ratio:2/3;transition:transform .15s,box-shadow .15s}
+#wall .wgrid button:hover{transform:scale(1.06);box-shadow:0 10px 30px rgba(0,0,0,.6);z-index:2}#wall .wgrid .cov{width:100%;height:100%;border-radius:0;border:0;display:block}
+/* colour search */
+.swatches{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:-4px 0 16px}.swatches .s{font-size:13px;margin-right:4px}
+.sw{width:30px;height:30px;border-radius:50%;border:3px solid var(--surf);box-shadow:0 0 0 1px var(--line);cursor:pointer;padding:0}.sw[aria-pressed=true]{box-shadow:0 0 0 3px var(--brand)}
+/* reader card */
+.lcard{border-radius:20px;padding:20px 22px;color:#fff;background:radial-gradient(circle at 85% 15%,rgba(224,165,38,.35),transparent 40%),linear-gradient(130deg,#0d2766,#14337a 55%,#1d4499);box-shadow:var(--shadow-hi);position:relative;overflow:hidden;margin-bottom:16px}
+.lcard::after{content:"";position:absolute;right:-40px;bottom:-60px;width:200px;height:200px;border-radius:50%;border:26px solid rgba(255,255,255,.06)}
+.lcard .lc-top{display:flex;align-items:center;gap:10px;font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;opacity:.9}
+.lcard .lc-main{display:flex;gap:16px;align-items:center;margin:16px 0 14px;position:relative;z-index:1}
+.lcard .lc-av{width:72px;height:72px;border-radius:18px;background:rgba(255,255,255,.14);display:grid;place-items:center;font-size:26px;font-weight:800;flex:none;overflow:hidden;border:2px solid rgba(255,255,255,.35)}
+.lcard .lc-av svg{width:100%;height:100%}
+.lcard .lc-name{font-size:26px;font-weight:700;line-height:1.1}.lcard .lc-sub{opacity:.85;font-size:13.5px;margin-top:3px}
+.lcard .lc-stats{display:flex;gap:22px;flex-wrap:wrap;position:relative;z-index:1}.lcard .lc-stats b{display:block;font-family:var(--serif);font-size:26px;line-height:1}.lcard .lc-stats span{font-size:12px;opacity:.85}
+.medals{display:flex;gap:14px;flex-wrap:wrap;margin:6px 0 16px}
+.medal{display:flex;flex-direction:column;align-items:center;gap:4px;width:74px;text-align:center;font-size:11.5px;color:var(--mute);font-weight:600}
+.medal .m{width:54px;height:54px;border-radius:50%;display:grid;place-items:center;position:relative;filter:grayscale(1);opacity:.35}
+.medal.on .m{filter:none;opacity:1}.medal.on{color:var(--ink)}
+.medal .m svg{width:54px;height:54px}
+.stamps{display:grid;grid-template-columns:repeat(auto-fill,minmax(84px,1fr));gap:10px;margin:8px 0 16px}
+.stamp{aspect-ratio:1;border-radius:50%;border:3px double var(--gc);color:var(--gc);display:grid;place-items:center;text-align:center;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;padding:8px;transform:rotate(var(--rot,-8deg));background:color-mix(in srgb,var(--gc) 8%,transparent)}
+.stamp small{display:block;font-weight:600;font-size:9.5px;opacity:.8;text-transform:none;letter-spacing:0}
+.stamp.empty{border:2px dashed var(--line);color:var(--mute);transform:none;background:none;font-weight:600}
+/* avatars */
+.avp{width:100%;height:100%;display:block}.av.avi{padding:0;overflow:hidden;background:transparent}.av.avi svg{width:100%;height:100%}
+.avgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(72px,1fr));gap:10px;margin-top:10px}
+.avgrid button{border:3px solid transparent;border-radius:18px;padding:4px;background:var(--surf2);cursor:pointer}.avgrid button[aria-pressed=true]{border-color:var(--gold)}
+/* reading forest */
+.forest{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:12px}
+.tree{background:var(--surf);border:1px solid var(--line);border-radius:16px;padding:10px 10px 12px;text-align:center;box-shadow:var(--shadow)}
+.tree svg{width:100%;height:auto;display:block}.tree b{display:block;font-family:var(--serif);font-size:16px}.tree span{font-size:12px;color:var(--mute)}
+/* kiosk welcome by time of day + facts */
+.khero.morning{background:linear-gradient(130deg,#14337a,#1d5fb5 60%,#4aa3df)}.khero.lunch{background:linear-gradient(130deg,#14337a,#16607a 60%,#1baf7a)}.khero.after{background:linear-gradient(130deg,#14337a,#3b2f86 60%,#7a4fc0)}
+.fact{display:inline-flex;gap:8px;align-items:center;background:rgba(255,255,255,.14);border-radius:99px;padding:7px 14px;font-size:13.5px;margin-top:14px;position:relative;z-index:1}
+/* seasonal themes */
+body.season-nd .welcome,body.season-nd .khero{box-shadow:inset 0 5px 0 #00843d,inset 0 9px 0 #fff,inset 0 13px 0 #111,inset 0 17px 0 #c8102e,var(--shadow-hi)}
+body.season-nd .welcome::after,body.season-nd .khero::before{border-color:rgba(0,132,61,.25)}
+body.season-ram .welcome,body.season-ram .khero{background:radial-gradient(circle at 88% 18%,rgba(232,181,69,.45) 0 22px,transparent 23px),linear-gradient(130deg,#0b1d4a,#23356e 60%,#3b2f86)}
+.seasonal{display:inline-flex;gap:8px;align-items:center;font-size:12.5px;font-weight:700;background:rgba(255,255,255,.14);border-radius:99px;padding:4px 12px;margin-bottom:8px;position:relative;z-index:1}
+/* Library Wrapped */
+.wr{position:relative;border-radius:24px;overflow:hidden;min-height:420px;display:grid;place-items:center;text-align:center;padding:40px 24px;color:#fff;box-shadow:var(--shadow-hi)}
+.wr.c0{background:linear-gradient(140deg,#14337a,#3b2f86)}.wr.c1{background:linear-gradient(140deg,#0e5a7a,#1baf7a)}.wr.c2{background:linear-gradient(140deg,#7a2f5a,#e87ba4)}.wr.c3{background:linear-gradient(140deg,#7a4a0e,#e0a526)}.wr.c4{background:linear-gradient(140deg,#123276,#2a78d6)}.wr.c5{background:linear-gradient(140deg,#3b1d6e,#6250d6)}
+.wr .wr-in{animation:wrIn .55s cubic-bezier(.2,.8,.2,1) both;max-width:640px;display:flex;flex-direction:column;align-items:center}
+@keyframes wrIn{from{opacity:0;transform:translateY(18px) scale(.97)}}
+.wr .wr-k{font-size:13px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;opacity:.85}.wr .wr-big{font-size:clamp(56px,10vw,110px);line-height:1;font-weight:700;margin:12px 0}.wr .wr-title{font-size:clamp(24px,4vw,40px);line-height:1.1;margin:10px 0}.wr p{opacity:.9;font-size:17px;margin:6px 0 0}
+.wrnav{display:flex;gap:8px;align-items:center;justify-content:center;margin-top:14px}.wrdots{display:flex;gap:6px}.wrdots i{width:8px;height:8px;border-radius:50%;background:var(--line)}.wrdots i.on{background:var(--brand);width:22px;border-radius:99px}
+.wr:fullscreen{border-radius:0;min-height:100vh}
+/* phone bottom bar */
+#bnav{display:none}
+@media (max-width:900px){
+ body.inapp:not(.nosider) #bnav{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:17;background:var(--surf);border-top:1px solid var(--line);padding:6px 6px calc(6px + env(safe-area-inset-bottom,0px));justify-content:space-around;box-shadow:0 -6px 20px rgba(8,17,42,.08)}
+ #bnav button{flex:1;background:none;border:0;font:inherit;font-size:11px;font-weight:600;color:var(--mute);display:flex;flex-direction:column;align-items:center;gap:3px;padding:4px 0;cursor:pointer}
+ #bnav button[aria-selected=true]{color:var(--brand)}
+ #bnav .mid{margin-top:-24px}#bnav .mid span.c{width:52px;height:52px;border-radius:50%;background:var(--gold);color:#1b1300;display:grid;place-items:center;box-shadow:0 6px 16px rgba(224,165,38,.45);border:4px solid var(--surf)}
+ body.inapp:not(.nosider) main{padding-bottom:96px}
+ body.inapp:not(.nosider) #toast{bottom:calc(84px + env(safe-area-inset-bottom,0px))}
+ .selbar{bottom:68px}}
+.b-hero .qa{display:flex;flex-wrap:wrap;gap:8px;position:relative;z-index:1;margin-top:14px}.b-hero .qa .b{padding:9px 13px}
+.ticker .tk{padding-left:0;animation-name:tick2}@keyframes tick2{to{transform:translateX(-50%)}}
+.ticker .tk>span{flex:none}
+.ticker .tk{padding-right:28px}
+.b-hero{flex-wrap:nowrap!important}.b-hero>div{flex:none;min-width:0}.b-hero .qa{align-items:center}
+dialog.amb .ambbg.flat{filter:none;opacity:.1;transform:none}
+@media (max-width:560px){.bento{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.b-hero,.b-wide,.b-half{grid-column:span 2}.b-tile{min-height:0;padding:12px}.b-tile b{font-size:26px}.b-tile .si{width:32px;height:32px}.b-hero .today b{font-size:32px}}
 </style>
 </head>
 <body>
@@ -478,6 +630,14 @@ kbd{font:600 11px/1 ui-monospace,Menlo,Consolas,monospace;border:1px solid var(-
 <dialog id="kdlg" class="kdlg" aria-label="Search everything"></dialog>
 <div id="printArea" aria-hidden="true"></div>
 <div id="attract" class="hide" aria-hidden="true"></div>
+<div id="wall" class="hide" role="dialog" aria-label="Cover wall"></div>
+<nav id="bnav" aria-label="Quick menu">
+ <button type="button" data-tab="dash"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3h7v9H3zM14 3h7v5h-7zM14 12h7v9h-7zM3 16h7v5H3z"/></svg><span>Home</span></button>
+ <button type="button" data-tab="books"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V3H6.5A2.5 2.5 0 0 0 4 5.5v14zM4 19.5A2.5 2.5 0 0 0 6.5 22H20v-5"/></svg><span>Books</span></button>
+ <button type="button" data-tab="desk" class="mid nl ed" aria-label="Borrow and return"><span class="c"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M17 3l4 4-4 4M21 7H9M7 21l-4-4 4-4M3 17h12"/></svg></span><span>Desk</span></button>
+ <button type="button" data-tab="students" class="nl"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg><span>Students</span></button>
+ <button type="button" id="bnMore"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg><span>More</span></button>
+</nav>
 <div id="toast" role="status"></div>
 <div id="tip" role="tooltip" aria-hidden="true"></div>
 <script src="https://cdn.jsdelivr.net/npm/@zxing/library@0.21.3/umd/index.min.js" integrity="sha384-BzBxP10ZE72aitqj5UMmUsbKFliP/DZqA8Wq+BNNhlIJDGoEd1tpkMYXOg9+n6sB" crossorigin="anonymous"></script>
@@ -507,8 +667,8 @@ const REQUIRE_2FA=true;
 const APP_CHECK_SITE_KEY="";
 /* ========================================================================================= */
 
-const APP={version:"2.2.1",released:"17 November 2026",firebase:"10.12.2",sheetjs:"0.20.3",zxing:"0.21.3",tesseract:"5.1.1",qr:"qrcode-generator 1.4.4",rules:"2.0 (16 November 2026)",issuer:"IPHS Library"};
-const CHANGES=["2.2.1: Stock-taking removed.","2.2.0: Class period mode, due dates that skip weekends and holidays, accession numbers with barcode spine labels and the accession register, online catalogue for phones, Ctrl+K search, automatic book covers, genre colours, new analytics (reading calendar, class reading race, genre map, year-on-year, on-time goal), a new kiosk with Book of the week, and full student history.","2.1.1: much better barcode scanning on laptops and webcams, a guide box, “Take a photo instead”, and typing the ISBN by hand.","New design: sidebar menu that can be collapsed (and slides out on phones), welcome dashboard, grid view for books, student profiles, step-by-step Borrow & Return, notification centre, activity log table with date filters.","Students tab (was Borrowers), settings behind the gear icon, light and dark mode switch.","Interactive dashboard with charts.","Two-step sign-in with an authenticator app, automatic sign-out when idle, strong passwords.","School ID card scanning by GR No., and filling in a new student from a photo of their card.","Reports: monthly report, overdue list by grade, collection insights, top readers and badges, Excel export.","Kiosk: new arrivals, most popular, top readers, suggestions, reviews and recommendations, without showing who borrowed what.","Overdue notices, editable message templates, weekly summary email, optional server sending.","Bulk edit, backup, academic year rollover, Genre, Shelf, Mobile and Staff columns in imports, option to hide student names from read-only accounts."];
+const APP={version:"2.3.0",released:"17 November 2026",firebase:"10.12.2",sheetjs:"0.20.3",zxing:"0.21.3",tesseract:"5.1.1",qr:"qrcode-generator 1.4.4",rules:"2.3.0 (17 November 2026)",issuer:"IPHS Library"};
+const CHANGES=["2.3.0: New look. Serif headings, a deeper dark mode with gold, a bento dashboard with a live ticker and a timeline of today, a school map of reading by class, Library Wrapped (a slideshow of the month or year), a bookshelf view and cover wall, 3D covers, book pages tinted by their cover, each book's journey, reader cards with medals and a reading passport, student avatars, a reading forest and colour search on the kiosk, seasonal themes, sound at the desk, larger text and high contrast, smarter messages and a bottom bar on phones.","2.2.1: Stock-taking removed.","2.2.0: Class period mode, due dates that skip weekends and holidays, accession numbers with barcode spine labels and the accession register, online catalogue for phones, Ctrl+K search, automatic book covers, genre colours, new analytics (reading calendar, class reading race, genre map, year-on-year, on-time goal), a new kiosk with Book of the week, and full student history.","2.1.1: much better barcode scanning on laptops and webcams, a guide box, “Take a photo instead”, and typing the ISBN by hand.","New design: sidebar menu that can be collapsed (and slides out on phones), welcome dashboard, grid view for books, student profiles, step-by-step Borrow & Return, notification centre, activity log table with date filters.","Students tab (was Borrowers), settings behind the gear icon, light and dark mode switch.","Interactive dashboard with charts.","Two-step sign-in with an authenticator app, automatic sign-out when idle, strong passwords.","School ID card scanning by GR No., and filling in a new student from a photo of their card.","Reports: monthly report, overdue list by grade, collection insights, top readers and badges, Excel export.","Kiosk: new arrivals, most popular, top readers, suggestions, reviews and recommendations, without showing who borrowed what.","Overdue notices, editable message templates, weekly summary email, optional server sending.","Bulk edit, backup, academic year rollover, Genre, Shelf, Mobile and Staff columns in imports, option to hide student names from read-only accounts."];
 
 let S={books:[],students:[],logs:[],users:[],holds:[],sugg:[],stats:{},pub:null,ready:{}},CAT=new Map();
 let tab="dash",q="",sq="",lq="",kq="",kg="",filt="all",logF="all",showArch=false,unsubs=[],db,auth,me=null,limitedMode=false;
@@ -546,7 +706,12 @@ const shortName=n=>{const p=String(n||"").trim().split(/\s+/);return p.length>1?
 const titleCase=s=>String(s||"").toLowerCase().replace(/\b[a-z]/g,c=>c.toUpperCase());
 const normGrade=g=>String(g||"").trim().replace(/\s+/g," ").toUpperCase();
 const EMAIL_RE=/^[^@\s]+@[^@\s]+\.[^@\s]+$/;
-function toast(m,long){const t=$("#toast");t.textContent=m;t.classList.add("on");clearTimeout(t._h);t._h=setTimeout(()=>t.classList.remove("on"),long?6000:2800)}
+/* toast(message, long?, {kind:"ok"|"warn"|"info", act:{label, run}}) */
+function toast(m,long,o={}){const t=$("#toast"),ms=o.act?7000:long?6000:2800,k=o.kind||(/^(could not|no |not |that |every copy|enter |choose |something went wrong|this )/i.test(m)?"warn":/saved|added|returned|lent|renewed|sent|done|removed|deleted|updated|copied|imported/i.test(m)?"ok":"info");
+ t.innerHTML=`<div class="tb"><span class="ti ${k}">${k==="ok"?'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5 9-10"/></svg>':k==="warn"?'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round"><path d="M12 6v8M12 18h.01"/></svg>':'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round"><path d="M12 11v6M12 7h.01"/></svg>'}</span><span class="tm"></span>${o.act?'<button class="ta" type="button"></button>':""}</div><div class="tp"></div>`;
+ t.querySelector(".tm").textContent=m;if(o.act){const b=t.querySelector(".ta");b.textContent=o.act.label;b.onclick=()=>{t.classList.remove("on");o.act.run()}}t.classList.toggle("has-act",!!o.act);
+ const p=t.querySelector(".tp");p.animate([{transform:"scaleX(1)"},{transform:"scaleX(0)"}],{duration:ms,easing:"linear",fill:"forwards"});
+ t.classList.add("on");clearTimeout(t._h);t._h=setTimeout(()=>t.classList.remove("on"),ms)}
 const fail=e=>toast("Could not save: "+(e?.code||e?.message||e));
 const stop=m=>{const e=new Error(m);e.userMsg=m;throw e};
 function download(name,blob){const u=URL.createObjectURL(blob),a=document.createElement("a");a.href=u;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),2000)}
@@ -558,7 +723,7 @@ const RL={admin:"Administrator",staff:"Librarian",viewer:"Read-only",kiosk:"Kios
 const role=()=>me?.role||"viewer",isAdmin=()=>role()==="admin",canEdit=()=>["admin","staff"].includes(role()),isKiosk=()=>role()==="kiosk";
 const TPL_REMIND="Hello {name}, this is a reminder from the school library. {count_text} due soon: {books}. Please return {it_them} on time. Thank you.";
 const TPL_OVERDUE="Hello {name}, this is a reminder from the school library. {count_text} overdue: {books}. Please return {it_them} as soon as you can. Thank you.";
-const ST0={maxLoans:3,maxLoansStaff:5,loanDays:14,remindDays:2,maxRenewals:2,renewDays:7,autoEmail:false,overdueAfter:3,weeklyOn:false,serverSends:false,idleMinutes:15,hideNamesFromViewer:false,showReadersOnKiosk:true,yearStartMonth:4,badgeBronze:5,badgeSilver:10,badgeGold:20,finalGrade:"XII",weekend:[6,0],holidays:[],onTimeGoal:90,accPrefix:"",publicCatalog:false,
+const ST0={maxLoans:3,maxLoansStaff:5,loanDays:14,remindDays:2,maxRenewals:2,renewDays:7,autoEmail:false,overdueAfter:3,weeklyOn:false,serverSends:false,idleMinutes:15,hideNamesFromViewer:false,showReadersOnKiosk:true,yearStartMonth:4,badgeBronze:5,badgeSilver:10,badgeGold:20,finalGrade:"XII",weekend:[6,0],holidays:[],onTimeGoal:90,accPrefix:"",publicCatalog:false,seasonal:true,ramadanFrom:"",ramadanTo:"",
  ejService:"",ejTemplate:"",ejKey:"",tplRemind:TPL_REMIND,tplOverdue:TPL_OVERDUE,weeklyTo:""};
 const EMAIL_KEYS=["ejService","ejTemplate","ejKey","tplRemind","tplOverdue","weeklyTo"];
 let ST={...ST0},STa={},STe={};
@@ -709,7 +874,7 @@ $("#setBtn").addEventListener("click",()=>{tab="settings";selMode=false;sel.clea
 /* ================= LIVE DATA ================= */
 const LOGO=`<svg viewBox="0 0 32 32" width="38" height="38" aria-hidden="true"><rect width="32" height="32" rx="9" fill="#e0a526"/><path d="M8 9.5c3-1 6-.7 8 1 2-1.7 5-2 8-1v13c-3-1-6-.7-8 1-2-1.7-5-2-8-1z" fill="#14337a"/><path d="M16 10.5v13" stroke="#e0a526" stroke-width="1.4"/></svg>`;
 function applyRole(){const k=isKiosk()||isPub(),lim=limited();
- $("#t-users").classList.toggle("hide",!isAdmin());$$("#side .nl").forEach(b=>b.classList.toggle("hide",lim));$$("#side .ed").forEach(b=>b.classList.toggle("hide",lim||!canEdit()));
+ $("#t-users").classList.toggle("hide",!isAdmin());$$("#side .nl,#bnav .nl").forEach(b=>b.classList.toggle("hide",lim));$$("#side .ed,#bnav .ed").forEach(b=>b.classList.toggle("hide",lim||!canEdit()));
  $("#side").classList.toggle("hide",k);document.body.classList.toggle("nosider",k);["#setBtn","#menuBtn","#cmdBtn"].forEach(s=>$(s).classList.toggle("hide",k));$("#bellBtn").classList.toggle("hide",k||lim);
  $("#out").querySelector(".lbl").textContent=isPub()?"Staff sign in":k?"Close kiosk":"Sign out";
  $("#whoName").textContent=isPub()?"Online catalogue":k?"Student kiosk":(me?.name||auth.currentUser?.email||"");$("#who").textContent=k?"IPHS Library":RL[role()];$("#whoAv").textContent=initials(k?"IPHS":(me?.name||auth.currentUser?.email));
@@ -745,13 +910,14 @@ let syncT=null,syncing=false;
 const schedSync=()=>{if(!canEdit()||limitedMode)return;clearTimeout(syncT);syncT=setTimeout(runSync,2500)};
 function alsoMap(){const co=new Map();active().concat(S.students.filter(s=>s.archived)).forEach(s=>{const r=[...new Set(s.reads||[])].slice(-30);for(let i=0;i<r.length;i++)for(let j=0;j<r.length;j++)if(i!==j){let m=co.get(r[i]);if(!m)co.set(r[i],m=new Map());m.set(r[j],(m.get(r[j])||0)+1)}});
  const out={};co.forEach((m,k)=>{const top=[...m].filter(([,n])=>n>=2).sort((a,b)=>b[1]-a[1]).slice(0,4).map(([r])=>r);if(top.length)out[k]=top});return out}
-const catDoc=(b,also)=>({id:b.id,root:root(b),title:b.title||"",author:b.author||"",genre:b.genre||"",shelf:b.shelf||"",isbn:b.isbn||"",cover:b.cover&&String(b.cover).length<150000?b.cover:"",out:!!b.loan,state:b.state||"",addedAt:b.addedAt||0,borrows:num(b.borrows),rSum:num(b.rSum),rN:num(b.rN),reviews:(b.reviews||[]).slice(-6).map(r=>({r:num(r.r),t:String(r.t||"").slice(0,200),g:String(r.g||"")})),also:also[root(b)]||[]});
+const catDoc=(b,also)=>({id:b.id,root:root(b),title:b.title||"",author:b.author||"",genre:b.genre||"",shelf:b.shelf||"",isbn:b.isbn||"",cover:b.cover&&String(b.cover).length<150000?b.cover:"",out:!!b.loan,state:b.state||"",addedAt:b.addedAt||0,borrows:num(b.borrows),rSum:num(b.rSum),rN:num(b.rN),cc:/^#[0-9a-f]{6}$/.test(b.cc||"")?b.cc:"",reviews:(b.reviews||[]).slice(-6).map(r=>({r:num(r.r),t:String(r.t||"").slice(0,200),g:String(r.g||"")})),also:also[root(b)]||[]});
 function publicStats(){const now=Date.now(),k=mKey(now),m=S.stats[k]||{},ys=mKey(yearStart());
- if(!ST.showReadersOnKiosk)return{readers:false,month:k};
+ const forest={};Array.from({length:12},(_,i)=>mAdd(ys,i)).filter(x=>x<=k).forEach(x=>Object.entries((S.stats[x]||{}).byGrade||{}).forEach(([g,n])=>{if(g&&g!=="No grade")forest[g]=(forest[g]||0)+num(n)}));
+ if(!ST.showReadersOnKiosk)return{readers:false,month:k,forest};
  const rows=Object.entries(m.byStudent||{}).map(([sid,n])=>({s:stu(sid),n:num(n)})).filter(x=>x.s&&!x.s.archived&&x.n>0).sort((a,b)=>b.n-a.n);
- const top=rows.slice(0,10).map(x=>({n:shortName(x.s.name),g:gr(x.s),c:x.n,b:badgeFor(yearReads(x.s.id))}));
+ const top=rows.slice(0,10).map(x=>({n:shortName(x.s.name),g:gr(x.s),c:x.n,b:badgeFor(yearReads(x.s.id)),a:AVS[x.s.avatar]?x.s.avatar:""}));
  const cls={};rows.forEach(x=>{const g=normGrade(gr(x.s));if(!g)return;(cls[g]=cls[g]||[]).length<3&&cls[g].push({n:shortName(x.s.name),c:x.n})});
- return{readers:true,month:k,since:ys,top,cls}}
+ return{readers:true,month:k,since:ys,top,cls,forest}}
 async function runSync(){if(syncing||!canEdit()||limitedMode||!S.books.length&&!CAT.size)return;syncing=true;
  try{const also=alsoMap(),ops=[],want=new Set();
   S.books.forEach(b=>{want.add(b.id);const c=catDoc(b,also),old=CAT.get(b.id);if(!old||stable(old)!==stable(c))ops.push(w=>w.set(doc(db,"catalog",b.id),c))});
@@ -759,11 +925,12 @@ async function runSync(){if(syncing||!canEdit()||limitedMode||!S.books.length&&!
   const pub=publicStats(),oldPub=S.pub?{...S.pub}:null;if(oldPub)delete oldPub.at;
   if(!oldPub||stable(oldPub)!==stable(pub))ops.push(w=>w.set(doc(db,"stats","public"),{...pub,at:Date.now()}));
   if(ops.length)await commitBatches(ops)}
- finally{syncing=false}}
+ finally{syncing=false}
+ if(!ccAuto){ccAuto=true;setTimeout(()=>fillColours(false),25000)}}
 
 /* ================= SCREEN ================= */
 const dlg=$("#dlg");
-function open(html,wide){dlg.classList.toggle("wide",!!wide);dlg.innerHTML=html;if(!dlg.open)dlg.showModal()}
+function open(html,wide){dlg.classList.toggle("wide",!!wide);dlg.classList.remove("amb");dlg.style.removeProperty("--amb");dlg.innerHTML=html;if(!dlg.open){dlg.showModal();growFrom(dlg)}}
 dlg.addEventListener("click",e=>{if(e.target.dataset.close!==undefined)closeDlg()});
 function closeDlg(){stopScan();if(dlg.open)dlg.close()}
 dlg.addEventListener("close",()=>{stopScan();idScan=false});
@@ -772,7 +939,7 @@ function render(){if(!me)return;const ae=document.activeElement,fid=ae&&["q","sq
  renderView();updateBell();
  if(fid){const n=document.getElementById(fid);if(n&&n!==document.activeElement){n.focus();if(ps!=null)try{n.setSelectionRange(ps,ps)}catch(e){}}}}
 function renderView(){
- $$("#side nav button").forEach(b=>b.setAttribute("aria-selected",b.dataset.tab===tab));
+ $$("#side nav button,#bnav button[data-tab]").forEach(b=>b.setAttribute("aria-selected",b.dataset.tab===tab));{const se=season();["nd","ram"].forEach(x=>document.body.classList.toggle("season-"+x,se===x))}
  const m=$("#main");m.style.paddingBottom=selMode?"120px":"";
  const late=S.books.filter(isLate).length;
  const setN=(k,v,c)=>{const e=document.getElementById("n-"+k);if(e){e.textContent=v||"";e.classList.toggle("late",!!c)}};
@@ -788,7 +955,7 @@ function renderView(){
 const alertHtml=()=>{const late=S.books.filter(isLate).length;return late&&!limitedMode?`<div class="alert">${ico("alert")}<span><b>${plural(late,"book")} ${late>1?"are":"is"} overdue.</b> Students have been waiting to hear from the library.</span><button class="b" data-act="reminders">${ico("mail")}Open reminders</button></div>`:""};
 
 /* one click handler for the whole app */
-const EDIT_ACTS=["clscan","blabels","reglabels","findcovers","dkgo","dkrenew","dkstu","dkbook","dkscan","desklend","addbook","import","editbook","borrow","return","addstu","impstu","editstu","selmode","blend","bret","bdel","bedit","renew","holdlend","holdcancel","sugstat","rmrev","cardstu"];
+const EDIT_ACTS=["findcolours","clscan","blabels","reglabels","findcovers","dkgo","dkrenew","dkstu","dkbook","dkscan","desklend","addbook","import","editbook","borrow","return","addstu","impstu","editstu","selmode","blend","bret","bdel","bedit","renew","holdlend","holdcancel","sugstat","rmrev","cardstu"];
 const ADMIN_ACTS=["assignacc","holadd","holrm","savest","backup","rollover","rebuild","rebuildcat","adduser","edituser"];
 document.addEventListener("click",e=>{if(!me)return;
  const t=e.target.closest("[data-tab]");if(t){tab=t.dataset.tab;selMode=false;sel.clear();document.body.classList.remove("side-open");scrollTo(0,0);render();return}
@@ -814,6 +981,8 @@ document.addEventListener("click",e=>{if(!me)return;
   clscan:()=>{if(a.dataset.v==="id"){idScan=true;scan(c=>{idScan=false;classCode(c)})}else scan(c=>classCode(c))},clclr:()=>{desk.sid="";render()},
   blabels:()=>printLabels(selBooks()),reglabels:()=>printLabels(RX.register?.books||[]),assignacc:()=>assignAcc(),findcovers:()=>fillCovers(true),
   holadd:()=>{holEdit=holEdit||clean(ST.holidays||[]);holEdit.push({from:"",to:"",name:""});render()},holrm:()=>{holEdit=holEdit||clean(ST.holidays||[]);holEdit.splice(+a.dataset.i,1);render()},copylink:()=>{(navigator.clipboard?navigator.clipboard.writeText(pubLink()):Promise.reject()).then(()=>toast("Link copied."),()=>toast("Copy the link from the box."))},
+  wrp:()=>{wrP=a.dataset.v;wrI=0;render()},wrgo:()=>{wrI=Math.max(0,Math.min(WR.length-1,wrI+ +a.dataset.v));wrShow()},wrfull:()=>{const w=$("#wr");w?.requestFullscreen?.().then(()=>w.focus()).catch(()=>toast("Full screen isn't available in this browser."))},
+  wall:()=>coverWall(),kavatar:()=>avatarDlg(),ktext:()=>{const on=!document.body.classList.contains("kiosk-lg");document.body.classList.toggle("kiosk-lg",on);setPref("lib-ktext",on?"1":"");render()},kc:()=>{kc=kc===+a.dataset.v?-1:+a.dataset.v;render()},findcolours:()=>fillColours(true),
   scanfind:()=>scan(code=>{const b=findByCode(code)[0];if(b){q=b.acc&&b.acc.toUpperCase()===String(code).toUpperCase()?b.acc:code;render();toast("Found: "+b.title)}else if(canEdit()){toast("No book with barcode "+code+". Add it first.");bookForm(null,code)}else toast("No book with barcode "+code+".")})};
  A[act]?.()});
 document.addEventListener("keydown",e=>{const t=e.target;if((e.key==="Enter"||e.key===" ")&&t.matches&&t.matches("[role=button][data-act]")){e.preventDefault();t.click()}});
@@ -849,12 +1018,12 @@ function booksView(m){
  shownIds=f.map(b=>b.id);const show=f.slice(0,bView==="grid"?240:400);
  m.innerHTML=`${alertHtml()}<div class="bar"><div class="sbox">${ico("search")}<input id="q" type="search" placeholder="Search title, author, genre, shelf, ISBN or accession No." value="${esc(q)}" aria-label="Search books"></div>
 ${genres.length?`<select id="gf" aria-label="Genre" style="width:auto;min-width:160px"><option value="">All genres</option>${genres.map(g=>`<option ${gf===g?"selected":""}>${esc(g)}</option>`).join("")}</select>`:""}
-<div class="seg sm" role="group" aria-label="View"><button type="button" data-act="bview" data-v="grid" aria-pressed="${bView==="grid"}" aria-label="Grid view" data-tip="Grid view">${ico("grid")}</button><button type="button" data-act="bview" data-v="list" aria-pressed="${bView==="list"}" aria-label="List view" data-tip="List view">${ico("list")}</button></div>
+<div class="seg sm" role="group" aria-label="View"><button type="button" data-act="bview" data-v="grid" aria-pressed="${bView==="grid"}" aria-label="Grid view" data-tip="Grid view">${ico("grid")}</button><button type="button" data-act="bview" data-v="list" aria-pressed="${bView==="list"}" aria-label="List view" data-tip="List view">${ico("list")}</button><button type="button" data-act="bview" data-v="shelf" aria-pressed="${bView==="shelf"}" aria-label="Shelf view" data-tip="Shelf view">${ico("book")}</button></div><button class="b alt" type="button" data-act="wall" data-tip="Every cover on one screen">${ico("grid")}Cover wall</button>
 <button class="b alt" data-act="scanfind">${ico("scan")}Scan ISBN</button>${canEdit()?`<button class="b alt" data-act="import">${ico("upload")}Import</button><button class="b" data-act="addbook">${ico("plus")}Add book</button>`:""}</div>
 <div class="chips">${[["all","All"],["avail","Available"],["out","Borrowed"],["late","Overdue"],["unav","Lost or damaged"]].filter(x=>!limitedMode||["all","avail","out"].includes(x[0])).map(([k,l])=>`<button class="chip" data-filt="${k}" aria-pressed="${filt===k}">${l}</button>`).join("")}${chipRow()}</div>
 ${genres.length>1?`<div class="chips gchips" role="group" aria-label="Genres"><button class="chip" data-gf="" aria-pressed="${!gf}">All genres</button>${genres.map(g=>({g,n:S.books.filter(b=>String(b.genre||"").trim()===g).length})).sort((a,b)=>b.n-a.n).slice(0,12).map(({g,n})=>`<button class="chip" data-gf="${esc(g)}" aria-pressed="${gf===g}"><span class="gdot" style="--gc:${gColor(g)}"></span>${esc(g)} <span class="s">${n}</span></button>`).join("")}</div>`:""}
 <div class="s" style="margin:-4px 0 12px">${f.length===S.books.length?plural(S.books.length,"book"):`Showing ${f.length} of ${plural(S.books.length,"book")}`}</div>
-${f.length?(bView==="grid"?`<div class="bgrid">${show.map(bookTile).join("")}</div>`:show.map(bookCard).join(""))+(f.length>show.length?`<div class="note">Showing the first ${show.length} of ${f.length}. Search or filter to narrow the list.</div>`:""):(S.books.length?emptyBox("search","No books match","Try another word, genre or filter."):emptyBox("book","No books yet","Add the first book, scan its barcode, or import a list from Excel.",canEdit()?`<button class="b" data-act="addbook">${ico("plus")}Add book</button>`:""))}${selBar()}`;
+${f.length?(bView==="shelf"?shelfHtml(f):bView==="grid"?`<div class="bgrid">${show.map(bookTile).join("")}</div>`:show.map(bookCard).join(""))+(f.length>show.length?`<div class="note">Showing the first ${show.length} of ${f.length}. Search or filter to narrow the list.</div>`:""):(S.books.length?emptyBox("search","No books match","Try another word, genre or filter."):emptyBox("book","No books yet","Add the first book, scan its barcode, or import a list from Excel.",canEdit()?`<button class="b" data-act="addbook">${ico("plus")}Add book</button>`:""))}${selBar()}`;
  searchBind("q",v=>q=v);const g=$("#gf");if(g)g.onchange=e=>{gf=e.target.value;render()}}
 
 let coverData=null,formPhotos=[],lastCover=null;
@@ -967,7 +1136,7 @@ function detailsDlg(id){const b=S.books.find(x=>x.id===id);if(!b)return;const cp
  const sim=b.genre?[...new Map(S.books.filter(x=>root(x)!==root(b)&&(x.genre||"").toLowerCase()===b.genre.toLowerCase()).map(x=>[root(x),x])).values()]:[];
  const also=(lim?(b.also||[]):(alsoMap()[root(b)]||[])).map(byRoot).filter(Boolean),revs=(b.reviews||[]).slice().reverse();
  const L=b.loan&&!lim?b.loan:null,ls=L&&stu(L.sid),late=L&&isLate(b),dl=late?Math.ceil((Date.now()-L.due)/day):0;
- open(`<div class="bd"><div>${s?`<img class="bigcov" src="${s}" alt="Cover of ${esc(b.title)}">`:`<div class="bigcov">${esc(b.title)}</div>`}</div><div>
+ open(`<div class="bd"><div>${book3d(b,"bigcov")}</div><div>
 <h2>${esc(b.title)}</h2><div class="s" style="font-size:14px">${b.author?"by "+esc(b.author):"Author not set"}</div>
 <div style="display:flex;flex-wrap:wrap;margin:12px 0;gap:6px">${lim?avTag(cp):statusTag(b)}${!lim&&cp.length>1?`<span class="tag cond">${av} of ${cp.length} copies available</span>`:""}${num(b.rN)?`<span class="tag gold">★ ${(num(b.rSum)/num(b.rN)).toFixed(1)} from ${plural(num(b.rN),"rating")}</span>`:""}</div>
 <dl class="kv"><dt>ISBN</dt><dd>${esc(b.isbn||"–")}</dd><dt>Genre</dt><dd>${esc(b.genre||"–")}</dd><dt>Shelf</dt><dd>${esc(b.shelf||"–")}</dd>${lim?"":`<dt>Condition</dt><dd>${esc(b.cond||"Not recorded")}</dd><dt>Times borrowed</dt><dd>${num(b.borrows)}</dd>${b.lastLent?`<dt>Last borrowed</dt><dd>${fmtL(b.lastLent)}</dd>`:""}${b.addedAt?`<dt>Added</dt><dd>${fmtL(b.addedAt)}</dd>`:""}`}</dl>
@@ -977,8 +1146,11 @@ ${!lim&&ph.length?`<label>Photos</label><div class="thumbs">${ph.map(p=>`<img sr
 ${revs.length?`<label>What readers said</label>${revs.slice(0,6).map((r,i)=>`<div class="rev">${"★".repeat(Math.max(0,Math.min(5,num(r.r))))}${r.t?" “"+esc(r.t)+"”":""}${r.g?` <span class="s">· Grade ${esc(r.g)}</span>`:""}${canEdit()&&!lim?` <button class="linkbtn" style="padding:0 4px;font-size:12px" data-act="rmrev" data-id="${esc(b.id)}" data-i="${(b.reviews.length-1-i)}">Remove</button>`:""}</div>`).join("")}`:""}
 ${also.length?`<label>Students who borrowed this also borrowed</label>${also.map(x=>`<div class="s">• ${esc(x.title)}${x.author?" — "+esc(x.author):""}</div>`).join("")}`:""}
 ${sim.length?`<label>More in this genre</label>${sim.slice(0,6).map(x=>`<div class="s">• ${esc(x.title)} — ${copiesOf(x).some(c=>!c.loan&&!c.state)?"Available":"Borrowed"}</div>`).join("")}`:""}
+${lim?"":`<label>This book's journey</label><div id="bj"><div class="note">Loading…</div></div>`}
 </div></div>
-<div class="row">${canEdit()&&!lim?`${b.loan?`<button class="b alt" data-act="deskret" data-id="${esc(b.id)}">${ico("ret")}Return</button>${canRenew(b)?`<button class="b alt" data-act="renew" data-id="${esc(b.id)}">Renew</button>`:""}`:b.state?"":`<button class="b" data-act="borrow" data-id="${esc(b.id)}">${ico("lend")}Lend</button>`}<button class="b alt" data-act="editbook" data-id="${esc(b.id)}">${ico("edit")}Edit</button><button class="b alt" data-act="bhist" data-id="${esc(b.id)}">History</button>`:""}${canHold(b)?`<button class="b alt" data-act="hold" data-id="${esc(b.id)}">Reserve</button>`:""}<button class="b alt" data-close>Close</button></div>`,true);dlg.onclick=null}
+<div class="row">${canEdit()&&!lim?`${b.loan?`<button class="b alt" data-act="deskret" data-id="${esc(b.id)}">${ico("ret")}Return</button>${canRenew(b)?`<button class="b alt" data-act="renew" data-id="${esc(b.id)}">Renew</button>`:""}`:b.state?"":`<button class="b" data-act="borrow" data-id="${esc(b.id)}">${ico("lend")}Lend</button>`}<button class="b alt" data-act="editbook" data-id="${esc(b.id)}">${ico("edit")}Edit</button><button class="b alt" data-act="bhist" data-id="${esc(b.id)}">History</button>`:""}${canHold(b)?`<button class="b alt" data-act="hold" data-id="${esc(b.id)}">Reserve</button>`:""}<button class="b alt" data-close>Close</button></div>`,true);dlg.onclick=null;
+ dlg.classList.add("amb");dlg.style.setProperty("--amb",/^#[0-9a-f]{6}$/i.test(b.cc||"")?b.cc:gColor(b.genre));const bg=document.createElement("div");bg.className="ambbg";if(s)bg.style.backgroundImage=`url(${JSON.stringify(s)})`;else{bg.style.background=gColor(b.genre);bg.classList.add("flat")}
+ const inn=document.createElement("div");inn.className="ambin";while(dlg.firstChild)inn.appendChild(dlg.firstChild);dlg.append(bg,inn);if(!lim)loadJourney(b.id)}
 function similarDlg(id){const b=S.books.find(x=>x.id===id);if(!b)return;const g=(b.genre||"").toLowerCase(),l=S.books.filter(x=>x.id!==id&&(x.genre||"").toLowerCase()===g);
  open(`<h2>More in “${esc(b.genre)}”</h2>${l.length?l.slice(0,60).map(x=>`<div class="card" style="padding:10px 14px"><div class="info"><div class="t">${esc(x.title)}${stars(x)}</div><div class="s">${esc(x.author||"")}${x.shelf?" · Shelf "+esc(x.shelf):""}</div><div>${status(x)}</div></div></div>`).join(""):'<div class="empty">No other books with this genre yet.</div>'}<div class="row"><button class="b alt" data-close>Close</button></div>`);dlg.onclick=null}
 async function removeReview(id,i){if(!await ask("Remove this review? It will no longer show on the kiosk.",{title:"Remove review",ok:"Remove",danger:true}))return;const r=await txBook(id,cur=>{const rv=(cur.reviews||[]).slice();if(i<0||i>=rv.length)stop("This review has already changed.");const x=rv.splice(i,1)[0];return{...cur,reviews:rv,rSum:Math.max(0,num(cur.rSum)-num(x.r)),rN:Math.max(0,num(cur.rN)-(num(x.r)?1:0))}});if(r){addLog({type:"review_rm",bid:id,bt:r.nb.title});closeDlg();toast("Review removed.")}}
@@ -1025,7 +1197,7 @@ function bulkEdit(){const bs=selBooks();if(!bs.length){toast("Select some books 
   closeDlg();const done=await txBooks(bs.map(b=>b.id),cur=>({...cur,...(g?{genre:g}:{}),...(s?{shelf:s}:{}),...(st!=="keep"?{state:st}:{}),...(c!=="keep"?{cond:c}:{})}));
   if(done){addLog({type:"bulk_edit",note:plural(done.length,"book")+" updated"+[g&&"genre "+g,s&&"shelf "+s,st!=="keep"&&"status "+(STL[st]||"in circulation"),c!=="keep"&&"condition "+(c||"none")].filter(Boolean).map(x=>" · "+x).join("")});toast("Updated "+plural(done.length,"book")+".");endSel()}}}
 
-let bView=(()=>{try{return localStorage.getItem("lib-bview")||"grid"}catch(e){return"grid"}})(),gf="";
+let bView=(()=>{try{const v=localStorage.getItem("lib-bview");return["grid","list","shelf"].includes(v)?v:"grid"}catch(e){return"grid"}})(),gf="";
 const statusTag=b=>{if(limitedMode)return b.state?'<span class="tag unav">Unavailable</span>':b.loan?'<span class="tag out">Borrowed</span>':'<span class="tag">Available</span>';
  if(b.state)return`<span class="tag unav">${STL[b.state]||"Unavailable"}</span>`;if(b.loan)return isLate(b)?'<span class="tag late">Overdue</span>':'<span class="tag out">Borrowed</span>';return'<span class="tag">Available</span>'};
 function bookTile(b){const cp=copiesOf(b).length,on=sel.has(b.id),s=img(b.cover);
@@ -1060,6 +1232,7 @@ ${s?"":`<div class="panel" style="margin:0 0 6px;padding:10px 12px"><b style="fo
 <label for="s-mob">Mobile (for WhatsApp reminders)</label><input id="s-mob" maxlength="20" value="${esc(s?.mobile)}" inputmode="tel" placeholder="971501234567" autocomplete="off">
 <label for="s-em">Email</label><input id="s-em" type="email" maxlength="120" value="${esc(em)}" autocomplete="off">
 <label for="s-kind">Type</label><select id="s-kind"><option value="student" ${s?.kind!=="staff"?"selected":""}>Student</option><option value="staff" ${s?.kind==="staff"?"selected":""}>Staff</option></select>
+<label>Avatar (optional, shown instead of initials)</label>${avPicker(s?.avatar||"","sav")}
 <label for="s-max">Book limit (optional)</label><input id="s-max" type="number" min="0" max="50" value="${esc(s?.maxLoans)}" placeholder="Uses the default in Settings">
 ${s?`<label class="chk"><input type="checkbox" id="s-arch" ${s.archived?"checked":""}> Left the school (kept for history, hidden from lists)</label>`:""}
 <div class="row">${s&&isAdmin()?'<button class="b danger" type="button" data-x="del">Delete</button>':""}<button class="b alt" type="button" data-close>Cancel</button><button class="b" type="button" data-x="save">Save student</button></div>`);
@@ -1074,7 +1247,7 @@ ${s?`<label class="chk"><input type="checkbox" id="s-arch" ${s.archived?"checked
    if(!/^[A-Z0-9\-\/]{1,30}$/.test(adm)){toast("The GR No. can only contain letters, numbers, - and /.");return}
    if(email&&!EMAIL_RE.test(email)){toast("That email address does not look right.");return}
    if(maxLoans&&!(+maxLoans>=0&&+maxLoans<=50)){toast("The book limit must be between 0 and 50.");return}
-   const key=encodeURIComponent(adm),base={name,grade,email,kind,maxLoans,mobile};
+   const key=encodeURIComponent(adm),base={name,grade,email,kind,maxLoans,mobile,avatar:pickedAv("sav")};
    if(!s){if(S.students.some(z=>z.id===key||normId(z.adm)===adm)){toast("A student with this GR No. already exists.");return}saveStu({id:key,adm,...base});addLog({type:"stu_add",sid:key,sn:name});closeDlg();toast("Student saved.");return}
    if(s.adm){if(archived&&!s.archived&&S.books.some(b=>b.loan&&b.loan.sid===s.id)&&!await ask("This student still has borrowed books. Mark them as having left the school anyway?",{title:"Books still on loan",ok:"Mark as left"}))return;
     updateDoc(doc(db,"students",s.id),clean({...base,archived,...(archived&&!s.archived?{archivedAt:Date.now()}:{})})).catch(fail);if(archived!==!!s.archived)addLog({type:archived?"stu_arch":"stu_unarch",sid:s.id,sn:name});closeDlg();toast("Student saved.");return}
@@ -1122,14 +1295,13 @@ function gradeDlg(g){const months=rangeMonths(),cnt={};months.forEach(k=>Object.
 <div class="row">${od.length?`<button class="b alt" data-act="odgrade" data-v="${esc(g)}" data-close>Overdue report</button>`:""}<button class="b alt" data-close>Close</button></div>`);dlg.onclick=e=>{if(e.target.dataset.close!==undefined)closeDlg()}}
 
 function stuRow(s){const n=S.books.filter(b=>b.loan&&b.loan.sid===s.id),late=n.filter(isLate).length,yr=yearReads(s.id),lim=maxFor(s);
- return`<tr class="click" data-act="profile" data-id="${esc(s.id)}"><td class="full"><div class="tcell"><span class="av" aria-hidden="true">${esc(initials(s.name))}</span><div style="min-width:0"><div class="t">${esc(s.name)} ${badgeHtml(yr)}</div><div class="s">${s.kind==="staff"?"Staff":"Student"}${s.mobile?" · "+esc(s.mobile):""}</div></div></div></td>
+ return`<tr class="click" data-act="profile" data-id="${esc(s.id)}"><td class="full"><div class="tcell">${avHtml(s)}<div style="min-width:0"><div class="t">${esc(s.name)} ${badgeHtml(yr)}</div><div class="s">${s.kind==="staff"?"Staff":"Student"}${s.mobile?" · "+esc(s.mobile):""}</div></div></div></td>
 <td data-l="GR No.">${s.adm?esc(s.adm):'<span class="tag late">Missing</span>'}</td><td data-l="Grade">${esc(gr(s)||"–")}</td><td class="n" data-l="Books now">${n.length}${lim?` <span class="s">/ ${lim}</span>`:""}</td>
 <td data-l="Status">${s.archived?'<span class="tag cond">Left the school</span>':late?`<span class="tag late">${late} overdue</span>`:n.length?'<span class="tag out">Has books</span>':'<span class="tag">All returned</span>'}</td>
 <td class="n" data-l=""><button class="b alt" data-act="profile" data-id="${esc(s.id)}" aria-label="Open ${esc(s.name)}">View</button></td></tr>`}
 function stuProfile(id){const s=stu(id);if(!s)return;const now=S.books.filter(b=>b.loan&&b.loan.sid===id).sort((a,b)=>a.loan.due-b.loan.due),late=now.filter(isLate),yr=yearReads(id),lim=maxFor(s);
  const hist=S.logs.filter(l=>l.sid===id&&["lend","return","renew"].includes(l.type)).slice(0,30),lr=S.logs.filter(l=>l.type==="return"&&l.late&&l.sid===id).length;
- open(`<div class="prof"><span class="av lg" aria-hidden="true">${esc(initials(s.name))}</span><div style="min-width:0"><h2>${esc(s.name)} ${badgeHtml(yr)}</h2><div class="s">${[gr(s)&&"Grade "+esc(gr(s)),s.adm?"GR No. "+esc(s.adm):"No GR No.",s.kind==="staff"?"Staff":"Student",s.mobile&&esc(s.mobile),s.email&&esc(s.email)].filter(Boolean).join(" · ")}</div>${s.archived?'<span class="tag cond" style="margin-top:6px">Left the school</span>':""}</div></div>
-<div class="stats" style="grid-template-columns:repeat(auto-fit,minmax(130px,1fr));margin-bottom:14px"><div><b>${now.length}${lim?`<span class="s" style="font-size:14px"> / ${lim}</span>`:""}</b><span>Books now</span></div><div class="${late.length?"crit":""}"><b>${late.length}</b><span>Overdue</span></div><div><b>${yr}</b><span>This school year</span></div><div><b id="pf-late">${lr}</b><span>Late returns on record</span></div></div>
+ open(`${readerCard(s)}${s.archived?'<span class="tag cond" style="margin:-6px 0 12px">Left the school</span>':""}${s.mobile||s.email?`<div class="s" style="margin:-8px 0 14px">${[s.mobile&&"Mobile "+esc(s.mobile),s.email&&esc(s.email)].filter(Boolean).join(" · ")}</div>`:""}
 <div class="grid2" style="gap:18px"><section><h3 style="font-size:15px;margin-bottom:8px">Borrowed now</h3>${now.length?now.map(b=>`<div class="card" style="padding:10px 12px">${cov(b)}<div class="info"><div class="t">${esc(b.title)}</div><div class="s">Due ${fmtL(b.loan.due)}</div><div>${statusTag(b)}${isLate(b)?` <span class="s">${plural(Math.ceil((Date.now()-b.loan.due)/day),"day")} late</span>`:""}</div></div>${canEdit()?`<div class="acts"><button class="b alt" data-act="deskret" data-id="${esc(b.id)}">${ico("ret")}Return</button>${canRenew(b)?`<button class="b alt" data-act="renew" data-id="${esc(b.id)}">Renew</button>`:""}</div>`:""}</div>`).join(""):emptyBox("check","No books borrowed","")}</section>
 <section><h3 style="font-size:15px;margin-bottom:8px">Borrowing history</h3><div id="pf-hist">${hist.length?`<ul class="tl">${hist.map(l=>`<li class="${l.type==="return"?(l.late?"late":"ret"):""}"><b>${l.type==="lend"?"Borrowed":l.type==="renew"?"Renewed":"Returned"}</b> “${esc(l.bt||"")}”<div class="s">${fmtL(num(l.at))}${l.type==="return"&&l.late?` · ${plural(num(l.dl),"day")} late`:""}${l.rating?` · rated ${num(l.rating)} ★`:""}</div></li>`).join("")}</ul><div class="note">From the latest 600 records in the activity log.</div>`:emptyBox("clock","No history yet","")}</div></section></div>
 <div class="row">${canEdit()&&!s.archived?`<button class="b" data-act="desklend" data-id="${esc(s.id)}">${ico("lend")}Lend a book</button>`:""}${canEdit()?`<button class="b alt" data-act="editstu" data-id="${esc(s.id)}">${ico("edit")}Edit</button>`:""}<button class="b alt" data-close>Close</button></div>`,true);dlg.onclick=null;loadHist(id)}
@@ -1312,14 +1484,14 @@ ${warn.map(w=>`<div class="warnbox">${w}</div>`).join("")}<button class="b lg wi
  searchBind("dk-sq",v=>desk.sq=v);searchBind("dk-bq",v=>desk.bq=v);
  const di=$("#dk-days");if(di)di.addEventListener("input",e=>{desk.days=e.target.value;render()});
  const rv=$("#dk-rv");if(rv)rv.addEventListener("input",e=>{desk.rv=e.target.value})}
-function deskScan(kind){if(kind==="id"){idScan=true;scan(code=>{idScan=false;const p=findPerson(code);if(!p){toast("No student found for GR No. "+code+".");return}if(p.archived){toast(p.name+" is marked as having left the school.");return}desk.sid=p.id;render()});return}
- scan(code=>{const cps=findByCode(code);if(!cps.length){toast("No book with barcode "+code+".");return}
+function deskScan(kind){if(kind==="id"){idScan=true;scan(code=>{idScan=false;const p=findPerson(code);if(!p){tone("err");toast("No student found for GR No. "+code+".");return}if(p.archived){toast(p.name+" is marked as having left the school.");return}desk.sid=p.id;render()});return}
+ scan(code=>{const cps=findByCode(code);if(!cps.length){tone("err");toast("No book with barcode "+code+".");return}
   const pool=desk.mode==="lend"?cps.filter(x=>!x.loan&&!x.state):cps.filter(x=>x.loan);
-  if(!pool.length){toast(desk.mode==="lend"?"Every copy of “"+cps[0].title+"” is borrowed or unavailable.":"No copy of “"+cps[0].title+"” is borrowed.");return}
+  if(!pool.length){tone("err");toast(desk.mode==="lend"?"Every copy of “"+cps[0].title+"” is borrowed or unavailable.":"No copy of “"+cps[0].title+"” is borrowed.");return}
   if(pool.length===1)desk.bid=pool[0].id;else desk.bq=code;render()})}
 async function deskGo(){const b=S.books.find(x=>x.id===desk.bid);if(!b||desk.busy)return;desk.busy=true;render();
- try{if(desk.mode==="lend"){const p=stu(desk.sid),bu=badgeUp(desk.sid);const loan=await doLend(b,desk.sid,desk.days??ST.loanDays);if(loan&&bu){confetti(true);toast(p.name+" just earned a "+bu+" reading badge!",true)}if(loan)desk.done={sid:p.id,title:"Lent to "+p.name,text:"“"+b.title+"” is due back on "+fmtL(loan.due)+"."}}
-  else{const sid=b.loan?.sid,late=isLate(b),dl=late?Math.ceil((Date.now()-b.loan.due)/day):0;const r=await doReturn(b,desk.rating,desk.rv);if(r&&!late)confetti(false);if(r){const hn=holdsFor(b)[0];desk.done={sid,title:"Returned",text:"“"+b.title+"” is back"+(late?", "+plural(dl,"day")+" late":" on time")+"."+(hn?" Next in line: "+(stu(hn.sid)?.name||"GR "+hn.adm)+".":"")}}}}
+ try{if(desk.mode==="lend"){const p=stu(desk.sid),bu=badgeUp(desk.sid);const loan=await doLend(b,desk.sid,desk.days??ST.loanDays);if(loan&&bu){confetti(true);toast(p.name+" just earned a "+bu+" reading badge!",true)}if(loan){tone("ok");desk.done={sid:p.id,title:"Lent to "+p.name,text:"“"+b.title+"” is due back on "+fmtL(loan.due)+"."}}else tone("err")}
+  else{const sid=b.loan?.sid,late=isLate(b),dl=late?Math.ceil((Date.now()-b.loan.due)/day):0;const r=await doReturn(b,desk.rating,desk.rv);if(r&&!late)confetti(false);if(!r)tone("err");if(r){tone(late?"err":"ok");const hn=holdsFor(b)[0];desk.done={sid,title:"Returned",text:"“"+b.title+"” is back"+(late?", "+plural(dl,"day")+" late":" on time")+"."+(hn?" Next in line: "+(stu(hn.sid)?.name||"GR "+hn.adm)+".":"")}}}}
  finally{desk.busy=false;render()}}
 async function deskRenew(){const b=S.books.find(x=>x.id===desk.bid);if(!b)return;const due=await renew(b.id);if(due){desk.done={sid:b.loan.sid,title:"Renewed",text:"“"+b.title+"” is now due back on "+fmtL(due)+"."};render()}}
 let lfFrom="",lfTo="";
@@ -1420,6 +1592,7 @@ ${panel("y","This school year vs last","Loans per month, "+sy(ys.getFullYear())+
 ${panel("w","Busiest days","Loans by day of the week.",{type:"col",label:"Loans by day of the week",data:dow,h:170,tip:d=>`<b>${esc(d.k)}</b>${fmtN(d.v)} loans`,empty:"No loans in this period yet."},["Day","Loans"],dow.map(d=>[d.k,d.v]))}
 ${panel("o","Overdue now, by grade","Select a grade for a printable list for the class teacher.",{type:"bar",cls:"crit",label:"Overdue books by grade",data:od,tip:d=>`<b>Grade ${esc(d.k)}</b>${plural(d.v,"overdue book")}`,onPick:d=>{tab="reports";rTab="overdue";odG=d.k;render()},empty:"Nothing is overdue. Well done!"},["Grade","Overdue"],od.map(d=>[d.k,d.v]))}
 </div>
+${schoolMapHtml()}
 <div class="grid3">
 <section class="panel"><h3>Most borrowed</h3><div class="sub2">${esc(rangeLabel())}</div>${topB.length?topB.map((x,i)=>row(i,esc(x.b.title),esc(x.b.author||"")+(x.b.genre?` · <span class="gdot" style="--gc:${gColor(x.b.genre)}"></span>`+esc(x.b.genre):""),plural(x.v,"loan"))).join(""):emptyBox("book","No loans in this period yet","")}</section>
 <section class="panel"><h3>Top readers</h3><div class="sub2">${esc(rangeLabel())} · badges count the whole school year</div>${topS.length?topS.map((x,i)=>row(i,esc(x.s.name)+" "+badgeHtml(yearReads(x.s.id)),gr(x.s)?"Grade "+esc(gr(x.s)):"",plural(x.v,"book"))).join(""):emptyBox("users","No loans in this period yet","")}</section>
@@ -1431,24 +1604,27 @@ function dashView(m){for(const k in CH)delete CH[k];
  const h=new Date().getHours(),first=String(me?.name||"").trim().split(/\s+/)[0]||"there",today=new Date().toLocaleDateString(undefined,{weekday:"long",day:"numeric",month:"long",year:"numeric"});
  const dueToday=onLoan.filter(b=>!isLate(b)&&b.loan.due<=eod(now)).length,dueWeek=onLoan.filter(b=>!isLate(b)&&b.loan.due<=eod(now+6*day)).length,worst=late.length?Math.max(...late.map(b=>Math.ceil((now-b.loan.due)/day))):0;
  const qa=limitedMode?`<button class="b" data-act="gotab" data-v="books">${ico("book")}Browse books</button>`:canEdit()?`<button class="b gold" data-act="gotab" data-v="desk">${ico("desk")}Lend or return</button><button class="b" data-act="addbook">${ico("plus")}Add book</button><button class="b" data-act="addstu">${ico("user")}Add student</button><button class="b" data-act="idsearch">${ico("id")}Scan ID card</button>`:`<button class="b" data-act="gotab" data-v="books">${ico("book")}Browse books</button><button class="b" data-act="gotab" data-v="reports">${ico("chart")}Reports</button>`;
- const card=(ic,c,v,l,sm,x="")=>`<div class="${x}"><div class="stat"><span class="si ${c}">${ico(ic)}</span><div style="min-width:0"><b class="cu" data-v="${String(v).replace(/[^0-9]/g,"")}">${v}</b><span>${l}</span><span class="sm">${sm}</span></div></div></div>`;
- const stats=`<div class="stats">${card("book","blue",fmtN(B.length),"Total books",`${plural(titles,"title")}${genres?" · "+plural(genres,"genre"):""}`)}${card("check","green",fmtN(avail),"Available",B.length?Math.round(avail/B.length*100)+"% of the collection":"–")}${card("clock","amber",fmtN(onLoan.length),"Currently borrowed",limitedMode?"&nbsp;":dueToday?plural(dueToday,"book")+" due back today":dueWeek?dueWeek+" due in the next 7 days":"None due this week")}${limitedMode?"":card("alert",late.length?"red":"green",fmtN(late.length),"Overdue",late.length?`Oldest ${plural(worst,"day")} late · <button class="linkbtn" style="padding:0;font-size:12px" data-act="reminders">Remind</button>`:"Everything is on time",late.length?"crit":"")}</div>`;
- const welcome=`<section class="welcome"><div><div class="wd">${esc(today)}</div><h2>Good ${h<12?"morning":h<17?"afternoon":"evening"}, ${esc(first)}</h2><p>Here's what's happening in your library today.</p></div><div class="qa">${qa}</div></section>`;
+ const card=(ic,c,v,l,sm,x="")=>`<div class="b-tile ${x}"><span class="si ${c}">${ico(ic)}</span><div><b class="cu" data-v="${String(v).replace(/[^0-9]/g,"")}">${v}</b><div class="l">${l}</div><div class="s">${sm}</div></div></div>`;
+ const t0=new Date();t0.setHours(0,0,0,0);const tl=limitedMode?[]:S.logs.filter(l=>num(l.at)>=+t0),lentT=tl.filter(l=>l.type==="lend").length,retT=tl.filter(l=>l.type==="return").length;
+ const stats=`<div class="stats-tiles" style="display:contents">${card("book","blue",fmtN(B.length),"Total books",`${plural(titles,"title")}${genres?" · "+plural(genres,"genre"):""}`)}${card("check","green",fmtN(avail),"Available",B.length?Math.round(avail/B.length*100)+"% of the collection":"–")}${card("clock","amber",fmtN(onLoan.length),"Currently borrowed",limitedMode?"&nbsp;":dueToday?plural(dueToday,"book")+" due back today":dueWeek?dueWeek+" due in the next 7 days":"None due this week")}${limitedMode?"":card("alert",late.length?"red":"green",fmtN(late.length),"Overdue",late.length?`Oldest ${plural(worst,"day")} late · <button class="linkbtn" style="padding:0;font-size:12px" data-act="reminders">Remind</button>`:"Everything is on time",late.length?"crit":"")}</div>`;
+ const welcome=`<section class="welcome b-hero"><div>${seasonPill()}<div class="wd">${esc(today)}</div><h2>Good ${h<12?"morning":h<17?"afternoon":"evening"}, ${esc(first)}</h2><p>Here's what's happening in your library today.</p>${limitedMode?"":`<div class="today"><div><b>${lentT}</b><span>lent today</span></div><div><b>${retT}</b><span>returned today</span></div><div><b>${dueToday}</b><span>due back today</span></div></div>`}</div><div class="qa">${qa}</div>${limitedMode?"":tickerHtml()}</section>`;
+ const bento=`<div class="bento">${welcome}${stats}</div>`;
  const recent=[...new Map(B.slice().sort((a,c)=>(c.addedAt||0)-(a.addedAt||0)).map(b=>[root(b),b])).values()].slice(0,8);
- const recentHtml=`<section class="panel"><div class="ph"><div><h3>Recently added</h3><div class="sub2">The newest titles in the collection</div></div><button class="mini" data-act="gotab" data-v="books">All books</button></div>${recent.length?`<div class="minibooks">${recent.map(b=>`<button class="minibook" data-act="detail" data-id="${esc(b.id)}" aria-label="${esc(b.title)}">${cover(b)}<span class="t">${esc(b.title)}</span><span class="s" style="display:block">${b.addedAt?ago(b.addedAt):""}</span></button>`).join("")}</div>`:emptyBox("book","No books yet","",canEdit()?`<button class="b" data-act="addbook">${ico("plus")}Add book</button>`:"")}</section>`;
- if(limitedMode){m.innerHTML=welcome+stats+recentHtml;return}
+ const recentHtml=`<section class="panel"><div class="ph"><div><h3>Recently added</h3><div class="sub2">The newest titles in the collection</div></div><button class="mini" data-act="gotab" data-v="books">All books</button></div>${recent.length?`<div class="minibooks">${recent.map(b=>`<button class="minibook" data-act="detail" data-id="${esc(b.id)}" aria-label="${esc(b.title)}">${book3d(b)}<span class="t">${esc(b.title)}</span><span class="s" style="display:block">${b.addedAt?ago(b.addedAt):""}</span></button>`).join("")}</div>`:emptyBox("book","No books yet","",canEdit()?`<button class="b" data-act="addbook">${ico("plus")}Add book</button>`:"")}</section>`;
+ if(limitedMode){m.innerHTML=bento+recentHtml;return}
  const feed=S.logs.slice(0,8),od=late.slice().sort((a,c)=>a.loan.due-c.loan.due).slice(0,6);
  const feedHtml=`<section class="panel"><div class="ph"><div><h3>Recent activity</h3><div class="sub2">The latest borrowing and changes</div></div><button class="mini" data-act="gotab" data-v="logs">Activity log</button></div>${feed.length?`<ul class="feed">${feed.map(l=>{const[ic,c]=LCAT(l);return`<li><span class="fi si ${c}">${ico(ic)}</span><div class="fb"><b>${LT[l.type]||esc(l.type)}</b>${l.bt?" · “"+esc(l.bt)+"”":""}${l.sn?` <span class="s">${l.type==="lend"?"to":l.type==="return"?"from":"·"} ${esc(l.sn)}</span>`:""}${l.note&&!l.bt?` <span class="s">${esc(l.note)}</span>`:""}<div class="s">by ${esc(String(l.by||"unknown").split("@")[0])}</div></div><span class="ft">${ago(num(l.at))}</span></li>`}).join("")}</ul>`:emptyBox("activity","Nothing yet","Lending, returns and changes will appear here.")}</section>`;
  const odHtml=`<section class="panel"><div class="ph"><div><h3>Overdue books</h3><div class="sub2">${late.length?plural(late.length,"book")+" past the due date":"Nothing is overdue"}</div></div>${late.length?`<button class="mini" data-act="odgrade" data-v="">By grade</button>`:""}</div>${od.length?od.map(b=>{const s=stu(b.loan.sid),dl=Math.ceil((now-b.loan.due)/day);return`<div class="card" style="padding:9px 12px;margin-bottom:8px">${cov(b)}<div class="info" style="min-width:140px"><div class="t">${esc(b.title)}</div><div class="s">${s?`<button class="linkbtn" style="padding:0;font-size:13px" data-act="profile" data-id="${esc(s.id)}">${esc(s.name)}</button>${gr(s)?" · "+esc(gr(s)):""}`:"Unknown student"}</div><span class="tag late">${plural(dl,"day")} late</span></div>${canEdit()?`<div class="acts"><button class="b alt" data-act="deskret" data-id="${esc(b.id)}" aria-label="Return ${esc(b.title)}" data-tip="Return">${ico("ret")}</button></div>`:""}</div>`}).join("")+(late.length>6?`<button class="linkbtn" data-act="reminders">See all ${late.length} and send reminders</button>`:""):emptyBox("check","All books are on time","")}</section>`;
- m.innerHTML=welcome+stats+alertHtml()+`<div class="grid2">${feedHtml}${odHtml}</div>`+recentHtml+analyticsHtml();
+ const tlHtml=`<section class="panel"><div class="ph"><div><h3>Today at the library</h3><div class="sub2">Every loan and return so far today. Hover a dot for details.</div></div></div>${todayHtml()}</section>`;
+ m.innerHTML=bento+alertHtml()+tlHtml+`<div class="grid2">${feedHtml}${odHtml}</div>`+recentHtml+analyticsHtml();
  requestAnimationFrame(drawCharts)}
 
 /* ================= REPORTS ================= */
 let rTab="monthly",rMonth=mKey(Date.now()),odG="",rGrade="",RX={},extraMonth={};
-const RT={monthly:"Monthly report",overdue:"Overdue by grade",collection:"Collection insights",readers:"Readers and badges",register:"Accession register",export:"Export"};
+const RT={wrapped:"Library Wrapped",monthly:"Monthly report",overdue:"Overdue by grade",collection:"Collection insights",readers:"Readers and badges",register:"Accession register",export:"Export"};
 function reportsView(m){for(const k in CH)delete CH[k];RX={};
  const head=`<div class="chips noprint" role="group" aria-label="Report">${Object.entries(RT).map(([k,v])=>`<button class="chip" data-act="rtab" data-v="${k}" aria-pressed="${rTab===k}">${v}</button>`).join("")}</div>`;
- m.innerHTML=head+`<div id="rep">${({monthly:monthlyRep,overdue:overdueRep,collection:collectionRep,readers:readersRep,register:registerRep,export:exportRep}[rTab]||monthlyRep)()}</div>`;
+ m.innerHTML=head+`<div id="rep">${({wrapped:wrappedRep,monthly:monthlyRep,overdue:overdueRep,collection:collectionRep,readers:readersRep,register:registerRep,export:exportRep}[rTab]||monthlyRep)()}</div>`;
  const mi=$("#r-month");if(mi)mi.onchange=e=>{if(/^\d{4}-\d{2}$/.test(e.target.value)){rMonth=e.target.value;render()}};
  const gs=$("#r-grade");if(gs)gs.onchange=e=>{(rTab==="overdue"?(odG=e.target.value):(rGrade=e.target.value));render()};
  ["r-af","r-at"].forEach(id=>{const e=$("#"+id);if(e)e.onchange=()=>{const v=e.value.replace(/\D/g,"");id==="r-af"?rAF=v:rAT=v;render()}});
@@ -1527,19 +1703,21 @@ function registerRep(){const all=S.books.slice().sort((a,b)=>accNum(a)-accNum(b)
 
 /* ================= KIOSK (reads the catalog only: no borrower details) ================= */
 function kioskView(m){const pub=isPub(),gs=[...new Set(S.books.map(b=>String(b.genre||"").trim()).filter(Boolean))].sort(),seen=new Set(),L=[],ql=kq.toLowerCase(),roots=new Set(S.books.map(root)).size;
- S.books.filter(b=>(!kg||b.genre===kg)&&(b.title+" "+(b.author||"")+" "+(b.isbn||"")+" "+(b.genre||"")).toLowerCase().includes(ql)).forEach(b=>{if(!seen.has(root(b))){seen.add(root(b));L.push(b)}});
- const browsing=!kq&&!kg,uniq=list=>{const s=new Set();return list.filter(b=>!s.has(root(b))&&s.add(root(b)))},av=b=>copiesOf(b).some(c=>!c.loan&&!c.state);
- const tile=b=>`<button class="tile" data-act="detail" data-id="${esc(b.id)}" aria-label="${esc(b.title)}">${cover(b)}<span class="t">${esc(b.title)}</span><span class="s" style="display:block">${esc(b.author||"")}</span><span style="display:block;margin-top:4px">${av(b)?'<span class="tag">Available</span>':'<span class="tag out">Borrowed</span>'}</span></button>`;
+ S.books.filter(b=>(!kg||b.genre===kg)&&(kc<0||colourMatch(b,kc))&&(b.title+" "+(b.author||"")+" "+(b.isbn||"")+" "+(b.genre||"")).toLowerCase().includes(ql)).forEach(b=>{if(!seen.has(root(b))){seen.add(root(b));L.push(b)}});
+ const browsing=!kq&&!kg&&kc<0,hasCC=S.books.some(b=>b.cc),[mood,greet]=kioskMood(),fact=kioskFact(),uniq=list=>{const s=new Set();return list.filter(b=>!s.has(root(b))&&s.add(root(b)))},av=b=>copiesOf(b).some(c=>!c.loan&&!c.state);
+ const tile=b=>`<button class="tile" data-act="detail" data-id="${esc(b.id)}" aria-label="${esc(b.title)}">${book3d(b)}<span class="t">${esc(b.title)}</span><span class="s" style="display:block">${esc(b.author||"")}</span><span style="display:block;margin-top:4px">${av(b)?'<span class="tag">Available</span>':'<span class="tag out">Borrowed</span>'}</span></button>`;
  const newest=uniq(S.books.slice().sort((a,b)=>(b.addedAt||0)-(a.addedAt||0))).slice(0,12),popular=uniq(S.books.filter(b=>num(b.borrows)).sort((a,b)=>num(b.borrows)-num(a.borrows))).slice(0,12),W=botw();
  const P=S.pub,readers=!pub&&P&&P.readers&&P.top&&P.top.length&&P.month===mKey(Date.now());
  const gcount=g=>new Set(S.books.filter(b=>b.genre===g).map(root)).size;
- m.innerHTML=`<section class="khero"><div class="wd">${pub?"Indian Public High School · online catalogue":"Indian Public High School Library"}</div><h2>What will you read next?</h2><p>Search ${plural(roots,"book")} in the library${pub?". Come to the library desk to borrow.":"."}</p><div class="sbox kbig">${ico("search")}<input id="kq" type="search" placeholder="Search by title, author or subject" value="${esc(kq)}" aria-label="Search books"></div></section>
+ m.innerHTML=`<section class="khero ${mood}">${seasonPill()}<div class="wd">${pub?"Indian Public High School · online catalogue":esc(greet)}</div><h2>What will you read next?</h2><p>Search ${plural(roots,"book")} in the library${pub?". Come to the library desk to borrow.":"."}</p><div class="sbox kbig">${ico("search")}<input id="kq" type="search" placeholder="Search by title, author or subject" value="${esc(kq)}" aria-label="Search books"></div>${fact&&browsing?`<div class="fact">${ico("bulb")}<span><b>Did you know?</b> ${esc(fact)}</span></div>`:""}<div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:12px;position:relative;z-index:1"><button class="b alt sm" type="button" data-act="ktext" aria-pressed="${document.body.classList.contains("kiosk-lg")}">${document.body.classList.contains("kiosk-lg")?"Normal text":"Larger text"}</button>${pub?"":`<button class="b alt sm" type="button" data-act="kavatar">${ico("user")}Choose your avatar</button>`}</div></section>
 ${gs.length?`<div class="gtiles">${(kg?[`<button class="gtile" data-kg="" style="--gc:#14337a">${ico("x")}<b>All categories</b></button>`]:[]).concat(gs.slice(0,kg?0:12).map(g=>`<button class="gtile" data-kg="${esc(g)}" style="--gc:${gColor(g)}"><b>${esc(g)}</b><span>${plural(gcount(g),"book")}</span></button>`)).join("")}</div>`:""}
+${hasCC?`<div class="swatches" role="group" aria-label="Find a book by its cover colour"><span class="s">Remember the cover colour?</span>${SWATCH.map(([n,c],i)=>`<button type="button" class="sw" data-act="kc" data-v="${i}" style="background:${c}" aria-pressed="${kc===i}" aria-label="${n} covers" title="${n}"></button>`).join("")}${kc>=0?`<button class="linkbtn" data-act="kc" data-v="${kc}">Clear colour</button>`:""}</div>`:""}
 ${browsing?`${W?`<section class="spot"><div class="spotc">${cover(W.b,"bigcov")}</div><div style="min-width:0"><div class="wd" style="color:var(--warn)">${ico("star")} Book of the week</div><h2>${esc(W.b.title)}</h2><p class="s" style="font-size:15px;margin:2px 0 10px">${[W.b.author,W.b.genre].filter(Boolean).map(esc).join(" · ")}</p><div style="display:flex;gap:8px;flex-wrap:wrap">${av(W.b)?'<span class="tag">Available now</span>':'<span class="tag out">Borrowed right now</span>'}<span class="tag gold plain">${esc(W.why)}</span></div>${(W.b.reviews||[]).find(r=>r.t)?`<div class="rev" style="margin-top:12px">“${esc((W.b.reviews||[]).find(r=>r.t).t)}”</div>`:""}<div class="row" style="justify-content:flex-start"><button class="b" data-act="detail" data-id="${esc(W.b.id)}">See details</button>${!pub&&canHold(W.b)?`<button class="b alt" data-act="hold" data-id="${esc(W.b.id)}">Reserve</button>`:""}</div></div></section>`:""}
 ${newest.length?`<h2 class="sect">New arrivals</h2><div class="hscroll">${newest.map(tile).join("")}</div>`:""}${popular.length?`<h2 class="sect">Most popular</h2><div class="hscroll">${popular.map(tile).join("")}</div>`:""}
-${readers?`<h2 class="sect">Top readers this month</h2><div class="podium">${P.top.slice(0,3).map((r,i)=>`<div class="pod p${i+1}"><div class="av lg">${esc(initials(r.n))}</div><b>${esc(r.n)}</b><span class="s">${r.g?"Grade "+esc(r.g):""}</span><div class="pbar"><span>${i+1}</span>${plural(num(r.c),"book")}</div></div>`).join("")}</div>${P.top.length>3?`<div class="panel">${P.top.slice(3,10).map((r,i)=>`<div class="card" style="padding:8px 12px;margin-bottom:6px"><div class="av" style="width:30px;height:30px;font-size:13px">${i+4}</div><div class="info"><div class="t">${esc(r.n)} ${r.b&&["gold","silver","bronze"].includes(r.b)?`<span class="badge ${r.b}">★ ${r.b[0].toUpperCase()+r.b.slice(1)}</span>`:""}</div><div class="s">${r.g?"Grade "+esc(r.g):""}</div></div><b>${plural(num(r.c),"book")}</b></div>`).join("")}</div>`:""}`:""}
+${readers?`<h2 class="sect">Top readers this month</h2><div class="podium">${P.top.slice(0,3).map((r,i)=>`<div class="pod p${i+1}">${AVS[r.a]?`<div class="av lg avi">${avatarSvg(r.a)}</div>`:`<div class="av lg">${esc(initials(r.n))}</div>`}<b>${esc(r.n)}</b><span class="s">${r.g?"Grade "+esc(r.g):""}</span><div class="pbar"><span>${i+1}</span>${plural(num(r.c),"book")}</div></div>`).join("")}</div>${P.top.length>3?`<div class="panel">${P.top.slice(3,10).map((r,i)=>`<div class="card" style="padding:8px 12px;margin-bottom:6px"><div class="av" style="width:30px;height:30px;font-size:13px">${i+4}</div><div class="info"><div class="t">${esc(r.n)} ${r.b&&["gold","silver","bronze"].includes(r.b)?`<span class="badge ${r.b}">★ ${r.b[0].toUpperCase()+r.b.slice(1)}</span>`:""}</div><div class="s">${r.g?"Grade "+esc(r.g):""}</div></div><b>${plural(num(r.c),"book")}</b></div>`).join("")}</div>`:""}`:""}
+${pub?"":forestHtml()}
 ${pub?"":`<section class="sugg"><div>${ILLU.inbox}</div><div style="flex:1;min-width:200px"><h3>Can't find the book you want?</h3><p class="s">Tell the librarian and they may order it for the library.</p></div><button class="b gold lg" data-act="suggest">${ico("bulb")}Suggest a book</button></section>`}
-<h2 class="sect">All books</h2>`:`<div class="s" style="margin:4px 0 12px">${plural(L.length,"book")} found${kg?" in "+esc(kg):""}</div>`}
+<h2 class="sect">All books</h2>`:`<div class="s" style="margin:4px 0 12px">${plural(L.length,"book")} found${kg?" in "+esc(kg):""}${kc>=0?" with "+SWATCH[kc][0].toLowerCase()+" covers":""}</div>`}
 ${L.length?L.slice(0,browsing?30:120).map(b=>`<div class="card ${av(b)?"":"out"}"><span class="covw" data-act="detail" data-id="${esc(b.id)}" role="button" tabindex="0" aria-label="Details for ${esc(b.title)}">${cover(b)}</span><div class="info"><div class="t" style="font-size:17px">${esc(b.title)}${stars(b)}</div><div class="s">${esc(b.author||"")}</div><div class="s">${b.genre?`<span class="gdot" style="--gc:${gColor(b.genre)}"></span>${esc(b.genre)}`:""}${b.genre&&b.shelf?" · ":""}${b.shelf?"Shelf "+esc(b.shelf):""}</div><div>${avTag(copiesOf(b))}</div></div><div class="acts">${!pub&&canHold(b)?`<button class="b" data-act="hold" data-id="${esc(b.id)}">Reserve</button>`:""}<button class="b alt" data-act="detail" data-id="${esc(b.id)}">Details</button></div></div>`).join("")+(browsing&&L.length>30?`<div class="note">Search or choose a category to see more.</div>`:""):emptyBox("search","No books match",pub?"Try another word or category.":`Try another word or category, or <button class="linkbtn" data-act="suggest" style="padding:0">suggest a book</button>.`)}`;
  searchBind("kq",v=>kq=v)}
 
@@ -1633,14 +1811,21 @@ function settingsView(m){if(isKiosk()){tab="dash";return render()}
  const pf=$("#pw-form");if(pf)pf.onsubmit=changePw;
  $$("[data-hi]").forEach(el=>el.addEventListener("input",()=>{holEdit=holEdit||clean(ST.holidays||[]);const h=holEdit[+el.dataset.hi];if(h)h[el.dataset.hf]=el.value}));
  const pq=$("#pubqr");if(pq)loadQR().then(()=>{const qr=qrcode(0,"M");qr.addData(pubLink());qr.make();pq.innerHTML=qr.createImgTag(4,0)}).catch(()=>pq.remove());
- const th=$("#st-theme");if(th)th.onchange=e=>setTheme(e.target.value)}
+ const th=$("#st-theme");if(th)th.onchange=e=>setTheme(e.target.value);
+ const sz=$("#st-size");if(sz)sz.onchange=e=>{setPref("lib-size",e.target.value);applyPrefs();requestAnimationFrame(drawCharts)};
+ const hc=$("#st-hc");if(hc)hc.onchange=e=>{setPref("lib-contrast",e.target.checked?"high":"");applyPrefs()};
+ const sn=$("#st-snd");if(sn)sn.onchange=e=>{setPref("lib-sound",e.target.checked?"":"off");if(e.target.checked)tone("ok")}}
 const fld=(id,l,v,h,t="number",x="")=>`<label for="${id}">${l}</label><input id="${id}" type="${t}" ${t==="number"?'min="0" max="999"':'maxlength="200"'} value="${esc(v)}" ${x}>${h?`<div class="note">${h}</div>`:""}`;
 const chk=(id,l,v)=>`<label class="chk" style="margin-top:12px"><input type="checkbox" id="${id}" ${v?"checked":""}> ${l}</label>`;
 const saveRow=`<div class="row"><button class="b" data-act="savest">Save settings</button></div>`;
 function setAccount(){const u=auth.currentUser,f=multiFactor(u).enrolledFactors;let t="";try{t=localStorage.getItem("lib-theme")||""}catch(e){}
  return`<section class="panel"><h3>Signed in as</h3><dl class="kv" style="margin-top:8px"><dt>Name</dt><dd>${esc(me?.name||"")}</dd><dt>Email</dt><dd>${esc(u.email)}</dd><dt>Role</dt><dd>${RL[role()]}</dd><dt>Two-step sign-in</dt><dd>${f.length?`On · ${esc(f[0].displayName||"Authenticator app")}, added ${fmtL(Date.parse(f[0].enrollmentTime))}`:"Off"}</dd></dl>
 <div class="note">Lost your phone? Ask the administrator to reset two-step sign-in for your account (see SETUP.md). You will then add it again at your next sign-in.</div></section>
-<section class="panel"><h3>Appearance</h3><label for="st-theme">Colour theme</label><select id="st-theme" style="max-width:260px"><option value="" ${!t?"selected":""}>Same as this device</option><option value="light" ${t==="light"?"selected":""}>Light</option><option value="dark" ${t==="dark"?"selected":""}>Dark</option></select><div class="note">Saved on this device only. The sun and moon button at the top switches quickly.</div></section>
+<section class="panel"><h3>Appearance</h3><label for="st-theme">Colour theme</label><select id="st-theme" style="max-width:260px"><option value="" ${!t?"selected":""}>Same as this device</option><option value="light" ${t==="light"?"selected":""}>Light</option><option value="dark" ${t==="dark"?"selected":""}>Dark</option></select><div class="note">Saved on this device only. The sun and moon button at the top switches quickly.</div>
+<label for="st-size">Text size</label><select id="st-size" style="max-width:260px"><option value="" ${!pref("lib-size","")?"selected":""}>Normal</option><option value="lg" ${pref("lib-size","")==="lg"?"selected":""}>Large</option><option value="xl" ${pref("lib-size","")==="xl"?"selected":""}>Extra large</option></select>
+${chk("st-hc","High contrast (darker text and stronger borders)",pref("lib-contrast","")==="high")}
+${chk("st-snd","Sound at the desk (a chime when a book is lent or returned, a low tone when something is wrong)",soundOn())}
+<div class="note">These three are saved on this device only, so each library computer can be set up differently.</div></section>
 <section class="panel"><h3>Change password</h3><form id="pw-form"><label for="pw-cur">Current password</label><input id="pw-cur" type="password" autocomplete="current-password" required><label for="pw-new">New password</label><input id="pw-new" type="password" autocomplete="new-password" required><div class="note">At least 10 characters, with upper-case and lower-case letters and a number.</div><label for="pw-new2">New password again</label><input id="pw-new2" type="password" autocomplete="new-password" required><div class="note" id="pw-m" role="alert"></div><div class="row"><button class="b" type="submit">Change password</button></div></form></section>`}
 async function changePw(e){e.preventDefault();const msg=$("#pw-m"),u=auth.currentUser,cur=$("#pw-cur").value,n1=$("#pw-new").value,n2=$("#pw-new2").value;msg.textContent="";
  if(n1!==n2){msg.textContent="The new passwords do not match.";return}const p=pwProblem(n1,u.email);if(p){msg.textContent=p;return}if(n1===cur){msg.textContent="Choose a password you have not used here.";return}
@@ -1652,7 +1837,9 @@ ${fld("st-bb","Bronze badge: books in the school year",ST.badgeBronze,"")}${fld(
 ${fld("st-fg","Final grade",ST.finalGrade,"Students in this grade graduate at the academic year rollover. For example, XII or 12.","text",'maxlength="10"')}</section>
 <section class="panel"><h3>School days and holidays</h3><div class="sub2">Due dates never fall on these days; they move to the next school day.</div><label>Weekend days</label><div class="chips">${[1,2,3,4,5,6,0].map(d=>`<label class="chip" style="margin:0;display:inline-flex;gap:6px;align-items:center;color:var(--ink)"><input type="checkbox" data-wd="${d}" ${(ST.weekend||[]).map(Number).includes(d)?"checked":""}>${DOWL[d]}</label>`).join("")}</div>
 <label>Holidays</label>${(holEdit||(holEdit=clean(ST.holidays||[]))).map((h,i)=>`<div class="inl" style="margin-bottom:6px"><input type="date" data-hi="${i}" data-hf="from" value="${esc(h.from)}" aria-label="First day"><input type="date" data-hi="${i}" data-hf="to" value="${esc(h.to)}" aria-label="Last day"><input data-hi="${i}" data-hf="name" value="${esc(h.name)}" placeholder="For example, Winter break" maxlength="60" aria-label="Holiday name"><button class="b alt" style="flex:none;min-width:0" data-act="holrm" data-i="${i}" aria-label="Remove this holiday">${ico("trash")}</button></div>`).join("")||'<div class="note">No holidays added yet.</div>'}<button class="b alt" data-act="holadd" style="margin-top:6px">${ico("plus")}Add a holiday</button></section>
-<section class="panel"><h3>Goals and numbering</h3>${fld("st-goal","On-time return goal (%)",ST.onTimeGoal,"Shown as the goal on the dashboard meter.")}${fld("st-accp","Accession number prefix (optional)",ST.accPrefix,"For example, IPHS- gives IPHS-1024. Leave it empty for plain numbers. Existing numbers don't change.","text",'maxlength="10"')}</section>${saveRow}`}
+<section class="panel"><h3>Goals and numbering</h3>${fld("st-goal","On-time return goal (%)",ST.onTimeGoal,"Shown as the goal on the dashboard meter.")}${fld("st-accp","Accession number prefix (optional)",ST.accPrefix,"For example, IPHS- gives IPHS-1024. Leave it empty for plain numbers. Existing numbers don't change.","text",'maxlength="10"')}</section>
+<section class="panel"><h3>Seasonal themes</h3>${chk("st-sea","Decorate the dashboard and kiosk for special occasions",ST.seasonal!==false)}<div class="note">UAE National Day colours appear automatically from 25 November to 3 December. Enter this year's Ramadan dates to show the Ramadan theme.</div>
+<div class="inl" style="display:flex;gap:10px;flex-wrap:wrap"><div><label for="st-rf">Ramadan starts</label><input id="st-rf" type="date" value="${esc(ST.ramadanFrom||"")}"></div><div><label for="st-rt">Ramadan ends</label><input id="st-rt" type="date" value="${esc(ST.ramadanTo||"")}"></div></div></section>${saveRow}`}
 function setMessages(){return`<section class="panel"><h3>Sending emails</h3><div class="sub2">Emails are sent through your EmailJS account. The template must use {{to_email}}, {{to_name}}, {{book_title}}, {{due_date}} and {{message}}.</div>
 ${fld("st-es","EmailJS service ID",ST.ejService,"","text")}${fld("st-et","EmailJS template ID",ST.ejTemplate,"","text")}${fld("st-ek","EmailJS public key",ST.ejKey,"Only staff accounts can read these keys.","text")}
 ${chk("st-auto","Send reminders automatically while a library computer has the app open",ST.autoEmail)}
@@ -1669,7 +1856,8 @@ ${fld("st-idle","Sign staff out after this many minutes without activity",ST.idl
 ${chk("st-kr","Show top readers on the kiosk",ST.showReadersOnKiosk)}<div class="note">Shows first name, initial and grade only.</div></section>${saveRow}`}
 function setData(){return`<section class="panel"><h3>Online catalogue for phones</h3><div class="sub2">A public page where students and parents can search the library and see what is available, without signing in. It shows titles only, never who borrowed what.</div>${chk("st-pub","Switch on the online catalogue",ST.publicCatalog)}<div class="inl" style="margin-top:10px;align-items:flex-start"><div style="flex:2;min-width:220px"><label for="pub-l" style="margin-top:0">Link to share</label><input id="pub-l" readonly value="${esc(pubLink())}" onfocus="this.select()"><div class="row" style="justify-content:flex-start;margin-top:8px"><button class="b alt" data-act="copylink">${ico("file")}Copy link</button><button class="b" data-act="savest">Save</button></div><div class="note">Print the QR code for the library notice board. It only works while the catalogue is switched on.</div></div><div class="qr" id="pubqr" style="flex:none;margin:0" aria-label="QR code for the online catalogue"></div></div></section>
 <section class="panel"><h3>Accession numbers and spine labels</h3><div class="sub2">Every copy gets its own number, added automatically for new books. Labels carry it as a barcode for lending and stock-taking.</div><div class="row" style="justify-content:flex-start;margin-top:0"><button class="b alt" data-act="assignacc">${ico("plus")}Number books that have none (${S.books.filter(b=>!b.acc).length})</button><button class="b alt" data-act="rtab" data-v="register">Open the accession register</button></div><div class="note">To print labels, select books on the Books page and choose Labels, or use the register. Labels fit A4 sheets of 3 × 7 (63.5 × 38.1 mm).</div></section>
-<section class="panel"><h3>Book covers</h3><div class="sub2">Covers are looked up automatically from the ISBN on library computers. Books without a cover online keep a coloured cover with their title.</div><button class="b alt" data-act="findcovers">${ico("refresh")}Find missing covers now (${S.books.filter(b=>!img(b.cover)&&b.isbn).length})</button></section>
+<section class="panel"><h3>Book covers</h3><div class="sub2">Covers are looked up automatically from the ISBN on library computers. Books without a cover online keep a coloured cover with their title.</div><button class="b alt" data-act="findcovers">${ico("refresh")}Find missing covers now (${S.books.filter(b=>!img(b.cover)&&b.isbn).length})</button>
+<div class="note" style="margin-top:12px">The kiosk can find books by cover colour. Library computers work the colours out in the background; this does the rest now.</div><button class="b alt" data-act="findcolours">${ico("refresh")}Work out cover colours (${S.books.filter(b=>img(b.cover)&&!b.cc).length})</button></section>
 <section class="panel"><h3>Backup</h3><div class="sub2">Download everything as one file: books, students, the full audit log, reservations, suggestions, users and settings. It contains personal details and your EmailJS keys, so keep it somewhere safe.</div><button class="b" data-act="backup">Download backup</button></section>
 <section class="panel"><h3>Export to Excel</h3><div class="sub2">Readable spreadsheets of books, students, loans and the audit log.</div><button class="b alt" data-act="rtab" data-v="export">Open Reports, Export</button></section>
 <section class="panel"><h3>New school year</h3><div class="sub2">Move every student up one grade, and mark the final grade as having left the school. Their borrowing history is kept.</div><button class="b" data-act="rollover">Start the rollover</button></section>
@@ -1685,9 +1873,10 @@ function saveSettings(){const v=id=>$(id)?.value,n=(id,d,min=0,max=999)=>{const 
  const b1=n("#st-bb",ST.badgeBronze,1),b2=n("#st-bs",ST.badgeSilver,1),b3=n("#st-bg",ST.badgeGold,1);if(!(b1<b2&&b2<b3)){toast("Badges must go up: bronze less than silver, less than gold.");return}
  const wdb=$$("[data-wd]"),wk=wdb.length?wdb.filter(x=>x.checked).map(x=>+x.dataset.wd):(ST.weekend||[]);if(wk.length>=7){toast("At least one day of the week must be a school day.");return}
  let hols=ST.holidays||[];if(holEdit){hols=holEdit.map(h=>({from:String(h.from||""),to:String(h.to||h.from||""),name:String(h.name||"").trim().slice(0,60)})).filter(h=>h.from||h.to||h.name);if(hols.some(h=>!/^\d{4}-\d{2}-\d{2}$/.test(h.from)||!/^\d{4}-\d{2}-\d{2}$/.test(h.to)||h.to<h.from)){toast("Check the holiday dates: each needs a first day, and the last day can't be before it.",true);return}hols.sort((a,b)=>a.from.localeCompare(b.from))}
+ const rf=s("#st-rf",ST.ramadanFrom||"",10),rt=s("#st-rt",ST.ramadanTo||"",10);if((rf||rt)&&!(/^\d{4}-\d{2}-\d{2}$/.test(rf)&&/^\d{4}-\d{2}-\d{2}$/.test(rt)&&rt>=rf)){toast("Enter both Ramadan dates, with the end on or after the start.",true);return}
  const A={maxLoans:n("#st-ml",ST.maxLoans,0,50),maxLoansStaff:n("#st-ms",ST.maxLoansStaff,0,50),loanDays:n("#st-ld",ST.loanDays,1,365),maxRenewals:n("#st-mr",ST.maxRenewals,0,10),renewDays:n("#st-rn",ST.renewDays,1,365),remindDays:n("#st-rd",ST.remindDays,0,30),
   autoEmail:c("#st-auto",ST.autoEmail),serverSends:c("#st-srv",ST.serverSends),overdueAfter:n("#st-oa",ST.overdueAfter,0,60),weeklyOn:c("#st-wk",ST.weeklyOn),idleMinutes:n("#st-idle",ST.idleMinutes,0,240),hideNamesFromViewer:c("#st-hide",ST.hideNamesFromViewer),showReadersOnKiosk:c("#st-kr",ST.showReadersOnKiosk),
-  yearStartMonth:n("#st-ys",ST.yearStartMonth,1,12),badgeBronze:b1,badgeSilver:b2,badgeGold:b3,finalGrade:normGrade(fg),weekend:wk,holidays:hols,onTimeGoal:n("#st-goal",ST.onTimeGoal,50,100),accPrefix:s("#st-accp",ST.accPrefix,10).toUpperCase().replace(/[^A-Z0-9\-\/]/g,""),publicCatalog:c("#st-pub",ST.publicCatalog)};
+  yearStartMonth:n("#st-ys",ST.yearStartMonth,1,12),badgeBronze:b1,badgeSilver:b2,badgeGold:b3,finalGrade:normGrade(fg),weekend:wk,holidays:hols,onTimeGoal:n("#st-goal",ST.onTimeGoal,50,100),accPrefix:s("#st-accp",ST.accPrefix,10).toUpperCase().replace(/[^A-Z0-9\-\/]/g,""),publicCatalog:c("#st-pub",ST.publicCatalog),seasonal:c("#st-sea",ST.seasonal!==false),ramadanFrom:rf,ramadanTo:rt};
  const E={ejService:s("#st-es",ST.ejService,100),ejTemplate:s("#st-et",ST.ejTemplate,100),ejKey:s("#st-ek",ST.ejKey,100),tplRemind:s("#st-tr",ST.tplRemind,1000)||TPL_REMIND,tplOverdue:s("#st-to",ST.tplOverdue,1000)||TPL_OVERDUE,weeklyTo:wt};
  Promise.all([setDoc(doc(db,"settings","app"),A),setDoc(doc(db,"settings","email"),E)]).then(()=>{holEdit=null;addLog({type:"settings",note:STABS[sTab]});toast("Settings saved.")}).catch(fail)}
 
@@ -1955,6 +2144,175 @@ function botw(){const roots=[...new Map(S.books.map(b=>[root(b),b])).values()],r
 const cover=(b,cls="cov")=>{const s=img(b.cover);return s?`<img class="${cls}" src="${s}" alt="" loading="lazy" data-fb="1">`:`<span class="${cls} ph-cov" style="--gc:${gColor(b.genre)}"><span>${esc(String(b.title).slice(0,60))}</span></span>`};
 /* covers that fail to load fall back to the coloured placeholder */
 document.addEventListener("error",e=>{const t=e.target;if(t&&t.tagName==="IMG"&&t.dataset.fb){const sp=document.createElement("span");sp.className=t.className+" ph-cov";sp.innerHTML="<span></span>";t.replaceWith(sp)}},true);
+
+/* ================= 2.3 DESIGN ================= */
+
+/* ----- avatars (simple illustrated faces; no photos) ----- */
+const E=(cx,cy,r,f)=>`<circle cx="${cx}" cy="${cy}" r="${r}" fill="${f}"/>`,EYES=(y=46,f="#14233f",dx=14)=>E(50-dx,y,5,f)+E(50+dx,y,5,f);
+const AVS={
+ fox:{bg:"#eb6834",n:"Fox",d:`<path d="M18 22l18 22-14 6zM82 22L64 44l14 6z" fill="#b8481c"/><path d="M22 50q28 34 56 0q-6 26-28 30q-22-4-28-30z" fill="#fff"/>${EYES(48)}${E(50,62,5,"#14233f")}`},
+ cat:{bg:"#e87ba4",n:"Cat",d:`<path d="M22 20l14 22-16 4zM78 20L64 42l16 4z" fill="#c45683"/>${EYES(50)}<path d="M46 60h8l-4 5z" fill="#14233f"/><path d="M20 60l18 2M20 68l18-2M80 60l-18 2M80 68l-18-2" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/>`},
+ panda:{bg:"#8a94a8",n:"Panda",d:`${E(26,24,11,"#14233f")+E(74,24,11,"#14233f")}<circle cx="50" cy="54" r="30" fill="#fff"/><ellipse cx="38" cy="50" rx="8" ry="10" fill="#14233f"/><ellipse cx="62" cy="50" rx="8" ry="10" fill="#14233f"/>${E(38,50,3,"#fff")+E(62,50,3,"#fff")+E(50,64,4,"#14233f")}`},
+ lion:{bg:"#eda100",n:"Lion",d:`<circle cx="50" cy="52" r="34" fill="#b8740a"/><circle cx="50" cy="54" r="24" fill="#f6c24a"/>${EYES(50,"#14233f",10)}<path d="M44 60h12l-6 6z" fill="#7a3d0a"/>`},
+ rabbit:{bg:"#2a78d6",n:"Rabbit",d:`<ellipse cx="38" cy="22" rx="7" ry="20" fill="#fff"/><ellipse cx="62" cy="22" rx="7" ry="20" fill="#fff"/><circle cx="50" cy="58" r="24" fill="#fff"/>${EYES(54,"#14233f",9)}${E(50,64,3.5,"#e87ba4")}`},
+ bear:{bg:"#8a5a2b",n:"Bear",d:`${E(26,26,10,"#6d4421")+E(74,26,10,"#6d4421")}${EYES(46,"#14233f",13)}<ellipse cx="50" cy="62" rx="13" ry="10" fill="#d9b48a"/>${E(50,58,4,"#14233f")}`},
+ penguin:{bg:"#14337a",n:"Penguin",d:`<ellipse cx="50" cy="58" rx="26" ry="30" fill="#fff"/>${EYES(48,"#14233f",9)}<path d="M44 58h12l-6 8z" fill="#e0a526"/>`},
+ frog:{bg:"#1baf7a",n:"Frog",d:`${E(32,30,13,"#1baf7a")+E(68,30,13,"#1baf7a")+E(32,30,9,"#fff")+E(68,30,9,"#fff")+E(32,31,4.5,"#14233f")+E(68,31,4.5,"#14233f")}<path d="M28 60q22 18 44 0" stroke="#0b5c3e" stroke-width="5" fill="none" stroke-linecap="round"/>`},
+ robot:{bg:"#5b6985",n:"Robot",d:`<path d="M50 14v12" stroke="#fff" stroke-width="4"/>${E(50,13,5,"#e0a526")}<rect x="22" y="28" width="56" height="48" rx="12" fill="#dfe6f3"/><rect x="32" y="42" width="12" height="10" rx="3" fill="#2a78d6"/><rect x="56" y="42" width="12" height="10" rx="3" fill="#2a78d6"/><rect x="36" y="62" width="28" height="5" rx="2.5" fill="#5b6985"/>`},
+ rocket:{bg:"#e34948",n:"Rocket",d:`<path d="M50 14q18 18 14 46H36q-4-28 14-46z" fill="#fff"/>${E(50,38,7,"#2a78d6")}<path d="M36 60l-10 14h14zM64 60l10 14H60z" fill="#e0a526"/><path d="M44 62h12l-6 18z" fill="#eda100"/>`},
+ star:{bg:"#e0a526",n:"Star",d:`<path d="M50 14l10 22 24 3-18 16 5 24-21-12-21 12 5-24-18-16 24-3z" fill="#fff"/>${E(43,46,3.5,"#14233f")+E(57,46,3.5,"#14233f")}<path d="M44 56q6 5 12 0" stroke="#14233f" stroke-width="3" fill="none" stroke-linecap="round"/>`},
+ owl:{bg:"#6250d6",n:"Owl",d:`<path d="M24 24l12 10M76 24L64 34" stroke="#fff" stroke-width="5" stroke-linecap="round"/>${E(36,46,12,"#fff")+E(64,46,12,"#fff")+E(36,46,5.5,"#14233f")+E(64,46,5.5,"#14233f")}<path d="M45 58l5 9 5-9z" fill="#e0a526"/>`}};
+const avatarSvg=k=>{const a=AVS[k];return a?`<svg viewBox="0 0 100 100" class="avp" aria-hidden="true"><rect width="100" height="100" rx="24" fill="${a.bg}"/>${a.d}</svg>`:""};
+const avHtml=(s,extra="")=>s&&AVS[s.avatar]?`<span class="av avi" ${extra} aria-hidden="true">${avatarSvg(s.avatar)}</span>`:`<span class="av" ${extra} aria-hidden="true">${esc(initials(s?.name||"?"))}</span>`;
+const avPicker=(cur,name="av")=>`<div class="avgrid" role="radiogroup" aria-label="Avatar">${Object.entries(AVS).map(([k,a])=>`<button type="button" data-avk="${k}" data-avn="${name}" aria-pressed="${cur===k}" aria-label="${a.n}" title="${a.n}">${avatarSvg(k)}</button>`).join("")}</div>`;
+document.addEventListener("click",e=>{const b=e.target.closest("[data-avk]");if(!b)return;$$(`[data-avn="${b.dataset.avn}"]`).forEach(x=>x.setAttribute("aria-pressed",x===b))});
+const pickedAv=name=>$(`[data-avn="${name}"][aria-pressed="true"]`)?.dataset.avk||"";
+/* the kiosk lets a student choose their own avatar with their GR No. (the rules only allow changing the avatar) */
+function avatarDlg(){open(`<h2>Choose your avatar</h2><p class="note" style="margin-top:0">It appears next to your name on the leaderboards instead of your initials.</p><label for="ka-id">Your GR No.</label><input id="ka-id" inputmode="numeric" maxlength="30" autocomplete="off">${avPicker("","kav")}<div class="row"><button class="b alt" data-close>Cancel</button><button class="b" data-x="ok">Save my avatar</button></div>`);
+ dlg.onclick=async e=>{if(e.target.dataset.close!==undefined)return closeDlg();if(!e.target.closest('[data-x="ok"]'))return;const adm=normId($("#ka-id").value),k=pickedAv("kav");
+  if(!adm||!/^[A-Z0-9\-\/]{1,30}$/.test(adm)){toast("Enter your GR No.");return}if(!AVS[k]){toast("Choose an avatar first.");return}
+  try{await updateDoc(doc(db,"students",encodeURIComponent(adm)),{avatar:k});closeDlg();toast("Saved! Your avatar will show on the leaderboards.");confetti(false)}catch(er){toast(er.code==="permission-denied"||er.code==="not-found"?"That GR No. was not found. Check it and try again.":"Could not save: "+(er.code||er.message))}}}
+
+/* ----- sound cues at the desk (per device, can be switched off) ----- */
+let actx=null;const soundOn=()=>{try{return localStorage.getItem("lib-sound")!=="off"}catch(e){return true}};
+function tone(kind){if(!soundOn())return;try{actx=actx||new(window.AudioContext||window.webkitAudioContext)();const t=actx.currentTime,ok=kind==="ok",notes=ok?[[880,0],[1320,.09]]:[[220,0],[175,.13]];
+ notes.forEach(([f,d])=>{const o=actx.createOscillator(),g=actx.createGain();o.type=ok?"sine":"triangle";o.frequency.value=f;g.gain.setValueAtTime(.0001,t+d);g.gain.exponentialRampToValueAtTime(ok?.16:.12,t+d+.012);g.gain.exponentialRampToValueAtTime(.0001,t+d+.18);o.connect(g).connect(actx.destination);o.start(t+d);o.stop(t+d+.2)})}catch(e){}}
+
+/* ----- per-device display preferences ----- */
+const pref=(k,d)=>{try{return localStorage.getItem(k)??d}catch(e){return d}},setPref=(k,v)=>{try{v?localStorage.setItem(k,v):localStorage.removeItem(k)}catch(e){}};
+function applyPrefs(){const h=document.documentElement,sz=pref("lib-size",""),hc=pref("lib-contrast","");sz?h.dataset.size=sz:delete h.dataset.size;hc?h.dataset.contrast=hc:delete h.dataset.contrast}
+applyPrefs();try{if(localStorage.getItem("lib-ktext"))document.body.classList.add("kiosk-lg")}catch(e){}
+
+/* ----- motion: dialogs grow from where you clicked ----- */
+let lastPt=null;addEventListener("pointerdown",e=>{lastPt={x:e.clientX,y:e.clientY,t:Date.now()}},{capture:true,passive:true});
+function growFrom(d){if(!lastPt||Date.now()-lastPt.t>1500)return;const r=d.getBoundingClientRect();d.style.transformOrigin=`${Math.round(lastPt.x-r.left)}px ${Math.round(lastPt.y-r.top)}px`}
+
+/* ----- seasonal themes (UAE National Day automatically; Ramadan on the dates set in Settings) ----- */
+function season(){if(ST.seasonal===false)return"";const d=new Date(),md=(d.getMonth()+1)*100+d.getDate();if(md>=1125&&md<=1203)return"nd";const k=ymd(d);if(ST.ramadanFrom&&ST.ramadanTo&&k>=ST.ramadanFrom&&k<=ST.ramadanTo)return"ram";return""}
+const FLAG=`<svg width="22" height="14" viewBox="0 0 22 14" aria-hidden="true"><rect width="22" height="14" fill="#fff"/><rect width="22" height="4.7" fill="#00843d"/><rect y="9.3" width="22" height="4.7" fill="#111"/><rect width="6" height="14" fill="#c8102e"/></svg>`;
+const CRESCENT=`<svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a7 7 0 0 0 10.5 10.5z" fill="#e8b545"/></svg>`;
+const seasonPill=()=>{const s=season();return s==="nd"?`<div class="seasonal">${FLAG}Happy UAE National Day · 2 December</div>`:s==="ram"?`<div class="seasonal">${CRESCENT}Ramadan Kareem</div>`:""};
+
+/* ----- more illustrations ----- */
+Object.assign(ILLU,{
+ activity:`<svg viewBox="0 0 120 84" width="120" height="84" aria-hidden="true"><rect x="30" y="12" width="60" height="66" rx="6" fill="#14337a"/><rect x="46" y="6" width="28" height="12" rx="4" fill="#e0a526"/><path d="M40 34h40M40 46h40M40 58h26" stroke="#fff" stroke-width="5" stroke-linecap="round" opacity=".75"/></svg>`,
+ clock:`<svg viewBox="0 0 120 84" width="120" height="84" aria-hidden="true"><circle cx="60" cy="44" r="32" fill="#14337a"/><circle cx="60" cy="44" r="25" fill="#fff"/><path d="M60 28v17l11 7" stroke="#e0a526" stroke-width="5" stroke-linecap="round" fill="none"/></svg>`,
+ bulb:`<svg viewBox="0 0 120 84" width="120" height="84" aria-hidden="true"><circle cx="60" cy="36" r="24" fill="#e0a526"/><rect x="50" y="56" width="20" height="14" rx="3" fill="#14337a"/><path d="M60 22v14M52 30l8 6 8-6" stroke="#fff" stroke-width="4" stroke-linecap="round" fill="none"/></svg>`,
+ shield:`<svg viewBox="0 0 120 84" width="120" height="84" aria-hidden="true"><path d="M60 8l30 10v22c0 20-14 32-30 38C44 72 30 60 30 40V18z" fill="#14337a"/><path d="M47 42l9 9 17-18" stroke="#e0a526" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>`,
+ mail:`<svg viewBox="0 0 120 84" width="120" height="84" aria-hidden="true"><rect x="22" y="18" width="76" height="52" rx="6" fill="#14337a"/><path d="M24 22l36 26 36-26" stroke="#e0a526" stroke-width="5" fill="none" stroke-linejoin="round"/></svg>`});
+
+/* ----- 3D books ----- */
+const book3d=(b,cls="cov")=>`<span class="b3d"><span class="b3d-in">${cover(b,cls)}</span></span>`;
+
+/* ----- dashboard: today timeline and live ticker ----- */
+function todayHtml(){const t0=new Date();t0.setHours(0,0,0,0);const ev=S.logs.filter(l=>num(l.at)>=+t0&&(l.type==="lend"||l.type==="return")).sort((a,b)=>a.at-b.at);
+ const hrs=ev.map(l=>new Date(l.at).getHours()+new Date(l.at).getMinutes()/60),now=new Date(),nh=now.getHours()+now.getMinutes()/60,h0=Math.floor(Math.min(7,...hrs,nh>7?7:nh)),h1=Math.ceil(Math.max(16,...hrs.map(h=>h+.5),Math.min(24,nh+.5))),pos=h=>((h-h0)/(h1-h0)*100).toFixed(2)+"%";
+ const byH={};ev.filter(l=>l.type==="lend").forEach(l=>{const h=new Date(l.at).getHours(),g=normGrade(gr(stu(l.sid)));if(g)((byH[h]=byH[h]||{})[g]=(byH[h][g]||0)+1)});
+ const cl=Object.entries(byH).map(([h,m])=>{const [g,n]=Object.entries(m).sort((a,b)=>b[1]-a[1])[0];return n>=3?`<span class="cl" style="left:${pos(+h+.5)}">${esc(g)}</span>`:""}).join("");
+ return`<div class="tline" role="img" aria-label="Today: ${plural(ev.filter(l=>l.type==="lend").length,"loan")} and ${plural(ev.filter(l=>l.type==="return").length,"return")}">${cl}<div class="ax"></div>${Array.from({length:h1-h0+1},(_,i)=>`<span class="hr" style="left:${pos(h0+i)}">${String(h0+i).padStart(2,"0")}:00</span>`).join("")}
+ ${ev.map(l=>{const d=new Date(l.at),h=d.getHours()+d.getMinutes()/60;return`<span class="ev ${l.type==="lend"?"l":"r"}${l.type==="return"&&l.late?" late":""}" style="left:${pos(h)}" title="${esc(d.toLocaleTimeString(undefined,{hour:"2-digit",minute:"2-digit"})+" · "+(l.type==="lend"?"Lent":"Returned")+" “"+(l.bt||"")+"”"+(l.sn?" · "+l.sn:""))}"></span>`}).join("")}
+ ${nh>=h0&&nh<=h1?`<span class="now" style="left:${pos(nh)}"><span>Now</span></span>`:""}</div><div class="tleg"><span><i style="background:var(--s1)"></i>Lent</span><span><i style="background:#1baf7a"></i>Returned</span><span><i style="background:var(--crit)"></i>Returned late</span>${ev.length?"":`<span>· Nothing yet today</span>`}</div>`}
+function tickerHtml(){const L=S.logs.filter(l=>["lend","return","renew","book_add","hold_add"].includes(l.type)).slice(0,10);if(!L.length)return"";
+ const line=l=>{const s=stu(l.sid),g=gr(s);return`<span>${g?`<b>${esc(g)}</b> · `:""}${esc(shortName(l.sn||"Someone"))} ${l.type==="lend"?"borrowed":l.type==="return"?"returned":l.type==="renew"?"renewed":l.type==="hold_add"?"reserved":"added"} “${esc(l.bt||"")}” <span style="opacity:.6">${ago(num(l.at))}</span></span>`};
+ const h=L.map(line).join("");return`<div class="ticker" aria-label="Recent activity"><div class="tk">${h}<span aria-hidden="true" style="display:contents">${h}</span></div></div>`}
+
+/* ----- analytics: reading across the school (grade tiles) ----- */
+function schoolMapHtml(){const months=rangeMonths(),loans=sumMap(months,"byGrade"),grades=[...new Set(active().map(s=>normGrade(gr(s))).filter(Boolean))].sort(byGrade);if(!grades.length)return"";
+ const per=grades.map(g=>{const n=active().filter(s=>normGrade(gr(s))===g).length;return{g,n,l:num(loans[g]),p:n?num(loans[g])/n:0}}),mx=Math.max(...per.map(x=>x.p),.0001);
+ return`<section class="panel"><div class="ph"><div><h3>Reading across the school</h3><div class="sub2">Books per student in each class, ${esc(rangeLabel().toLowerCase())}. Darker classes read more; select one to see its readers.</div></div></div><div class="smap">${per.map(x=>`<button type="button" class="q${x.p?Math.min(4,1+Math.floor(x.p/mx*3.999)):0}" data-act="gopen" data-v="${esc(x.g)}" title="${esc(x.g)}: ${x.l} loans by ${plural(x.n,"student")}"><b>${esc(x.g)}</b><span>${x.p?x.p.toFixed(1)+" per student":"No loans yet"}</span></button>`).join("")}</div></section>`}
+
+/* ----- Library Wrapped ----- */
+let wrP="month",wrI=0,WR=[];
+function wrData(){const ys=yearStart(),months=wrP==="year"?Array.from({length:12},(_,i)=>mAdd(mKey(ys),i)).filter(k=>k<=mKey(Date.now())):[rMonth],title=wrP==="year"?"School year "+ys.getFullYear()+"–"+String(ys.getFullYear()+1).slice(2):mName(rMonth,true);
+ const loans=sumF(months,"loans"),rets=sumF(months,"returns"),late=sumF(months,"late"),stud=sumMap(months,"byStudent"),books=sumMap(months,"byBook"),genres=sumMap(months,"byGenre"),grades=sumMap(months,"byGrade"),dow=sumMap(months,"byDow");
+ const top=o=>Object.entries(o).sort((a,b)=>b[1]-a[1])[0]||null,tb=top(books),tg=top(Object.fromEntries(Object.entries(genres).filter(([k])=>k!=="No genre"))),tc=top(Object.fromEntries(Object.entries(grades).filter(([k])=>k!=="No grade"))),td=top(dow),tr=top(stud);
+ const tbook=tb&&byRoot(tb[0]),treader=tr&&stu(tr[0]),badges=active().filter(s=>badgeFor(yearReads(s.id))).length,ontime=rets?Math.round((rets-late)/rets*100):null,metres=(loans*0.025).toFixed(1);
+ const S2=[{k:"IPHS Library Wrapped",big:"",t:title,p:"A look back at what the school read. Use the arrows to continue."}];
+ if(!loans){S2.push({k:"Nothing to wrap yet",big:"0",t:"books borrowed",p:"Lend some books and come back later."});return S2}
+ S2.push({k:"Together we borrowed",big:fmtN(loans),t:plural(loans,"book","books").replace(/^[\d,]+ /,""),p:`If you stacked them, the pile would be about ${metres} metres tall.`});
+ S2.push({k:"Readers",big:fmtN(Object.keys(stud).length),t:"students borrowed at least one book",p:ontime!=null?ontime+"% of books came back on time.":""});
+ if(tbook)S2.push({k:"The most borrowed book",big:"",t:tbook.title,p:(tbook.author?"by "+tbook.author+" · ":"")+plural(tb[1],"loan"),book:tbook});
+ if(tg)S2.push({k:"Favourite genre",big:"",t:tg[0],p:plural(tg[1],"loan")+" · "+Math.round(tg[1]/loans*100)+"% of everything borrowed",gc:gColor(tg[0])});
+ if(tc)S2.push({k:"Most bookish class",big:tc[0],t:"",p:plural(tc[1],"book")+" borrowed. Congratulations!"});
+ if(td)S2.push({k:"Busiest day of the week",big:"",t:DOWL[+td[0]],p:plural(td[1],"loan")+" on "+DOWL[+td[0]]+"s"});
+ if(treader)S2.push({k:"Top reader",big:"",t:shortName(treader.name),p:(gr(treader)?"Grade "+gr(treader)+" · ":"")+plural(tr[1],"book"),av:treader});
+ if(wrP==="year"&&badges)S2.push({k:"Reading badges",big:fmtN(badges),t:"students earned a badge",p:`Bronze from ${ST.badgeBronze} books, silver from ${ST.badgeSilver}, gold from ${ST.badgeGold}.`});
+ S2.push({k:"Thank you",big:"",t:"Keep reading!",p:"Indian Public High School Library"});return S2}
+function wrSlide(i){const x=WR[i];if(!x)return"";return`<div class="wr-in"><div class="wr-k">${esc(x.k)}</div>${x.book?`<div style="margin:18px 0 6px">${book3d(x.book,"bigcov")}</div>`:""}${x.av?`<div style="width:96px;height:96px;margin:16px 0 4px">${AVS[x.av.avatar]?avatarSvg(x.av.avatar):`<div class="av lg" style="width:96px;height:96px;font-size:34px">${esc(initials(x.av.name))}</div>`}</div>`:""}${x.big?`<div class="wr-big">${esc(x.big)}</div>`:""}${x.t?`<div class="wr-title" ${x.gc?`style="background:${x.gc};padding:6px 18px;border-radius:14px"`:""}>${esc(x.t)}</div>`:""}${x.p?`<p>${esc(x.p)}</p>`:""}</div>`}
+function wrShow(){const el=$("#wr");if(!el)return;el.className="wr c"+(wrI%6);el.innerHTML=wrSlide(wrI);$$(".wrdots i").forEach((d,i)=>d.classList.toggle("on",i===wrI));const c=$("#wr-c");if(c)c.textContent=(wrI+1)+" / "+WR.length}
+function wrappedRep(){WR=wrData();if(wrI>=WR.length)wrI=0;
+ return`<div class="bar noprint"><div class="seg sm" role="group" aria-label="Period"><button type="button" data-act="wrp" data-v="month" aria-pressed="${wrP==="month"}">Month</button><button type="button" data-act="wrp" data-v="year" aria-pressed="${wrP==="year"}">School year</button></div>${wrP==="month"?`<input id="r-month" type="month" value="${esc(rMonth)}" max="${mKey(Date.now())}" style="max-width:200px">`:""}<span style="flex:1"></span><button class="b alt" data-act="wrfull">${ico("chart")}Present full screen</button></div>
+<div class="wr c${wrI%6}" id="wr" tabindex="0" aria-live="polite">${wrSlide(wrI)}</div>
+<div class="wrnav noprint"><button class="b alt" data-act="wrgo" data-v="-1" aria-label="Previous">${ico("chevL")}</button><div class="wrdots">${WR.map((_,i)=>`<i class="${i===wrI?"on":""}"></i>`).join("")}</div><span class="s" id="wr-c">${wrI+1} / ${WR.length}</span><button class="b" data-act="wrgo" data-v="1" aria-label="Next">${ico("chevR")}</button></div>`}
+document.addEventListener("keydown",e=>{if(tab!=="reports"||rTab!=="wrapped"||dlg.open||/INPUT|SELECT|TEXTAREA/.test(document.activeElement?.tagName||""))return;if(e.key==="ArrowRight"||e.key===" "){e.preventDefault();wrI=Math.min(WR.length-1,wrI+1);wrShow()}if(e.key==="ArrowLeft"){e.preventDefault();wrI=Math.max(0,wrI-1);wrShow()}});
+
+/* ----- Books: shelf view ----- */
+function shelfHtml(list){const roots=[...new Map(list.map(b=>[root(b),b])).values()],by={};roots.forEach(b=>{const g=String(b.genre||"").trim()||"No genre";(by[g]=by[g]||[]).push(b)});
+ return`<div class="shelves">${Object.entries(by).sort((a,b)=>b[1].length-a[1].length).map(([g,bs])=>`<section class="shelf"><h3><span class="gdot" style="--gc:${gColor(g==="No genre"?"":g)}"></span>${esc(g)} <span class="s" style="font-weight:500">${plural(bs.length,"title")}</span></h3><div class="srow">${bs.slice(0,140).map(b=>{const h=hashS(b.title),gc=gColor(b.genre),out=!copiesOf(b).some(c=>!c.loan&&!c.state);
+  return`<button type="button" class="spine ${out?"out":""}" data-act="detail" data-id="${esc(b.id)}" title="${esc(b.title)}${b.author?" — "+esc(b.author):""}" aria-label="${esc(b.title)}${out?", borrowed":""}" style="width:${30+h%16}px;height:${150+(h>>4)%48}px;background:color-mix(in srgb,${gc} ${72+(h>>8)%24}%,${(h>>3)%2?"#000":"#fff"})"><span class="bd1"></span><span class="st">${esc(b.title)}</span><span class="bd2"></span></button>`}).join("")}</div><div class="plank"></div></section>`).join("")}</div>`}
+
+/* ----- cover wall ----- */
+let wallG="";
+function coverWall(){const w=$("#wall"),roots=[...new Map(S.books.map(b=>[root(b),b])).values()],gs=[...new Set(roots.map(b=>String(b.genre||"").trim()).filter(Boolean))].sort();if(wallG&&!gs.includes(wallG))wallG="";
+ w.innerHTML=`<div class="wtop"><h2>Cover wall</h2><div class="chips" style="margin:0"><button class="chip" data-wg="" aria-pressed="${!wallG}">All</button>${gs.map(g=>`<button class="chip" data-wg="${esc(g)}" aria-pressed="${wallG===g}">${esc(g)}</button>`).join("")}</div><button class="b gold" data-wclose type="button">${ico("x")}Close</button></div><div class="wgrid">${roots.filter(b=>!wallG||b.genre===wallG).map(b=>`<button type="button" data-act="detail" data-id="${esc(b.id)}" aria-label="${esc(b.title)}" title="${esc(b.title)}">${cover(b)}</button>`).join("")}</div>`;
+ w.classList.remove("hide");w.onclick=e=>{const g=e.target.closest("[data-wg]");if(g){wallG=g.dataset.wg;coverWall()}if(e.target.closest("[data-wclose]"))w.classList.add("hide")}}
+document.addEventListener("keydown",e=>{if(e.key==="Escape"&&!$("#wall").classList.contains("hide")&&!dlg.open)$("#wall").classList.add("hide")});
+
+/* ----- book journey (every borrower of this copy, from the full activity log) ----- */
+async function loadJourney(id){const box=$("#bj");if(!box)return;const b=S.books.find(x=>x.id===id);
+ try{const L=(await getDocs(query(collection(db,"logs"),where("bid","==",id)))).docs.map(d=>d.data()).filter(l=>["lend","return","book_state","renew"].includes(l.type)).sort((a,c)=>num(a.at)-num(c.at));const el=$("#bj");if(!el)return;
+  const items=[...(b?.addedAt>1e11?[`<li><b>Added to the library</b><div class="s">${fmtL(b.addedAt)}</div></li>`]:[]),...L.map(l=>{const s=stu(l.sid);return`<li class="${l.type==="return"?(l.late?"late":"ret"):""}"><b>${l.type==="lend"?"Borrowed":l.type==="return"?"Returned":l.type==="renew"?"Renewed":"Status changed"}</b>${l.type==="lend"||l.type==="return"?" · "+esc(l.sn||"")+(s&&gr(s)?" ("+esc(gr(s))+")":""):l.note?" · "+esc(l.note):""}<div class="s">${fmtL(num(l.at))}${l.type==="return"&&l.late?" · "+plural(num(l.dl),"day")+" late":""}${l.rating?" · "+"★".repeat(Math.min(5,num(l.rating))):""}</div></li>`})];
+  el.innerHTML=items.length?`<ul class="tl">${items.slice(-40).join("")}</ul><div class="note">${plural(L.filter(l=>l.type==="lend").length,"loan")} in total.</div>`:'<div class="note">Not borrowed yet.</div>'}
+ catch(e){const el=$("#bj");if(el)el.innerHTML='<div class="note">Could not load the history.</div>'}}
+
+/* ----- colour search: each cover's main colour, worked out on library computers ----- */
+let ccRun=false,ccAuto=false;
+const hexOf=(r,g,b)=>"#"+[r,g,b].map(v=>Math.round(v).toString(16).padStart(2,"0")).join("");
+const hsl=hex=>{const n=parseInt(hex.slice(1),16),r=(n>>16&255)/255,g=(n>>8&255)/255,b=(n&255)/255,mx=Math.max(r,g,b),mn=Math.min(r,g,b),l=(mx+mn)/2,d=mx-mn;let h=0,s=0;if(d){s=d/(1-Math.abs(2*l-1));h=mx===r?((g-b)/d)%6:mx===g?(b-r)/d+2:(r-g)/d+4;h=(h*60+360)%360}return{h,s,l}};
+function coverColour(src){return new Promise(ok=>{const i=new Image();i.crossOrigin="anonymous";i.onload=()=>{try{const c=document.createElement("canvas");c.width=24;c.height=36;const x=c.getContext("2d",{willReadFrequently:true});x.drawImage(i,0,0,24,36);const p=x.getImageData(0,0,24,36).data;let R=0,G=0,B=0,W=0;
+ for(let k=0;k<p.length;k+=4){const r=p[k],g=p[k+1],b=p[k+2],mx=Math.max(r,g,b),mn=Math.min(r,g,b),w=.15+(mx-mn)/255;R+=r*w;G+=g*w;B+=b*w;W+=w}ok(W?hexOf(R/W,G/W,B/W):"")}catch(e){ok(null)}};i.onerror=()=>ok(null);i.src=src;setTimeout(()=>ok(null),8000)})}
+async function fillColours(manual){if(ccRun||!canEdit()||limitedMode)return;ccRun=true;let n=0;
+ try{const todo=S.books.filter(b=>img(b.cover)&&!b.cc&&(manual||!b.ccTried)).slice(0,manual?600:60);if(manual&&!todo.length){toast("Every cover has its colour already.");return}
+  for(const b of todo){const c=await coverColour(b.cover);try{await updateDoc(doc(db,"books",b.id),c?{cc:c,ccTried:Date.now()}:{ccTried:Date.now()});if(c)n++}catch(e){}if(manual&&n%10===0)toast(`Working out cover colours… ${n}`)}}
+ finally{ccRun=false}if(manual)toast(n?plural(n,"cover colour")+" saved.":"No colours could be read (some cover websites don't allow it).",true)}
+const SWATCH=[["Red","#d63a3a",0],["Orange","#eb7a2a",28],["Yellow","#efc21d",52],["Green","#2f9e4f",125],["Teal","#159a96",178],["Blue","#2a6fd6",218],["Purple","#7a4fc0",272],["Pink","#e46aa0",328],["Dark","#1f2430",-1],["Light","#efe9dc",-2]];
+function colourMatch(b,i){if(!b.cc)return false;const{h,s,l}=hsl(b.cc),sw=SWATCH[i];if(sw[2]===-1)return l<.24;if(sw[2]===-2)return l>.74&&s<.45;if(s<.22||l<.16||l>.86)return false;const d=Math.min(Math.abs(h-sw[2]),360-Math.abs(h-sw[2]));return d<=24}
+let kc=-1;
+
+/* ----- reader card: medals and reading passport ----- */
+const MEDAL=(fill,ribbon,glyph)=>`<svg viewBox="0 0 54 54" aria-hidden="true"><path d="M17 2h8l4 14h-8zM29 2h8l-4 14h-8z" fill="${ribbon}"/><circle cx="27" cy="33" r="18" fill="${fill}" stroke="#fff" stroke-width="2"/><circle cx="27" cy="33" r="13" fill="none" stroke="rgba(255,255,255,.55)" stroke-width="1.5"/>${glyph}</svg>`;
+const STAR_G=`<path d="M27 24l2.8 5.7 6.2.9-4.5 4.4 1 6.2-5.5-2.9-5.5 2.9 1-6.2-4.5-4.4 6.2-.9z" fill="#fff"/>`;
+function readerCard(s){const yr=yearReads(s.id),now=S.books.filter(b=>b.loan&&b.loan.sid===s.id),late=now.filter(isLate).length,lr=S.logs.filter(l=>l.type==="return"&&l.late&&l.sid===s.id).length;
+ const gen=[...new Set((s.reads||[]).map(r=>byRoot(r)?.genre).filter(Boolean).map(g=>String(g).trim()))],allG=new Set(S.books.map(b=>String(b.genre||"").trim()).filter(Boolean)).size,goal=Math.max(1,Math.min(8,allG)),done=gen.length>=goal;
+ const medals=[["Bronze",yr>=ST.badgeBronze,"#c98a5a","#14337a",STAR_G,ST.badgeBronze+" books"],["Silver",yr>=ST.badgeSilver,"#9ca3af","#14337a",STAR_G,ST.badgeSilver+" books"],["Gold",yr>=ST.badgeGold,"#e0a526","#14337a",STAR_G,ST.badgeGold+" books"],["Explorer",done,"#1baf7a","#e0a526",`<path d="M27 22l4 9-4 2-4-2z" fill="#fff"/><path d="M27 44l-4-9 4-2 4 2z" fill="rgba(255,255,255,.6)"/>`,goal+" genres"],["On time",yr>=5&&!lr,"#2a78d6","#e0a526",`<path d="M20 33l5 5 10-10" stroke="#fff" stroke-width="3.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>`,"5+ books, never late"]];
+ return`<div class="lcard"><div class="lc-top">${LOGO.replace('width="38" height="38"','width="26" height="26"')}<span>Indian Public High School · Library card</span></div>
+<div class="lc-main"><div class="lc-av">${AVS[s.avatar]?avatarSvg(s.avatar):esc(initials(s.name))}</div><div style="min-width:0"><div class="lc-name">${esc(s.name)}</div><div class="lc-sub">${[gr(s)&&"Grade "+esc(gr(s)),s.adm?"GR No. "+esc(s.adm):"No GR No.",s.kind==="staff"?"Staff":"Student"].filter(Boolean).join(" · ")}</div></div></div>
+<div class="lc-stats"><div><b>${yr}</b><span>this school year</span></div><div><b>${now.length}${maxFor(s)?`<span style="font-size:15px;opacity:.7"> / ${maxFor(s)}</span>`:""}</b><span>books now</span></div><div><b>${late}</b><span>overdue</span></div><div><b id="pf-late">${lr}</b><span>late returns</span></div><div><b>${gen.length}</b><span>genres explored</span></div></div></div>
+<h3 style="font-size:15px;margin:0 0 6px">Medals</h3><div class="medals">${medals.map(([n,on,f,r,g,h])=>`<div class="medal ${on?"on":""}" title="${esc(n)}: ${esc(h)}"><span class="m">${MEDAL(f,r,g)}</span>${esc(n)}<span class="s" style="font-weight:500">${esc(h)}</span></div>`).join("")}</div>
+<h3 style="font-size:15px;margin:0 0 2px">Reading passport</h3><div class="sub2">A stamp for every genre ${esc(String(s.name).split(" ")[0])} has borrowed from. ${done?"Passport complete!":`${goal-Math.min(goal,gen.length)} more to complete it.`}</div>
+<div class="stamps">${gen.slice(0,12).map((g,i)=>`<div class="stamp" style="--gc:${gColor(g)};--rot:${(hashS(g)%17)-8}deg">${esc(g)}<small>IPHS Library</small></div>`).join("")}${Array.from({length:Math.max(0,goal-gen.length)},()=>`<div class="stamp empty">Next genre</div>`).join("")}</div>`}
+
+/* ----- kiosk: reading forest (one tree per class; a leaf for every book this school year) ----- */
+function forestTree(n,g){const leaves=Math.min(70,n),rnd=i=>{const x=Math.sin(hashS(g)+i*12.9898)*43758.5453;return x-Math.floor(x)};let s=`<svg viewBox="0 0 120 120" aria-hidden="true"><rect x="54" y="72" width="12" height="36" rx="4" fill="#8a5a2b"/><path d="M60 92l-14-10M60 86l14-9" stroke="#8a5a2b" stroke-width="4" stroke-linecap="round"/><ellipse cx="60" cy="60" rx="${18+Math.min(26,leaves*.6)}" ry="${16+Math.min(22,leaves*.5)}" fill="#1f8a52" opacity=".25"/>`;
+ for(let i=0;i<leaves;i++){const a=rnd(i)*Math.PI*2,r=Math.sqrt(rnd(i+99))*(16+Math.min(26,leaves*.6));s+=`<circle cx="${(60+Math.cos(a)*r).toFixed(1)}" cy="${(60+Math.sin(a)*r*.82).toFixed(1)}" r="4.2" fill="${["#1baf7a","#2f9e4f","#5cc98a"][i%3]}"/>`}
+ if(n>=25)for(let i=0;i<Math.min(10,Math.floor(n/10));i++){const a=rnd(i+300)*Math.PI*2,r=rnd(i+400)*28;s+=`<circle cx="${(60+Math.cos(a)*r).toFixed(1)}" cy="${(58+Math.sin(a)*r*.8).toFixed(1)}" r="3" fill="#f4a6c4"/>`}
+ if(n>=50)for(let i=0;i<Math.min(8,Math.floor(n/25));i++){const a=rnd(i+500)*Math.PI*2,r=rnd(i+600)*26;s+=`<circle cx="${(60+Math.cos(a)*r).toFixed(1)}" cy="${(62+Math.sin(a)*r*.8).toFixed(1)}" r="3.6" fill="#e0a526"/>`}
+ return s+`<rect x="20" y="106" width="80" height="4" rx="2" fill="#b9874f" opacity=".6"/></svg>`}
+function forestHtml(){const F=S.pub?.forest;if(!F||!Object.keys(F).length)return"";const gs=Object.keys(F).sort(byGrade).slice(0,24);
+ return`<h2 class="sect">Reading forest</h2><div class="s" style="margin:-4px 0 12px">Every book borrowed this school year adds a leaf to its class tree. Trees blossom at 25 books and grow golden fruit at 50.</div><div class="forest">${gs.map(g=>`<div class="tree">${forestTree(num(F[g]),g)}<b>${esc(g)}</b><span>${plural(num(F[g]),"book")}</span></div>`).join("")}</div>`}
+
+/* ----- kiosk: greeting by time of day and "Did you know?" ----- */
+function kioskMood(){const h=new Date().getHours()+new Date().getMinutes()/60;return h<11?["morning","Good morning, readers!"]:h<13.5?["lunch","Lunch break? Grab a good book."]:["after","After-school reading time"]}
+function kioskFact(){const roots=[...new Map(S.books.map(b=>[root(b),b])).values()],F=[];if(!roots.length)return"";
+ F.push(`The library has ${fmtN(roots.length)} different titles.`);const authors=new Set(roots.map(b=>b.author).filter(Boolean)).size;if(authors>1)F.push(`Books by ${fmtN(authors)} different authors are waiting on the shelves.`);
+ const pop=roots.filter(b=>num(b.borrows)).sort((a,b)=>num(b.borrows)-num(a.borrows))[0];if(pop)F.push(`“${pop.title}” has been borrowed ${plural(num(pop.borrows),"time")}.`);
+ const gc={};roots.forEach(b=>{if(b.genre)gc[b.genre]=(gc[b.genre]||0)+1});const tg=Object.entries(gc).sort((a,b)=>b[1]-a[1])[0];if(tg)F.push(`${tg[0]} is the biggest section, with ${plural(tg[1],"title")}.`);
+ const nw=roots.slice().sort((a,b)=>(b.addedAt||0)-(a.addedAt||0))[0];if(nw)F.push(`The newest arrival is “${nw.title}”.`);
+ const top=S.pub?.forest&&Object.entries(S.pub.forest).sort((a,b)=>b[1]-a[1])[0];if(top&&!isPub())F.push(`Grade ${top[0]} has read the most this year: ${plural(num(top[1]),"book")}.`);
+ return F[Math.floor(Date.now()/60000)%F.length]}
+
+/* ----- phone bottom bar ----- */
+$("#bnMore").addEventListener("click",()=>document.body.classList.add("side-open"));
 
 /* ================= START ================= */
 try{const f=sessionStorage.getItem("lib-flash");if(f){$("#lerr").textContent=f;sessionStorage.removeItem("lib-flash")}}catch(e){}
