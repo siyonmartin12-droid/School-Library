@@ -340,6 +340,89 @@ ol.steps{padding-left:20px;margin:8px 0}ol.steps li{margin:4px 0}
 
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
 @media print{#side,#hdr,#scrim,#notif,#toast,#tip,.noprint,.selbar,dialog{display:none!important}.shell{margin:0!important}body{background:#fff;color:#000}main{max-width:none;padding:0}.panel,.card{box-shadow:none;border-color:#bbb;break-inside:avoid}.pb{break-before:page}.stats>div{border-color:#bbb;box-shadow:none}}
+
+/* ============ 2.2 additions ============ */
+/* search button + command palette */
+.cmdb{display:flex;align-items:center;gap:8px;height:40px;padding:0 10px 0 12px;border:1px solid var(--line);border-radius:11px;background:var(--surf);color:var(--mute);font:inherit;font-size:14px;cursor:pointer;min-width:200px;margin-right:4px}
+.cmdb:hover{border-color:color-mix(in srgb,var(--brand) 35%,var(--line));color:var(--ink)}.cmdb .lbl{flex:1;text-align:left}
+kbd{font:600 11px/1 ui-monospace,Menlo,Consolas,monospace;border:1px solid var(--line);border-bottom-width:2px;border-radius:6px;padding:3px 6px;color:var(--mute);background:var(--surf2)}
+@media (max-width:1100px){.cmdb{min-width:0;width:40px;padding:0;justify-content:center}.cmdb .lbl,.cmdb kbd{display:none}}
+.kdlg{width:min(620px,94vw);padding:16px;align-self:start;margin-top:12vh}
+.kdlg .sbox input{font-size:17px;padding:13px 14px 13px 42px}
+.kres{list-style:none;margin:10px 0 0;padding:0;max-height:52vh;overflow:auto}
+.kres button{width:100%;display:flex;gap:12px;align-items:center;text-align:left;font:inherit;color:var(--ink);background:transparent;border:0;border-radius:10px;padding:8px 10px;cursor:pointer}
+.kres button[aria-selected=true],.kres button:hover{background:var(--surf2)}
+.kres .fi{width:34px;height:34px;border-radius:10px;display:grid;place-items:center;flex:none}
+/* covers: real image over a coloured placeholder in the book's genre colour */
+.covw{position:relative;display:inline-block;flex:none;cursor:pointer;border-radius:7px;overflow:hidden}
+.covw>.cov{display:block}
+.ph-cov{background:linear-gradient(155deg,color-mix(in srgb,var(--gc,#14337a) 85%,#fff),color-mix(in srgb,var(--gc,#14337a) 70%,#000));color:#fff;display:grid!important;place-items:center;text-align:center;overflow:hidden;border:0!important}
+.ph-cov>span{font-size:9px;font-weight:700;line-height:1.15;padding:4px;display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden}
+.tile .ph-cov>span,.minibook .ph-cov>span{font-size:13px;padding:10px}
+.bigcov.ph-cov>span{font-size:16px;padding:16px}
+.bcov{background:linear-gradient(155deg,color-mix(in srgb,var(--gc,#14337a) 85%,#fff),color-mix(in srgb,var(--gc,#14337a) 65%,#000))}
+.bcov img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.bcov .ph-cov{position:absolute;inset:0;width:100%;height:100%;background:transparent}
+.gdot{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--gc);margin-right:5px;vertical-align:1px}
+.gchips .chip{display:inline-flex;align-items:center}
+/* empty-state illustrations */
+.eill{margin:0 auto 8px;width:120px}.eill svg{display:block}
+/* KPI tiles with sparklines and the goal meter */
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin-bottom:16px}
+.kpi{background:var(--surf);border:1px solid var(--line);border-radius:var(--r);padding:16px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:2px;min-width:0}
+.kpi .l{font-size:13px;color:var(--mute);font-weight:600}
+.kpi b{font-size:38px;line-height:1.05;letter-spacing:-.03em;font-variant-numeric:tabular-nums;font-weight:800}
+.kpi .delta{font-size:12px;font-weight:700}.kpi .s{font-size:11.5px}
+.spark{width:100%;margin-top:8px}.sparkL{fill:none;stroke:var(--s1);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}.sparkA{fill:var(--s1);opacity:.1}.sparkD{fill:var(--s1);stroke:var(--surf);stroke-width:2}
+.meter{height:10px;border-radius:99px;background:var(--line);position:relative;overflow:visible}
+.meter>span{display:block;height:100%;border-radius:99px;background:var(--s1);transition:width .8s ease}
+.meter.goal{margin:12px 0 6px}.meter>span.ok{background:#1baf7a}.meter>span.low{background:#eda100}
+.meter>i{position:absolute;top:-4px;bottom:-4px;width:3px;border-radius:2px;background:var(--ink);transform:translateX(-1px)}
+/* chart extras */
+.chart .mk.soft{opacity:.42}
+.chart .h0{fill:var(--line)}.chart .h1{fill:#c6dcf6}.chart .h2{fill:#85b7eb}.chart .h3{fill:#378add}.chart .h4{fill:#185fa5}.chart .hx{fill:var(--surf2);stroke:var(--line);stroke-dasharray:2 2}
+:root[data-theme="dark"] .chart .h1{fill:#1d3866}:root[data-theme="dark"] .chart .h2{fill:#2a5594}:root[data-theme="dark"] .chart .h3{fill:#3987e5}:root[data-theme="dark"] .chart .h4{fill:#8db6ff}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .chart .h1{fill:#1d3866}:root:not([data-theme="light"]) .chart .h2{fill:#2a5594}:root:not([data-theme="light"]) .chart .h3{fill:#3987e5}:root:not([data-theme="light"]) .chart .h4{fill:#8db6ff}}
+.hleg{display:flex;gap:4px;align-items:center;font-size:11.5px;color:var(--mute);margin-top:8px}.hleg i{width:11px;height:11px;border-radius:3px;display:inline-block}
+.hleg .h1{background:#c6dcf6}.hleg .h2{background:#85b7eb}.hleg .h3{background:#378add}.hleg .h4{background:#185fa5}.hleg .hx{background:var(--surf2);border:1px dashed var(--line)}
+.chart .tm{transition:opacity .15s}.chart .tml{font-size:12.5px;font-weight:700;font-family:inherit}.chart .tmv{font-size:12px;font-family:inherit;opacity:.85}
+.chart .ln1{fill:none;stroke:var(--s1);stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}.chart .ln2{fill:none;stroke:#8a94a8;stroke-width:2;stroke-dasharray:5 4;stroke-linecap:round}
+.chart .ln1d{fill:var(--s1);stroke:var(--surf);stroke-width:2}.chart .ln1f{fill:var(--s1)}.chart .ln2f{fill:#8a94a8}
+.anim .chart svg.h .mk{transform-box:fill-box;transform-origin:left center;animation:growX .9s cubic-bezier(.2,.8,.2,1) both}
+.anim .chart svg.v .mk{transform-box:fill-box;transform-origin:center bottom;animation:growY .7s cubic-bezier(.2,.8,.2,1) both}
+.anim .chart .tm,.anim .chart .h1,.anim .chart .h2,.anim .chart .h3,.anim .chart .h4{animation:fadeIn .6s ease both}
+.anim .chart .ln1,.anim .chart .ln2{stroke-dasharray:1400;animation:draw 1.3s ease both}
+@keyframes growX{from{transform:scaleX(0)}}@keyframes growY{from{transform:scaleY(0)}}@keyframes fadeIn{from{opacity:0}}@keyframes draw{from{stroke-dashoffset:1400}}
+/* kiosk */
+.khero{text-align:center;padding:34px 20px 26px;border-radius:22px;background:linear-gradient(130deg,#14337a,#1d4499 60%,#2a5aad);color:#fff;margin-bottom:18px;position:relative;overflow:hidden;box-shadow:var(--shadow-hi)}
+.khero::before,.khero::after{content:"";position:absolute;border-radius:50%;border:30px solid rgba(224,165,38,.16)}.khero::before{width:240px;height:240px;right:-70px;top:-90px}.khero::after{width:160px;height:160px;left:-60px;bottom:-80px}
+.khero .wd{font-size:12.5px;letter-spacing:.08em;text-transform:uppercase;opacity:.8;font-weight:600}.khero h2{font-size:clamp(26px,4vw,38px);margin:6px 0 4px}.khero p{margin:0 0 18px;opacity:.9}
+.kbig{max-width:640px;margin:0 auto;position:relative;z-index:1}.kbig input{font-size:19px;padding:16px 18px 16px 48px;border-radius:16px;border:0;box-shadow:0 8px 30px rgba(0,0,0,.25)}.kbig svg{left:16px;width:22px;height:22px}
+.gtiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;margin-bottom:18px}
+.gtile{border:0;border-radius:14px;padding:16px 14px;text-align:left;cursor:pointer;font:inherit;background:var(--gc);color:#fff;display:flex;flex-direction:column;gap:2px;min-height:78px;justify-content:flex-end;transition:transform .15s,box-shadow .15s;box-shadow:var(--shadow)}
+.gtile:hover{transform:translateY(-2px);box-shadow:var(--shadow-hi)}.gtile b{font-size:16px;text-shadow:0 1px 2px rgba(0,0,0,.25)}.gtile span{font-size:12.5px;opacity:.92}
+.spot{display:grid;grid-template-columns:190px 1fr;gap:24px;align-items:center;background:var(--surf);border:1px solid var(--line);border-radius:20px;padding:20px;box-shadow:var(--shadow);margin-bottom:8px;border-top:4px solid var(--gold)}
+.spot .bigcov{width:100%;aspect-ratio:2/3;border-radius:12px;object-fit:cover;box-shadow:var(--shadow-hi);display:block}.spot h2{font-size:26px}.spot .wd{font-size:12.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;display:flex;gap:6px;align-items:center}
+@media (max-width:640px){.spot{grid-template-columns:1fr}.spot .spotc{max-width:160px;margin:0 auto}}
+.podium{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;align-items:end;margin-bottom:12px}
+.pod{text-align:center;display:flex;flex-direction:column;align-items:center;gap:2px}.pod .av{margin-bottom:6px}
+.pbar{width:100%;border-radius:12px 12px 0 0;background:var(--brand);color:var(--onbrand);margin-top:8px;display:flex;flex-direction:column;justify-content:flex-start;padding:10px;font-weight:700;font-size:13px}.pbar span{font-size:26px;line-height:1}
+.pod.p1{order:2}.pod.p1 .pbar{height:120px;background:var(--gold);color:#1b1300}.pod.p2{order:1}.pod.p2 .pbar{height:88px}.pod.p3{order:3}.pod.p3 .pbar{height:66px;opacity:.85}
+.sugg{display:flex;gap:16px;align-items:center;flex-wrap:wrap;background:var(--goldbg);border:1px solid color-mix(in srgb,var(--gold) 55%,transparent);border-radius:18px;padding:16px 20px;margin:22px 0 4px}.sugg h3{font-size:18px}
+#attract{position:fixed;inset:0;z-index:80;background:#0b1a40;color:#fff;display:grid;place-items:center;cursor:pointer;padding:30px}
+.attr-in{display:grid;grid-template-columns:minmax(180px,320px) minmax(0,520px);gap:44px;align-items:center;animation:pgIn .6s ease}
+.attr-in img{width:100%;border-radius:16px;box-shadow:0 30px 80px rgba(0,0,0,.5)}.attr-in .wd{color:var(--gold);font-weight:700;letter-spacing:.08em;text-transform:uppercase;font-size:14px}
+.attr-in h2{font-size:clamp(30px,4.4vw,52px);line-height:1.05;margin:10px 0}.attr-in p{font-size:20px;opacity:.85;margin:0 0 30px}.attr-cta{display:inline-flex;gap:10px;align-items:center;background:rgba(255,255,255,.12);border-radius:99px;padding:12px 20px;font-weight:600;animation:pulse 2s ease-in-out infinite}
+@keyframes pulse{50%{background:rgba(224,165,38,.35)}}
+@media (max-width:700px){.attr-in{grid-template-columns:1fr;text-align:center}.attr-in img{max-width:200px;margin:0 auto}}
+/* spine labels (A4, 3 × 7 labels of 63.5 × 38.1 mm) */
+#printArea{display:none}
+@media print{body.printing>*:not(#printArea){display:none!important}body.printing #printArea{display:block!important}body.printing{background:#fff}
+ @page{size:A4;margin:15mm 7mm}
+ .labels{display:grid;grid-template-columns:repeat(3,63.5mm);grid-auto-rows:38.1mm;column-gap:2.5mm}
+ .lab{padding:2mm 3mm;overflow:hidden;display:flex;flex-direction:column;color:#000;font-family:Arial,sans-serif;break-inside:avoid}
+ .lab .lh{font-size:7pt;font-weight:700;color:#14337a;text-transform:uppercase;letter-spacing:.04em}.lab .lt{font-size:8.5pt;font-weight:700;line-height:1.15;max-height:2.3em;overflow:hidden;margin:1mm 0}
+ .lab svg{width:100%;height:auto;max-height:20mm}}
 </style>
 </head>
 <body>
@@ -353,6 +436,7 @@ ol.steps{padding-left:20px;margin:8px 0}ol.steps li{margin:4px 0}
   <button role="tab" data-tab="desk" class="nl ed" data-tip="Borrow &amp; Return"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M17 3l4 4-4 4M21 7H9M7 21l-4-4 4-4M3 17h12"/></svg><span class="lbl">Borrow &amp; Return</span></button>
   <button role="tab" data-tab="loans" class="nl" data-tip="On loan"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20zM12 6v6l4 2"/></svg><span class="lbl">On loan</span><span class="n" id="n-loans"></span></button>
   <button role="tab" data-tab="holds" class="nl" data-tip="Requests"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M22 12h-6l-2 3h-4l-2-3H2M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></svg><span class="lbl">Requests</span><span class="n" id="n-holds"></span></button>
+  <button role="tab" data-tab="stock" class="nl ed" data-tip="Stock-take"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7V5a2 2 0 0 1 2-2h2M17 3h2a2 2 0 0 1 2 2v2M21 17v2a2 2 0 0 1-2 2h-2M7 21H5a2 2 0 0 1-2-2v-2M7 8v8M10 8v8M14 8v8M17 8v8"/></svg><span class="lbl">Stock-take</span></button>
   <div class="grp nl">Insights</div>
   <button role="tab" data-tab="reports" class="nl" data-tip="Reports"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3v18h18M8 17v-6M13 17V7M18 17v-4"/></svg><span class="lbl">Reports</span></button>
   <button role="tab" data-tab="logs" class="nl" data-tip="Activity log"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg><span class="lbl">Activity log</span></button>
@@ -367,6 +451,7 @@ ol.steps{padding-left:20px;margin:8px 0}ol.steps li{margin:4px 0}
 <header id="hdr" class="hide">
  <button class="ib" id="menuBtn" type="button" aria-label="Open menu"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
  <h1 id="pageTitle">Dashboard</h1>
+ <button class="cmdb" id="cmdBtn" type="button" aria-label="Search everything (Ctrl+K)"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M11 19a8 8 0 1 0 0-16 8 8 0 0 0 0 16zM21 21l-4.35-4.35"/></svg><span class="lbl">Search…</span><kbd>Ctrl K</kbd></button>
  <button class="ib" id="bellBtn" type="button" aria-label="Notifications" aria-haspopup="true" aria-expanded="false" data-tip="Notifications"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 0 1-3.46 0"/></svg><span class="dot hide" id="bellN"></span></button>
  <button class="ib" id="themeBtn" type="button" aria-label="Switch to dark mode" data-tip="Light or dark mode"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path id="themeIco" d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg></button>
  <button class="ib" id="setBtn" type="button" aria-label="Settings" data-tip="Settings"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></button>
@@ -391,12 +476,16 @@ ol.steps{padding-left:20px;margin:8px 0}ol.steps li{margin:4px 0}
 <div id="notif" class="hide" role="dialog" aria-label="Notifications"></div>
 <dialog id="dlg"></dialog>
 <dialog id="cdlg"></dialog>
+<dialog id="kdlg" class="kdlg" aria-label="Search everything"></dialog>
+<div id="printArea" aria-hidden="true"></div>
+<div id="attract" class="hide" aria-hidden="true"></div>
 <div id="toast" role="status"></div>
 <div id="tip" role="tooltip" aria-hidden="true"></div>
 <script src="https://cdn.jsdelivr.net/npm/@zxing/library@0.21.3/umd/index.min.js" integrity="sha384-BzBxP10ZE72aitqj5UMmUsbKFliP/DZqA8Wq+BNNhlIJDGoEd1tpkMYXOg9+n6sB" crossorigin="anonymous"></script>
 <script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
 <script type="module">
 import {initializeApp,deleteApp} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import {initializeAppCheck,ReCaptchaV3Provider} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app-check.js";
 import {getAuth,onAuthStateChanged,signInWithEmailAndPassword,signOut,sendPasswordResetEmail,createUserWithEmailAndPassword,multiFactor,TotpMultiFactorGenerator,getMultiFactorResolver,sendEmailVerification,reload,reauthenticateWithCredential,EmailAuthProvider,updatePassword} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import {initializeFirestore,persistentLocalCache,collection,doc,setDoc,deleteDoc,onSnapshot,writeBatch,getDoc,getDocs,query,orderBy,limit,where,updateDoc,runTransaction,increment,terminate,clearIndexedDbPersistence} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
@@ -415,15 +504,17 @@ const firebaseConfig={
 /* Two-step sign-in with an authenticator app, for every account except the kiosk.
    Keep this true. It must match the security rules, which also require it. */
 const REQUIRE_2FA=true;
+/* Optional: Firebase App Check (reCAPTCHA v3 site key). Leave empty until you have followed SETUP.md, App Check. */
+const APP_CHECK_SITE_KEY="";
 /* ========================================================================================= */
 
-const APP={version:"2.1.1",released:"16 November 2026",firebase:"10.12.2",sheetjs:"0.20.3",zxing:"0.21.3",tesseract:"5.1.1",qr:"qrcode-generator 1.4.4",rules:"2.0 (16 November 2026)",issuer:"IPHS Library"};
-const CHANGES=["2.1.1: much better barcode scanning on laptops and webcams, a guide box, “Take a photo instead”, and typing the ISBN by hand.","New design: sidebar menu that can be collapsed (and slides out on phones), welcome dashboard, grid view for books, student profiles, step-by-step Borrow & Return, notification centre, activity log table with date filters.","Students tab (was Borrowers), settings behind the gear icon, light and dark mode switch.","Interactive dashboard with charts.","Two-step sign-in with an authenticator app, automatic sign-out when idle, strong passwords.","School ID card scanning by GR No., and filling in a new student from a photo of their card.","Reports: monthly report, overdue list by grade, collection insights, top readers and badges, Excel export.","Kiosk: new arrivals, most popular, top readers, suggestions, reviews and recommendations, without showing who borrowed what.","Overdue notices, editable message templates, weekly summary email, optional server sending.","Bulk edit, backup, academic year rollover, Genre, Shelf, Mobile and Staff columns in imports, option to hide student names from read-only accounts."];
+const APP={version:"2.2.0",released:"17 November 2026",firebase:"10.12.2",sheetjs:"0.20.3",zxing:"0.21.3",tesseract:"5.1.1",qr:"qrcode-generator 1.4.4",rules:"2.0 (16 November 2026)",issuer:"IPHS Library"};
+const CHANGES=["2.2.0: Class period mode, due dates that skip weekends and holidays, stock-taking, accession numbers with barcode spine labels and the accession register, online catalogue for phones, Ctrl+K search, automatic book covers, genre colours, new analytics (reading calendar, class reading race, genre map, year-on-year, on-time goal), a new kiosk with Book of the week, and full student history.","2.1.1: much better barcode scanning on laptops and webcams, a guide box, “Take a photo instead”, and typing the ISBN by hand.","New design: sidebar menu that can be collapsed (and slides out on phones), welcome dashboard, grid view for books, student profiles, step-by-step Borrow & Return, notification centre, activity log table with date filters.","Students tab (was Borrowers), settings behind the gear icon, light and dark mode switch.","Interactive dashboard with charts.","Two-step sign-in with an authenticator app, automatic sign-out when idle, strong passwords.","School ID card scanning by GR No., and filling in a new student from a photo of their card.","Reports: monthly report, overdue list by grade, collection insights, top readers and badges, Excel export.","Kiosk: new arrivals, most popular, top readers, suggestions, reviews and recommendations, without showing who borrowed what.","Overdue notices, editable message templates, weekly summary email, optional server sending.","Bulk edit, backup, academic year rollover, Genre, Shelf, Mobile and Staff columns in imports, option to hide student names from read-only accounts."];
 
 let S={books:[],students:[],logs:[],users:[],holds:[],sugg:[],stats:{},pub:null,ready:{}},CAT=new Map();
 let tab="dash",q="",sq="",lq="",kq="",kg="",filt="all",logF="all",showArch=false,unsubs=[],db,auth,me=null,limitedMode=false;
 const configured=!firebaseConfig.apiKey.startsWith("PASTE");
-if(configured){const app=initializeApp(firebaseConfig);auth=getAuth(app);db=initializeFirestore(app,{localCache:persistentLocalCache()})}
+if(configured){const app=initializeApp(firebaseConfig);if(APP_CHECK_SITE_KEY){try{initializeAppCheck(app,{provider:new ReCaptchaV3Provider(APP_CHECK_SITE_KEY),isTokenAutoRefreshEnabled:true})}catch(e){console.warn("App Check",e)}}auth=getAuth(app);db=initializeFirestore(app,{localCache:persistentLocalCache()})}
 
 /* ---------- small helpers ---------- */
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
@@ -434,6 +525,19 @@ const clean=o=>JSON.parse(JSON.stringify(o));
 const num=v=>{const n=+v;return Number.isFinite(n)?n:0};
 const day=86400000,fmt=d=>new Date(d).toLocaleDateString(undefined,{day:"numeric",month:"short"}),fmtL=d=>new Date(d).toLocaleDateString(undefined,{day:"numeric",month:"long",year:"numeric"});
 const eod=t=>{const x=new Date(t);x.setHours(23,59,59,999);return +x};
+const ymd=d=>{d=new Date(d);return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")};
+/* School days: a due date never lands on a weekend day or a holiday set in Settings, Borrowing. */
+const isOff=d=>{d=new Date(d);if((ST.weekend||[]).map(Number).includes(d.getDay()))return true;const k=ymd(d);return(ST.holidays||[]).some(h=>h&&h.from&&k>=h.from&&k<=(h.to||h.from))};
+function dueFrom(start,days){const d=new Date(start+Math.max(1,+days||1)*day);let n=0;while(isOff(d)&&n<180){d.setDate(d.getDate()+1);n++}return eod(+d)}
+/* Genre colours: each genre keeps the same colour everywhere (cards, chips, charts). */
+const GC=["#2a78d6","#eb6834","#1baf7a","#eda100","#e87ba4","#008300","#6250d6","#e34948"];
+const hashS=s=>{let h=2166136261;for(const c of String(s).toLowerCase()){h^=c.charCodeAt(0);h=Math.imul(h,16777619)}return h>>>0};
+/* the 8 most common genres each get their own colour; any others share colours by a hash */
+let GMAP=null,GKEY="";
+const gColor=g=>{g=String(g||"").trim();if(!g)return"#8a94a8";const key=S.books.length+":"+(S.books[0]?.id||"");if(!GMAP||GKEY!==key){GKEY=key;const c={};S.books.forEach(b=>{const x=String(b.genre||"").trim().toLowerCase();if(x)c[x]=(c[x]||0)+1});GMAP=new Map(Object.keys(c).sort((a,b)=>c[b]-c[a]||a.localeCompare(b)).slice(0,8).map((x,i)=>[x,GC[i]]))}return GMAP.get(g.toLowerCase())||GC[hashS(g)%8]};
+const inkOn=hex=>{const n=parseInt(hex.slice(1),16),r=n>>16&255,g=n>>8&255,b=n&255;return(.299*r+.587*g+.114*b)>150?"#14233f":"#fff"};
+const accOf=b=>String(b?.acc||"");
+const findByCode=c=>{c=String(c||"").trim();if(!c)return[];const u=c.toUpperCase(),i=to13(c.replace(/[-\s]/g,"").toUpperCase());return S.books.filter(b=>accOf(b).toUpperCase()===u||(b.isbn&&(b.isbn===c||b.isbn===i)))};
 const mKey=t=>{const d=new Date(t);return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")};
 const mAdd=(key,n)=>{const [y,m]=key.split("-").map(Number);const d=new Date(y,m-1+n,1);return mKey(d)};
 const mName=(key,long)=>{const [y,m]=key.split("-").map(Number);return new Date(y,m-1,1).toLocaleDateString(undefined,{month:long?"long":"short",year:long?"numeric":"2-digit"})};
@@ -455,12 +559,13 @@ const RL={admin:"Administrator",staff:"Librarian",viewer:"Read-only",kiosk:"Kios
 const role=()=>me?.role||"viewer",isAdmin=()=>role()==="admin",canEdit=()=>["admin","staff"].includes(role()),isKiosk=()=>role()==="kiosk";
 const TPL_REMIND="Hello {name}, this is a reminder from the school library. {count_text} due soon: {books}. Please return {it_them} on time. Thank you.";
 const TPL_OVERDUE="Hello {name}, this is a reminder from the school library. {count_text} overdue: {books}. Please return {it_them} as soon as you can. Thank you.";
-const ST0={maxLoans:3,maxLoansStaff:5,loanDays:14,remindDays:2,maxRenewals:2,renewDays:7,autoEmail:false,overdueAfter:3,weeklyOn:false,serverSends:false,idleMinutes:15,hideNamesFromViewer:false,showReadersOnKiosk:true,yearStartMonth:4,badgeBronze:5,badgeSilver:10,badgeGold:20,finalGrade:"XII",
+const ST0={maxLoans:3,maxLoansStaff:5,loanDays:14,remindDays:2,maxRenewals:2,renewDays:7,autoEmail:false,overdueAfter:3,weeklyOn:false,serverSends:false,idleMinutes:15,hideNamesFromViewer:false,showReadersOnKiosk:true,yearStartMonth:4,badgeBronze:5,badgeSilver:10,badgeGold:20,finalGrade:"XII",weekend:[6,0],holidays:[],onTimeGoal:90,accPrefix:"",publicCatalog:false,
  ejService:"",ejTemplate:"",ejKey:"",tplRemind:TPL_REMIND,tplOverdue:TPL_OVERDUE,weeklyTo:""};
 const EMAIL_KEYS=["ejService","ejTemplate","ejKey","tplRemind","tplOverdue","weeklyTo"];
 let ST={...ST0},STa={},STe={};
 const mergeST=()=>{const a={...STa};EMAIL_KEYS.forEach(k=>delete a[k]);ST={...ST0,...a,...STe}};
-const limited=()=>isKiosk()||(role()==="viewer"&&!!ST.hideNamesFromViewer);
+const isPub=()=>role()==="public";
+const limited=()=>isKiosk()||isPub()||(role()==="viewer"&&!!ST.hideNamesFromViewer);
 
 /* ---------- books, copies, students ---------- */
 const root=b=>b.copyOf||b.id,copiesOf=b=>S.books.filter(x=>root(x)===root(b));
@@ -578,10 +683,10 @@ async function showGate(u){showView("gate");const g=gateEl;
 
 /* ----- automatic sign-out for staff, and kiosk reset ----- */
 let lastAct=Date.now(),idleTimer=null,idleWarned=false;
-const touch=()=>{lastAct=Date.now();idleWarned=false};
+const touch=()=>{lastAct=Date.now();idleWarned=false;hideAttract()};
 ["pointerdown","keydown","wheel","touchstart"].forEach(ev=>addEventListener(ev,touch,{passive:true,capture:true}));
 function startIdle(){stopIdle();touch();idleTimer=setInterval(()=>{const idle=Date.now()-lastAct;
- if(isKiosk()){if(idle>60000&&(kq||kg||dlg.open||scrollY>0)){if(dlg.open)closeDlg();kq="";kg="";scrollTo(0,0);render();touch()}return}
+ if(isKiosk()){if(idle>60000&&(kq||kg||dlg.open||scrollY>0)){if(dlg.open)closeDlg();kq="";kg="";scrollTo(0,0);render();lastAct=Date.now()-61000}if(idle>90000&&$("#attract").classList.contains("hide")&&!kq&&!kg)showAttract();return}
  const lim=num(ST.idleMinutes)*60000;if(!lim)return;
  if(idle>lim){stopIdle();doSignOut("You were signed out after "+ST.idleMinutes+" minutes without activity.")}
  else if(idle>lim-60000&&!idleWarned){idleWarned=true;toast("You will be signed out in 1 minute unless you use the app.",true)}},5000)}
@@ -604,11 +709,11 @@ $("#setBtn").addEventListener("click",()=>{tab="settings";selMode=false;sel.clea
 
 /* ================= LIVE DATA ================= */
 const LOGO=`<svg viewBox="0 0 32 32" width="38" height="38" aria-hidden="true"><rect width="32" height="32" rx="9" fill="#e0a526"/><path d="M8 9.5c3-1 6-.7 8 1 2-1.7 5-2 8-1v13c-3-1-6-.7-8 1-2-1.7-5-2-8-1z" fill="#14337a"/><path d="M16 10.5v13" stroke="#e0a526" stroke-width="1.4"/></svg>`;
-function applyRole(){const k=isKiosk(),lim=limited();
+function applyRole(){const k=isKiosk()||isPub(),lim=limited();
  $("#t-users").classList.toggle("hide",!isAdmin());$$("#side .nl").forEach(b=>b.classList.toggle("hide",lim));$$("#side .ed").forEach(b=>b.classList.toggle("hide",lim||!canEdit()));
- $("#side").classList.toggle("hide",k);document.body.classList.toggle("nosider",k);["#setBtn","#menuBtn"].forEach(s=>$(s).classList.toggle("hide",k));$("#bellBtn").classList.toggle("hide",k||lim);
- $("#out").querySelector(".lbl").textContent=k?"Close kiosk":"Sign out";
- $("#whoName").textContent=k?"Student kiosk":(me?.name||auth.currentUser?.email||"");$("#who").textContent=k?"IPHS Library":RL[role()];$("#whoAv").textContent=initials(k?"IPHS":(me?.name||auth.currentUser?.email));
+ $("#side").classList.toggle("hide",k);document.body.classList.toggle("nosider",k);["#setBtn","#menuBtn","#cmdBtn"].forEach(s=>$(s).classList.toggle("hide",k));$("#bellBtn").classList.toggle("hide",k||lim);
+ $("#out").querySelector(".lbl").textContent=isPub()?"Staff sign in":k?"Close kiosk":"Sign out";
+ $("#whoName").textContent=isPub()?"Online catalogue":k?"Student kiosk":(me?.name||auth.currentUser?.email||"");$("#who").textContent=k?"IPHS Library":RL[role()];$("#whoAv").textContent=initials(k?"IPHS":(me?.name||auth.currentUser?.email));
  $("#whoBox").title=auth.currentUser?.email||""}
 /* A catalog entry is a book without loan details: the kiosk (and read-only accounts with names hidden) read only these. */
 const fromCat=c=>({...c,copyOf:c.root&&c.root!==c.id?c.root:undefined,loan:c.out?{}:null,state:c.state||""});
@@ -619,7 +724,7 @@ function startSync(){stopSync();limitedMode=limited();S.ready={};const L=[],on=(
   on(collection(db,"catalog"),r=>{S.books=r.docs.map(d=>fromCat(d.data())).sort((a,b)=>(b.addedAt||0)-(a.addedAt||0));S.ready.books=true;render()},fail);
   on(doc(db,"stats","public"),d=>{S.pub=d.exists()?d.data():null;render()});
  }else{
-  on(collection(db,"books"),r=>{S.books=r.docs.map(d=>d.data()).sort((a,b)=>(b.addedAt||0)-(a.addedAt||0));S.ready.books=true;render();schedSync();schedAuto()},fail);
+  on(collection(db,"books"),r=>{S.books=r.docs.map(d=>d.data()).sort((a,b)=>(b.addedAt||0)-(a.addedAt||0));S.ready.books=true;render();schedSync();schedAuto();if(!coverAuto&&canEdit()){coverAuto=true;setTimeout(()=>fillCovers(false),20000)}},fail);
   on(collection(db,"students"),r=>{S.students=r.docs.map(d=>d.data()).sort((a,b)=>String(a.name).localeCompare(String(b.name)));S.ready.students=true;render();schedSync()},fail);
   on(collection(db,"holds"),r=>{S.holds=r.docs.map(d=>d.data()).filter(h=>h.status==="waiting").sort((a,b)=>a.at-b.at);render()});
   on(collection(db,"suggestions"),r=>{S.sugg=r.docs.map(d=>d.data()).sort((a,b)=>b.at-a.at);render()});
@@ -629,6 +734,7 @@ function startSync(){stopSync();limitedMode=limited();S.ready={};const L=[],on=(
    on(collection(db,"catalog"),r=>{CAT=new Map(r.docs.map(d=>[d.id,d.data()]));schedSync()});
    on(doc(db,"stats","public"),d=>{S.pub=d.exists()?d.data():null;schedSync()});
    on(doc(db,"settings","email"),d=>{STe=d.exists()?d.data():{};mergeST();render();schedAuto()});
+   on(collection(db,"stocktakes"),r=>{STK=r.docs.map(d=>d.data()).sort((a,b)=>b.startedAt-a.startedAt);render()});
   }
   if(isAdmin())on(collection(db,"users"),r=>{S.users=r.docs.map(d=>d.data()).sort((a,b)=>(a.name||"").localeCompare(b.name||""));render()},fail);
  }
@@ -664,7 +770,7 @@ dlg.addEventListener("click",e=>{if(e.target.dataset.close!==undefined)closeDlg(
 function closeDlg(){stopScan();if(dlg.open)dlg.close()}
 dlg.addEventListener("close",()=>{stopScan();idScan=false});
 let sel=new Set(),selMode=false,shownIds=[];
-function render(){if(!me)return;const ae=document.activeElement,fid=ae&&["q","sq","lq","kq","dk-sq","dk-bq","dk-days"].includes(ae.id)?ae.id:null,ps=fid&&ae.type!=="number"?ae.selectionStart:null;
+function render(){if(!me)return;const ae=document.activeElement,fid=ae&&["q","sq","lq","kq","dk-sq","dk-bq","dk-days","dk-cq","stk-in"].includes(ae.id)?ae.id:null,ps=fid&&ae.type!=="number"?ae.selectionStart:null;
  renderView();updateBell();
  if(fid){const n=document.getElementById(fid);if(n&&n!==document.activeElement){n.focus();if(ps!=null)try{n.setSelectionRange(ps,ps)}catch(e){}}}}
 function renderView(){
@@ -673,24 +779,25 @@ function renderView(){
  const late=S.books.filter(isLate).length;
  const setN=(k,v,c)=>{const e=document.getElementById("n-"+k);if(e){e.textContent=v||"";e.classList.toggle("late",!!c)}};
  setN("books",S.books.length);setN("holds",S.holds.length+S.sugg.filter(x=>x.status==="new").length);setN("students",active().length);setN("loans",S.books.filter(b=>b.loan).length,late>0);
- if(isKiosk()){$("#pageTitle").textContent="Find a book";if(!S.ready.books){m.innerHTML=skel();return}return kioskView(m)}
+ if(isKiosk()||isPub()){$("#pageTitle").textContent=isPub()?"Library catalogue":"Find a book";if(!S.ready.books){m.innerHTML=skel();return}return kioskView(m)}
  if(limitedMode&&!["dash","books","settings"].includes(tab))tab="dash";
- if(tab==="desk"&&!canEdit())tab="dash";
+ if((tab==="desk"||tab==="stock")&&!canEdit())tab="dash";
  $("#pageTitle").textContent=TITLES[tab]||"Library";document.title=(TITLES[tab]||"Library")+" – IPHS Library";
- if(tab!==lastTab){lastTab=tab;m.classList.remove("pg");void m.offsetWidth;m.classList.add("pg")}
+ if(tab!==lastTab){lastTab=tab;m.classList.remove("pg");void m.offsetWidth;m.classList.add("pg","anim");clearTimeout(window._an);window._an=setTimeout(()=>m.classList.remove("anim"),1800)}
  if(!S.ready.books&&["dash","books","loans","desk","students"].includes(tab)){m.innerHTML=skel();return}
- const V={settings:settingsView,holds:holdsView,dash:dashView,logs:logsView,users:usersView,reports:reportsView,books:booksView,students:studentsView,loans:loansView,desk:deskView};
+ const V={settings:settingsView,holds:holdsView,dash:dashView,logs:logsView,users:usersView,reports:reportsView,books:booksView,students:studentsView,loans:loansView,desk:deskView,stock:stockView};
  (V[tab]||dashView)(m)}
 const alertHtml=()=>{const late=S.books.filter(isLate).length;return late&&!limitedMode?`<div class="alert">${ico("alert")}<span><b>${plural(late,"book")} ${late>1?"are":"is"} overdue.</b> Students have been waiting to hear from the library.</span><button class="b" data-act="reminders">${ico("mail")}Open reminders</button></div>`:""};
 
 /* one click handler for the whole app */
-const EDIT_ACTS=["dkgo","dkrenew","dkstu","dkbook","dkscan","desklend","addbook","import","editbook","borrow","return","addstu","impstu","editstu","selmode","blend","bret","bdel","bedit","renew","holdlend","holdcancel","sugstat","rmrev","cardstu"];
-const ADMIN_ACTS=["savest","backup","rollover","rebuild","rebuildcat","adduser","edituser"];
+const EDIT_ACTS=["clscan","stkstart","stkdone","stklost","stkcam","blabels","reglabels","findcovers","dkgo","dkrenew","dkstu","dkbook","dkscan","desklend","addbook","import","editbook","borrow","return","addstu","impstu","editstu","selmode","blend","bret","bdel","bedit","renew","holdlend","holdcancel","sugstat","rmrev","cardstu"];
+const ADMIN_ACTS=["assignacc","holadd","holrm","savest","backup","rollover","rebuild","rebuildcat","adduser","edituser"];
 document.addEventListener("click",e=>{if(!me)return;
  const t=e.target.closest("[data-tab]");if(t){tab=t.dataset.tab;selMode=false;sel.clear();document.body.classList.remove("side-open");scrollTo(0,0);render();return}
  const fl=e.target.closest("[data-filt]");if(fl){filt=fl.dataset.filt;render();return}
  const lf=e.target.closest("[data-lf]");if(lf){logF=lf.dataset.lf;render();return}
- const kgb=e.target.closest("[data-kg]");if(kgb){kg=kgb.dataset.kg;render();return}
+ const kgb=e.target.closest("[data-kg]");if(kgb){kg=kgb.dataset.kg;scrollTo(0,0);render();return}
+ const gfb=e.target.closest("[data-gf]");if(gfb){gf=gfb.dataset.gf;render();return}
  const sc=e.target.closest("[data-sel]");if(sc){sc.checked?sel.add(sc.dataset.sel):sel.delete(sc.dataset.sel);render();return}
  const a=e.target.closest("[data-act]");if(!a)return;const id=a.dataset.id,act=a.dataset.act;
  if(EDIT_ACTS.includes(act)&&!canEdit()){toast("Your account is read-only.");return}
@@ -706,7 +813,10 @@ document.addEventListener("click",e=>{if(!me)return;
   drange:()=>{dRange=a.dataset.v;render()},rtab:()=>{rTab=a.dataset.v;tab="reports";render()},stab:()=>{sTab=a.dataset.v;render()},archtog:()=>{showArch=!showArch;render()},
   tbl:()=>{tblOn.has(a.dataset.v)?tblOn.delete(a.dataset.v):tblOn.add(a.dataset.v);render()},gopen:()=>gradeDlg(a.dataset.v),genre:()=>{tab="books";q=a.dataset.v;filt="all";render()},
   odgrade:()=>{tab="reports";rTab="overdue";odG=a.dataset.v;render()},print:()=>print(),xl:()=>exportReport(a.dataset.v),expall:()=>exportAll(),
-  scanfind:()=>scan(code=>{const b=S.books.find(x=>x.isbn===code);if(b){q=code;render();toast("Found: "+b.title)}else if(canEdit()){toast("No book with barcode "+code+". Add it first.");bookForm(null,code)}else toast("No book with barcode "+code+".")})};
+  clscan:()=>{if(a.dataset.v==="id"){idScan=true;scan(c=>{idScan=false;classCode(c)})}else scan(c=>classCode(c))},clclr:()=>{desk.sid="";render()},
+  stkstart:()=>stkStart(),stkdone:()=>stkFinish(),stklost:()=>stkLost(),stkxl:()=>stkExcel(id),stkcam:()=>scan(c=>stkScan(c)),blabels:()=>printLabels(selBooks()),reglabels:()=>printLabels(RX.register?.books||[]),assignacc:()=>assignAcc(),findcovers:()=>fillCovers(true),
+  holadd:()=>{holEdit=holEdit||clean(ST.holidays||[]);holEdit.push({from:"",to:"",name:""});render()},holrm:()=>{holEdit=holEdit||clean(ST.holidays||[]);holEdit.splice(+a.dataset.i,1);render()},copylink:()=>{(navigator.clipboard?navigator.clipboard.writeText(pubLink()):Promise.reject()).then(()=>toast("Link copied."),()=>toast("Copy the link from the box."))},
+  scanfind:()=>scan(code=>{const b=findByCode(code)[0];if(b){q=b.acc&&b.acc.toUpperCase()===String(code).toUpperCase()?b.acc:code;render();toast("Found: "+b.title)}else if(canEdit()){toast("No book with barcode "+code+". Add it first.");bookForm(null,code)}else toast("No book with barcode "+code+".")})};
  A[act]?.()});
 document.addEventListener("keydown",e=>{const t=e.target;if((e.key==="Enter"||e.key===" ")&&t.matches&&t.matches("[role=button][data-act]")){e.preventDefault();t.click()}});
 
@@ -721,7 +831,7 @@ function status(b){
  return SL+`${b.state?"":statusTag(b)} <span class="s">${esc(s?s.name+(gr(s)?" ("+gr(s)+")":""):"Unknown student")} · due ${fmt(b.loan.due)}</span>`}
 const condTag=b=>{if(!b.cond)return"";const k=CONDS.some(c=>c[0]===b.cond);return`<span class="tag cond ${k?"c-"+b.cond.toLowerCase():""}">${esc(b.cond)}</span>`};
 const stars=b=>num(b.rN)?` <span class="s">★ ${(num(b.rSum)/num(b.rN)).toFixed(1)} (${num(b.rN)})</span>`:"";
-const cov=b=>{const s=img(b.cover);return s?`<img class="cov" style="cursor:pointer" tabindex="0" role="button" data-act="detail" data-id="${esc(b.id)}" alt="Open details for ${esc(b.title)}" src="${s}" loading="lazy">`:`<div class="cov" style="cursor:pointer" tabindex="0" role="button" aria-label="Open details for ${esc(b.title)}" data-act="detail" data-id="${esc(b.id)}"></div>`};
+const cov=b=>`<span class="covw" role="button" tabindex="0" data-act="detail" data-id="${esc(b.id)}" aria-label="Open details for ${esc(b.title)}">${cover(b)}</span>`;
 const copyNo=b=>copiesOf(b).sort((x,y)=>(x.addedAt||0)-(y.addedAt||0)).findIndex(x=>x.id===b.id)+1;
 const holdsFor=b=>S.holds.filter(h=>h.root===root(b));
 const canRenew=b=>b.loan&&ST.maxRenewals>0&&(b.loan.renewals||0)<ST.maxRenewals&&!holdsFor(b).length;
@@ -732,18 +842,19 @@ function bookCard(b){const n=(b.photos||[]).length,cp=copiesOf(b).length;
 <div>${condTag(b)}${n?` <button class="chip" data-act="photos" data-id="${esc(b.id)}">${plural(n,"photo")}</button>`:""}${b.genre?` <button class="chip" data-act="similar" data-id="${esc(b.id)}">Similar</button>`:""}${limitedMode?"":` <button class="chip" data-act="bhist" data-id="${esc(b.id)}">History</button>`}</div></div>
 ${selMode||!canEdit()?"":`<div class="acts">${actBtns(b)}<button class="b alt" data-act="editbook" data-id="${esc(b.id)}" aria-label="Edit ${esc(b.title)}">Edit</button></div>`}</div>`}
 const selCount=()=>S.books.filter(b=>sel.has(b.id)).length;
-const selBar=()=>selMode?`<div class="selbar"><b>${selCount()} selected</b><button class="b alt" data-act="selall">Select all shown</button><button class="b" data-act="blend">${ico("lend")}Lend</button><button class="b" data-act="bret">${ico("ret")}Return</button><button class="b alt" data-act="bedit">${ico("edit")}Edit details</button>${isAdmin()?`<button class="b danger" data-act="bdel">${ico("trash")}Delete</button>`:""}<button class="b alt" data-act="selexit">Done</button></div>`:"";
+const selBar=()=>selMode?`<div class="selbar"><b>${selCount()} selected</b><button class="b alt" data-act="selall">Select all shown</button><button class="b" data-act="blend">${ico("lend")}Lend</button><button class="b" data-act="bret">${ico("ret")}Return</button><button class="b alt" data-act="bedit">${ico("edit")}Edit details</button><button class="b alt" data-act="blabels">${ico("file")}Labels</button>${isAdmin()?`<button class="b danger" data-act="bdel">${ico("trash")}Delete</button>`:""}<button class="b alt" data-act="selexit">Done</button></div>`:"";
 const chipRow=()=>`<span style="flex:1"></span>${limitedMode?"":'<button class="chip" data-act="reminders">Reminders</button>'}${canEdit()?`<button class="chip" data-act="${selMode?"selexit":"selmode"}" aria-pressed="${selMode}">${selMode?"Cancel select":"Select"}</button>`:""}`;
 const searchBind=(id,set)=>{const i=$("#"+id);i&&i.addEventListener("input",e=>{set(e.target.value);render()})};
 function booksView(m){
  const ql=q.toLowerCase(),genres=[...new Set(S.books.map(b=>String(b.genre||"").trim()).filter(Boolean))].sort((a,b)=>a.localeCompare(b));if(gf&&!genres.includes(gf))gf="";
- const f=S.books.filter(b=>(!gf||String(b.genre||"").trim()===gf)&&(b.title+" "+(b.author||"")+" "+(b.isbn||"")+" "+(b.genre||"")+" "+(b.shelf||"")).toLowerCase().includes(ql)).filter(b=>filt==="all"||(filt==="avail"&&!b.loan&&!b.state)||(filt==="out"&&b.loan)||(filt==="late"&&isLate(b))||(filt==="unav"&&b.state));
+ const f=S.books.filter(b=>(!gf||String(b.genre||"").trim()===gf)&&(b.title+" "+(b.author||"")+" "+(b.isbn||"")+" "+(b.genre||"")+" "+(b.shelf||"")+" "+accOf(b)).toLowerCase().includes(ql)).filter(b=>filt==="all"||(filt==="avail"&&!b.loan&&!b.state)||(filt==="out"&&b.loan)||(filt==="late"&&isLate(b))||(filt==="unav"&&b.state));
  shownIds=f.map(b=>b.id);const show=f.slice(0,bView==="grid"?240:400);
- m.innerHTML=`${alertHtml()}<div class="bar"><div class="sbox">${ico("search")}<input id="q" type="search" placeholder="Search title, author, genre, shelf or ISBN" value="${esc(q)}" aria-label="Search books"></div>
+ m.innerHTML=`${alertHtml()}<div class="bar"><div class="sbox">${ico("search")}<input id="q" type="search" placeholder="Search title, author, genre, shelf, ISBN or accession No." value="${esc(q)}" aria-label="Search books"></div>
 ${genres.length?`<select id="gf" aria-label="Genre" style="width:auto;min-width:160px"><option value="">All genres</option>${genres.map(g=>`<option ${gf===g?"selected":""}>${esc(g)}</option>`).join("")}</select>`:""}
 <div class="seg sm" role="group" aria-label="View"><button type="button" data-act="bview" data-v="grid" aria-pressed="${bView==="grid"}" aria-label="Grid view" data-tip="Grid view">${ico("grid")}</button><button type="button" data-act="bview" data-v="list" aria-pressed="${bView==="list"}" aria-label="List view" data-tip="List view">${ico("list")}</button></div>
 <button class="b alt" data-act="scanfind">${ico("scan")}Scan ISBN</button>${canEdit()?`<button class="b alt" data-act="import">${ico("upload")}Import</button><button class="b" data-act="addbook">${ico("plus")}Add book</button>`:""}</div>
 <div class="chips">${[["all","All"],["avail","Available"],["out","Borrowed"],["late","Overdue"],["unav","Lost or damaged"]].filter(x=>!limitedMode||["all","avail","out"].includes(x[0])).map(([k,l])=>`<button class="chip" data-filt="${k}" aria-pressed="${filt===k}">${l}</button>`).join("")}${chipRow()}</div>
+${genres.length>1?`<div class="chips gchips" role="group" aria-label="Genres"><button class="chip" data-gf="" aria-pressed="${!gf}">All genres</button>${genres.map(g=>({g,n:S.books.filter(b=>String(b.genre||"").trim()===g).length})).sort((a,b)=>b.n-a.n).slice(0,12).map(({g,n})=>`<button class="chip" data-gf="${esc(g)}" aria-pressed="${gf===g}"><span class="gdot" style="--gc:${gColor(g)}"></span>${esc(g)} <span class="s">${n}</span></button>`).join("")}</div>`:""}
 <div class="s" style="margin:-4px 0 12px">${f.length===S.books.length?plural(S.books.length,"book"):`Showing ${f.length} of ${plural(S.books.length,"book")}`}</div>
 ${f.length?(bView==="grid"?`<div class="bgrid">${show.map(bookTile).join("")}</div>`:show.map(bookCard).join(""))+(f.length>show.length?`<div class="note">Showing the first ${show.length} of ${f.length}. Search or filter to narrow the list.</div>`:""):(S.books.length?emptyBox("search","No books match","Try another word, genre or filter."):emptyBox("book","No books yet","Add the first book, scan its barcode, or import a list from Excel.",canEdit()?`<button class="b" data-act="addbook">${ico("plus")}Add book</button>`:""))}${selBar()}`;
  searchBind("q",v=>q=v);const g=$("#gf");if(g)g.onchange=e=>{gf=e.target.value;render()}}
@@ -762,6 +873,7 @@ function bookForm(b,isbn){coverData=b?b.cover:null;formPhotos=b&&b.photos?[...b.
 <label for="f-genre">Genre (optional)</label><input id="f-genre" maxlength="60" list="genres" value="${esc(b?.genre)}"><datalist id="genres">${[...new Set(GENRES.concat(S.books.map(x=>x.genre).filter(Boolean)))].map(g=>`<option>${esc(g)}</option>`).join("")}</datalist>
 <label for="f-shelf">Shelf location (optional)</label><input id="f-shelf" maxlength="60" value="${esc(b?.shelf)}" placeholder="For example, A-3 or Science, row 2">
 <label for="f-isbn">Barcode (ISBN)</label><div class="bar" style="margin:0"><input id="f-isbn" value="${esc(isbn||b?.isbn||"")}" inputmode="numeric" maxlength="20"><button class="b alt" type="button" data-x="scan">Scan</button><button class="b alt" type="button" data-x="lookup">Look up</button></div><div class="note" id="lk"></div>
+<label for="f-acc">Accession No.</label><input id="f-acc" maxlength="20" value="${esc(b?.acc)}" placeholder="Leave empty to give it the next number" autocomplete="off">
 <label for="f-state">Library status</label><select id="f-state"><option value="">In circulation</option>${Object.entries(STL).map(([k,v])=>`<option value="${k}" ${b?.state===k?"selected":""}>${v}</option>`).join("")}</select>
 <label for="f-snote">Status note (optional)</label><input id="f-snote" maxlength="200" value="${esc(b?.snote)}" placeholder="For example, water damage or lost by a student">
 <label for="f-scost">Replacement cost (optional)</label><input id="f-scost" maxlength="20" value="${esc(b?.scost)}" inputmode="decimal">
@@ -779,20 +891,21 @@ function bookForm(b,isbn){coverData=b?b.cover:null;formPhotos=b&&b.photos?[...b.
  dlg.onclick=async e=>{const x=e.target.dataset.x;if(e.target.dataset.close!==undefined)return closeDlg();
   if(x==="rm"){formPhotos.splice(+e.target.dataset.i,1);drawThumbs()}
   if(x==="clearcond"){$$("input[name=cond]").forEach(r=>r.checked=false);$("#f-cond").style.display="none"}
-  if(x==="scan"){const keep={...(b||{}),title:$("#f-title").value,author:$("#f-author").value,id:b?.id,cover:coverData,cond:readCond(),photos:formPhotos,genre:$("#f-genre").value,shelf:$("#f-shelf").value,state:$("#f-state").value,snote:$("#f-snote").value,scost:$("#f-scost").value};scan(c=>bookForm(keep,c))}
+  if(x==="scan"){const keep={...(b||{}),title:$("#f-title").value,author:$("#f-author").value,id:b?.id,cover:coverData,cond:readCond(),photos:formPhotos,genre:$("#f-genre").value,shelf:$("#f-shelf").value,state:$("#f-state").value,snote:$("#f-snote").value,scost:$("#f-scost").value,acc:$("#f-acc").value};scan(c=>bookForm(keep,c))}
   if(x==="lookup")autoLookup($("#f-isbn").value.trim());
   if(x==="idcover"){if(lastCover)identifyCover(lastCover);else toast("Take or choose a cover photo first.")}
   if(x==="save")saveBookForm(b);
-  if(x==="del"){if(!await ask(b.loan?"This book is currently borrowed. Delete it from the inventory anyway? This cannot be undone.":"Delete “"+b.title+"” from the inventory? This cannot be undone.",{title:"Delete book",ok:"Delete",danger:true}))return;deleteDoc(doc(db,"books",b.id)).catch(fail);addLog({type:"book_del",bid:b.id,bt:b.title});closeDlg()}}}
+  if(x==="del"){if(!await ask(b.loan?"This book is currently borrowed. Delete it from the inventory anyway? This cannot be undone.":"Delete “"+b.title+"” from the inventory? This cannot be undone.",{title:"Delete book",ok:"Delete",danger:true}))return;deleteDoc(doc(db,"books",b.id)).then(()=>orphanHolds([b.id])).catch(fail);addLog({type:"book_del",bid:b.id,bt:b.title});closeDlg()}}}
 async function saveBookForm(b){const title=$("#f-title").value.trim();if(!title){toast("Enter a title first.");return}
  const d={title,author:$("#f-author").value.trim(),isbn:to13($("#f-isbn").value.trim().replace(/[-\s]/g,"").toUpperCase()),cover:img(coverData)?coverData:null,cond:readCond(),photos:formPhotos,genre:$("#f-genre").value.trim(),shelf:$("#f-shelf").value.trim(),state:$("#f-state").value,snote:$("#f-snote").value.trim(),scost:$("#f-scost").value.trim()};
  if(!["","lost","damaged","withdrawn"].includes(d.state))d.state="";
  if(JSON.stringify(d).length>900000){toast("The photos are too large. Remove one and try again.");return}
- const ex=b&&b.id&&S.books.find(z=>z.id===b.id);
+ const ex=b&&b.id&&S.books.find(z=>z.id===b.id),accIn=String($("#f-acc")?.value||"").trim().toUpperCase().replace(/[^A-Z0-9\-\/]/g,"").slice(0,20);
+ if(accIn&&S.books.some(x=>accOf(x).toUpperCase()===accIn&&x.id!==ex?.id)){toast("Another book already has accession number "+accIn+".");return}if(accIn)d.acc=accIn;
  let cp=null;if(!ex){const dup=S.books.find(x=>(d.isbn&&x.isbn===d.isbn)||(x.title.toLowerCase()===d.title.toLowerCase()&&(x.author||"").toLowerCase()===(d.author||"").toLowerCase()));
   if(dup){const n=copiesOf(dup).length;if(await ask("“"+dup.title+"” is already in the library ("+plural(n,"copy","copies")+"). Save this as another copy of it?",{title:"Already in the library",ok:"Save as another copy",cancel:"No"}))cp=root(dup);else if(!await ask("Save it as a separate, unrelated book instead?",{title:"Save separately?",ok:"Save separately"}))return}}
  if(ex){updateDoc(doc(db,"books",ex.id),clean(d)).catch(fail);addLog({type:"book_edit",bid:ex.id,bt:d.title});if((ex.state||"")!==(d.state||""))addLog({type:"book_state",bid:ex.id,bt:d.title,note:(d.state?STL[d.state]:"Back in circulation")+(d.snote?" · "+d.snote:"")+(d.scost?" · cost "+d.scost:"")})}
- else{const nb={id:uid(),loan:null,addedAt:Date.now(),...d,...(cp?{copyOf:cp}:{})};saveBook(nb);addLog({type:"book_add",bid:nb.id,bt:nb.title})}
+ else{const nb={id:uid(),loan:null,addedAt:Date.now(),...d,...(cp?{copyOf:cp}:{})};if(!nb.acc){try{nb.acc=accStr(await reserveAcc(1))}catch(e){}}saveBook(nb);addLog({type:"book_add",bid:nb.id,bt:nb.title})}
  closeDlg();toast("Book saved.")}
 async function lookupISBN(isbn){
  try{const r=await fetch(`https://openlibrary.org/api/books?bibkeys=ISBN:${encodeURIComponent(isbn)}&format=json&jscmd=data`);const d=(await r.json())["ISBN:"+isbn];
@@ -843,8 +956,8 @@ async function readSheet(file){const out=$("#imp-out");if(!file)return;pending=[
  if(!list.length){out.innerHTML=`<div class="note">Nothing to import.${dup?" "+dup+" rows were already in the inventory or repeated.":""}</div>`;return}
  out.innerHTML=`<p><b>${plural(list.length,"book")}</b> ready to add.${dup?` ${dup} skipped because they are already in the inventory or repeated in the file.`:""}${unknown?` ${unknown} could not be found online and will be added as “Unknown title”. You can edit them afterwards.`:""}</p>
 <div class="note">First rows: ${list.slice(0,4).map(x=>esc(x.title)).join("; ")}${list.length>4?"…":""}</div><div class="row"><button class="b" data-x="go">Import ${plural(list.length,"book")}</button></div>`}
-async function runImport(){if(!pending.length)return;const out=$("#imp-out"),items=pending.slice();pending=[];out.innerHTML='<div class="note">Importing… please keep this page open.</div>';const base=Date.now();
- const ok=await commitBatches(items.map((x,j)=>w=>{const id=uid()+uid();w.set(doc(db,"books",id),clean({id,title:x.title,author:x.author||"",isbn:x.isbn||"",cover:x.cover||"",genre:x.genre||"",shelf:x.shelf||"",loan:null,addedAt:base-j}))}));
+async function runImport(){if(!pending.length)return;const out=$("#imp-out"),items=pending.slice();pending=[];out.innerHTML='<div class="note">Importing… please keep this page open.</div>';const base=Date.now();let st=0;try{st=await reserveAcc(items.length)}catch(e){}
+ const ok=await commitBatches(items.map((x,j)=>w=>{const id=uid()+uid();w.set(doc(db,"books",id),clean({id,title:x.title,author:x.author||"",isbn:x.isbn||"",cover:x.cover||"",genre:x.genre||"",shelf:x.shelf||"",loan:null,addedAt:base-j,...(st?{acc:accStr(st+j)}:{})}))}));
  if(ok){addLog({type:"import",note:plural(items.length,"book")+" imported"});closeDlg();toast("Imported "+plural(items.length,"book")+".")}else out.innerHTML='<div class="note">Import failed. Nothing or only part was saved; check the list and try again.</div>'}
 
 /* ----- photos, details, similar ----- */
@@ -858,7 +971,7 @@ function detailsDlg(id){const b=S.books.find(x=>x.id===id);if(!b)return;const cp
  const L=b.loan&&!lim?b.loan:null,ls=L&&stu(L.sid),late=L&&isLate(b),dl=late?Math.ceil((Date.now()-L.due)/day):0;
  open(`<div class="bd"><div>${s?`<img class="bigcov" src="${s}" alt="Cover of ${esc(b.title)}">`:`<div class="bigcov">${esc(b.title)}</div>`}</div><div>
 <h2>${esc(b.title)}</h2><div class="s" style="font-size:14px">${b.author?"by "+esc(b.author):"Author not set"}</div>
-<div class="inl" style="margin:12px 0;gap:6px;flex:none">${lim?avTag(cp):statusTag(b)}${!lim&&cp.length>1?`<span class="tag cond">${av} of ${cp.length} copies available</span>`:""}${num(b.rN)?`<span class="tag gold">★ ${(num(b.rSum)/num(b.rN)).toFixed(1)} from ${plural(num(b.rN),"rating")}</span>`:""}</div>
+<div style="display:flex;flex-wrap:wrap;margin:12px 0;gap:6px">${lim?avTag(cp):statusTag(b)}${!lim&&cp.length>1?`<span class="tag cond">${av} of ${cp.length} copies available</span>`:""}${num(b.rN)?`<span class="tag gold">★ ${(num(b.rSum)/num(b.rN)).toFixed(1)} from ${plural(num(b.rN),"rating")}</span>`:""}</div>
 <dl class="kv"><dt>ISBN</dt><dd>${esc(b.isbn||"–")}</dd><dt>Genre</dt><dd>${esc(b.genre||"–")}</dd><dt>Shelf</dt><dd>${esc(b.shelf||"–")}</dd>${lim?"":`<dt>Condition</dt><dd>${esc(b.cond||"Not recorded")}</dd><dt>Times borrowed</dt><dd>${num(b.borrows)}</dd>${b.lastLent?`<dt>Last borrowed</dt><dd>${fmtL(b.lastLent)}</dd>`:""}${b.addedAt?`<dt>Added</dt><dd>${fmtL(b.addedAt)}</dd>`:""}`}</dl>
 ${L?`<div class="loanbox ${late?"late":""}"><b>${late?"Overdue":"On loan"}</b><dl class="kv" style="margin-top:6px"><dt>Borrowed by</dt><dd>${ls?`<button class="linkbtn" style="padding:0" data-act="profile" data-id="${esc(ls.id)}">${esc(ls.name)}</button>${gr(ls)?" · Grade "+esc(gr(ls)):""}${ls.adm?" · GR "+esc(ls.adm):""}`:"Unknown student"}</dd><dt>Borrowed on</dt><dd>${fmtL(L.date)}</dd><dt>Due back</dt><dd>${fmtL(L.due)}${late?` · <b>${plural(dl,"day")} late</b>`:""}</dd><dt>Renewals</dt><dd>${num(L.renewals)} of ${ST.maxRenewals}</dd></dl></div>`:""}
 ${!lim&&b.state?`<div class="warnbox"><b>${STL[b.state]||"Unavailable"}</b>${b.snote?" · "+esc(b.snote):""}${b.scost?" · replacement cost "+esc(b.scost):""}</div>`:""}
@@ -900,7 +1013,7 @@ async function bulkReturn(){const all=selBooks(),bs=all.filter(b=>b.loan);if(!al
  if(!done)return;done.forEach(({old})=>retLog(old,0));toast("Returned "+plural(done.length,"book")+".");endSel()}
 async function bulkDelete(){const all=selBooks();if(!all.length){toast("Select some books first.");return}const out=all.filter(b=>b.loan).length;
  if(!await ask("Delete "+plural(all.length,"book")+" from the inventory? This cannot be undone."+(out?"\n\n"+out+" of them "+(out>1?"are":"is")+" currently borrowed.":""),{title:"Delete books",ok:"Delete "+plural(all.length,"book"),danger:true}))return;
- if(await commitBatches(all.map(b=>w=>w.delete(doc(db,"books",b.id))))){all.forEach(b=>addLog({type:"book_del",bid:b.id,bt:b.title}));toast("Deleted "+plural(all.length,"book")+".");endSel()}}
+ if(await commitBatches(all.map(b=>w=>w.delete(doc(db,"books",b.id))))){orphanHolds(all.map(b=>b.id));all.forEach(b=>addLog({type:"book_del",bid:b.id,bt:b.title}));toast("Deleted "+plural(all.length,"book")+".");endSel()}}
 function bulkEdit(){const bs=selBooks();if(!bs.length){toast("Select some books first.");return}
  open(`<h2>Edit ${plural(bs.length,"book")}</h2><p class="note" style="margin-top:0">Only the fields you fill in or change are updated. Everything else stays as it is.</p>
 <label for="be-g">Genre</label><input id="be-g" maxlength="60" list="genres2" placeholder="Leave empty to keep"><datalist id="genres2">${[...new Set(GENRES.concat(S.books.map(x=>x.genre).filter(Boolean)))].map(g=>`<option>${esc(g)}</option>`).join("")}</datalist>
@@ -919,8 +1032,8 @@ const statusTag=b=>{if(limitedMode)return b.state?'<span class="tag unav">Unavai
  if(b.state)return`<span class="tag unav">${STL[b.state]||"Unavailable"}</span>`;if(b.loan)return isLate(b)?'<span class="tag late">Overdue</span>':'<span class="tag out">Borrowed</span>';return'<span class="tag">Available</span>'};
 function bookTile(b){const cp=copiesOf(b).length,on=sel.has(b.id),s=img(b.cover);
  return`<div class="bcard ${on?"sel":""}">${selMode?`<input class="ck" type="checkbox" data-sel="${esc(b.id)}" ${on?"checked":""} aria-label="Select ${esc(b.title)}">`:""}
-<div class="bcov" role="button" tabindex="0" data-act="detail" data-id="${esc(b.id)}" aria-label="Open details for ${esc(b.title)}">${s?`<img src="${s}" alt="" loading="lazy">`:`<span class="phd">${esc(b.title)}</span>`}<span class="st">${statusTag(b)}</span></div>
-<div class="bbody"><div class="t" title="${esc(b.title)}">${esc(b.title)}</div><div class="s">${esc(b.author||"Author not set")}</div><div class="meta">${[b.genre&&esc(b.genre),b.isbn&&"ISBN "+esc(b.isbn),cp>1&&`Copy ${copyNo(b)} of ${cp}`,num(b.rN)&&"★ "+(num(b.rSum)/num(b.rN)).toFixed(1)].filter(Boolean).join(" · ")||"&nbsp;"}</div></div>
+<div class="bcov" style="--gc:${gColor(b.genre)}" role="button" tabindex="0" data-act="detail" data-id="${esc(b.id)}" aria-label="Open details for ${esc(b.title)}"><span class="phd">${esc(b.title)}</span>${s?`<img src="${s}" alt="" loading="lazy" data-fb="1">`:""}<span class="st">${statusTag(b)}</span></div>
+<div class="bbody"><div class="t" title="${esc(b.title)}">${esc(b.title)}</div><div class="s">${esc(b.author||"Author not set")}</div><div class="meta">${[b.genre&&`<span class="gdot" style="--gc:${gColor(b.genre)}"></span>${esc(b.genre)}`,b.acc&&"Acc. "+esc(b.acc),b.isbn&&"ISBN "+esc(b.isbn),cp>1&&`Copy ${copyNo(b)} of ${cp}`,num(b.rN)&&"★ "+(num(b.rSum)/num(b.rN)).toFixed(1)].filter(Boolean).join(" · ")||"&nbsp;"}</div></div>
 ${selMode||!canEdit()||limitedMode?"":`<div class="bact">${actBtns(b)}<button class="b alt" style="flex:none" data-act="editbook" data-id="${esc(b.id)}" aria-label="Edit ${esc(b.title)}" data-tip="Edit">${ico("edit")}</button></div>`}</div>`}
 
 /* ================= STUDENTS ================= */
@@ -971,7 +1084,7 @@ ${s?`<label class="chk"><input type="checkbox" id="s-arch" ${s.archived?"checked
    if(S.students.some(z=>z.id===key)){toast("A student with this GR No. already exists.");return}
    try{const w=writeBatch(db);w.set(doc(db,"students",key),clean({...s,id:key,adm,...base,archived}));w.delete(doc(db,"students",s.id));
     S.books.filter(b=>b.loan&&b.loan.sid===s.id).forEach(b=>w.update(doc(db,"books",b.id),{"loan.sid":key}));await w.commit();closeDlg()}catch(err){fail(err)}}
-  if(x==="del"){if(S.books.some(b=>b.loan&&b.loan.sid===s.id)){toast("Return this student’s books before deleting.");return}if(await ask("Delete this student? Their borrowing history stays in the audit log. To keep them in reports, mark them as “Left the school” instead.",{title:"Delete student",ok:"Delete",danger:true})){deleteDoc(doc(db,"students",s.id)).catch(fail);addLog({type:"stu_del",sid:s.id,sn:s.name});closeDlg()}}}}
+  if(x==="del"){if(S.books.some(b=>b.loan&&b.loan.sid===s.id)){toast("Return this student’s books before deleting.");return}if(await ask("Delete this student? Their borrowing history stays in the audit log. To keep them in reports, mark them as “Left the school” instead.",{title:"Delete student",ok:"Delete",danger:true})){deleteDoc(doc(db,"students",s.id)).then(()=>cancelHolds(h=>h.sid===s.id,"student removed")).catch(fail);addLog({type:"stu_del",sid:s.id,sn:s.name});closeDlg()}}}}
 
 /* ----- Excel import: Name, Grade, GR No., Mobile, Email, Type ----- */
 let pendingStu=[];
@@ -1018,10 +1131,10 @@ function stuRow(s){const n=S.books.filter(b=>b.loan&&b.loan.sid===s.id),late=n.f
 function stuProfile(id){const s=stu(id);if(!s)return;const now=S.books.filter(b=>b.loan&&b.loan.sid===id).sort((a,b)=>a.loan.due-b.loan.due),late=now.filter(isLate),yr=yearReads(id),lim=maxFor(s);
  const hist=S.logs.filter(l=>l.sid===id&&["lend","return","renew"].includes(l.type)).slice(0,30),lr=S.logs.filter(l=>l.type==="return"&&l.late&&l.sid===id).length;
  open(`<div class="prof"><span class="av lg" aria-hidden="true">${esc(initials(s.name))}</span><div style="min-width:0"><h2>${esc(s.name)} ${badgeHtml(yr)}</h2><div class="s">${[gr(s)&&"Grade "+esc(gr(s)),s.adm?"GR No. "+esc(s.adm):"No GR No.",s.kind==="staff"?"Staff":"Student",s.mobile&&esc(s.mobile),s.email&&esc(s.email)].filter(Boolean).join(" · ")}</div>${s.archived?'<span class="tag cond" style="margin-top:6px">Left the school</span>':""}</div></div>
-<div class="stats" style="grid-template-columns:repeat(auto-fit,minmax(130px,1fr));margin-bottom:14px"><div><b>${now.length}${lim?`<span class="s" style="font-size:14px"> / ${lim}</span>`:""}</b><span>Books now</span></div><div class="${late.length?"crit":""}"><b>${late.length}</b><span>Overdue</span></div><div><b>${yr}</b><span>This school year</span></div><div><b>${lr}</b><span>Late returns on record</span></div></div>
+<div class="stats" style="grid-template-columns:repeat(auto-fit,minmax(130px,1fr));margin-bottom:14px"><div><b>${now.length}${lim?`<span class="s" style="font-size:14px"> / ${lim}</span>`:""}</b><span>Books now</span></div><div class="${late.length?"crit":""}"><b>${late.length}</b><span>Overdue</span></div><div><b>${yr}</b><span>This school year</span></div><div><b id="pf-late">${lr}</b><span>Late returns on record</span></div></div>
 <div class="grid2" style="gap:18px"><section><h3 style="font-size:15px;margin-bottom:8px">Borrowed now</h3>${now.length?now.map(b=>`<div class="card" style="padding:10px 12px">${cov(b)}<div class="info"><div class="t">${esc(b.title)}</div><div class="s">Due ${fmtL(b.loan.due)}</div><div>${statusTag(b)}${isLate(b)?` <span class="s">${plural(Math.ceil((Date.now()-b.loan.due)/day),"day")} late</span>`:""}</div></div>${canEdit()?`<div class="acts"><button class="b alt" data-act="deskret" data-id="${esc(b.id)}">${ico("ret")}Return</button>${canRenew(b)?`<button class="b alt" data-act="renew" data-id="${esc(b.id)}">Renew</button>`:""}</div>`:""}</div>`).join(""):emptyBox("check","No books borrowed","")}</section>
-<section><h3 style="font-size:15px;margin-bottom:8px">Borrowing history</h3>${hist.length?`<ul class="tl">${hist.map(l=>`<li class="${l.type==="return"?(l.late?"late":"ret"):""}"><b>${l.type==="lend"?"Borrowed":l.type==="renew"?"Renewed":"Returned"}</b> “${esc(l.bt||"")}”<div class="s">${fmtL(num(l.at))}${l.type==="return"&&l.late?` · ${plural(num(l.dl),"day")} late`:""}${l.rating?` · rated ${num(l.rating)} ★`:""}</div></li>`).join("")}</ul><div class="note">From the latest 600 records in the activity log.</div>`:emptyBox("clock","No history yet","")}</section></div>
-<div class="row">${canEdit()&&!s.archived?`<button class="b" data-act="desklend" data-id="${esc(s.id)}">${ico("lend")}Lend a book</button>`:""}${canEdit()?`<button class="b alt" data-act="editstu" data-id="${esc(s.id)}">${ico("edit")}Edit</button>`:""}<button class="b alt" data-close>Close</button></div>`,true);dlg.onclick=null}
+<section><h3 style="font-size:15px;margin-bottom:8px">Borrowing history</h3><div id="pf-hist">${hist.length?`<ul class="tl">${hist.map(l=>`<li class="${l.type==="return"?(l.late?"late":"ret"):""}"><b>${l.type==="lend"?"Borrowed":l.type==="renew"?"Renewed":"Returned"}</b> “${esc(l.bt||"")}”<div class="s">${fmtL(num(l.at))}${l.type==="return"&&l.late?` · ${plural(num(l.dl),"day")} late`:""}${l.rating?` · rated ${num(l.rating)} ★`:""}</div></li>`).join("")}</ul><div class="note">From the latest 600 records in the activity log.</div>`:emptyBox("clock","No history yet","")}</div></section></div>
+<div class="row">${canEdit()&&!s.archived?`<button class="b" data-act="desklend" data-id="${esc(s.id)}">${ico("lend")}Lend a book</button>`:""}${canEdit()?`<button class="b alt" data-act="editstu" data-id="${esc(s.id)}">${ico("edit")}Edit</button>`:""}<button class="b alt" data-close>Close</button></div>`,true);dlg.onclick=null;loadHist(id)}
 
 /* ================= LENDING AND RETURNS ================= */
 let idScan=false,lendCtx=null;
@@ -1044,7 +1157,7 @@ function bulkLend(pre){const all=selBooks(),bs=all.filter(b=>!b.loan&&!b.state);
 ${pickerHtml()}<label for="l-d">Days to keep them</label><input id="l-d" type="number" min="1" max="365" value="${ST.loanDays}">
 <div class="row"><button class="b alt" data-close>Cancel</button><button class="b" data-x="ok">Lend books</button></div>`);bindPicker(pre);
  dlg.onclick=async e=>{if(e.target.dataset.close!==undefined)return closeDlg();if(e.target.dataset.x!=="ok")return;const sid=$("#l-s").value;if(!sid){toast("Choose a student from the list.");return}
-  const p=stu(sid),d=Math.min(365,Math.max(1,+$("#l-d").value||ST.loanDays)),now=Date.now(),loan={sid,date:now,due:eod(now+d*day)},lim=overLimit(sid,bs.length);
+  const p=stu(sid),d=Math.min(365,Math.max(1,+$("#l-d").value||ST.loanDays)),now=Date.now(),loan={sid,date:now,due:dueFrom(now,d)},lim=overLimit(sid,bs.length);
   if(lim){toast(p.name+" can borrow up to "+plural(lim,"book")+" at a time.");return}closeDlg();
   const done=await txBooks(bs.map(b=>b.id),(cur)=>cur.loan||cur.state?null:{...cur,loan,borrows:num(cur.borrows)+1,lastLent:now},t=>stuInTx(t,sid),(t,ctx,out)=>{
    let reads=ctx.st.reads||[];out.forEach(o=>{const rt=root(o.nb);reads=reads.filter(x=>x!==rt).concat(rt);t.set(statRef(now),lendStat(now,{grade:gr(ctx.st),genre:o.nb.genre,sid,rt}),{merge:true})});t.update(ctx.ref,{reads:reads.slice(-40)})});
@@ -1063,7 +1176,7 @@ function giveBack(id){const b=S.books.find(x=>x.id===id);if(!b||!b.loan)return;l
 async function renew(id){const b=S.books.find(x=>x.id===id);if(!b||!b.loan)return false;
  if((b.loan.renewals||0)>=ST.maxRenewals){toast("This loan can only be renewed "+plural(ST.maxRenewals,"time")+".");return false}
  if(holdsFor(b).length){toast("Someone is waiting for this book, so it can't be renewed.");return false}
- const due=eod(Math.max(b.loan.due,Date.now())+ST.renewDays*day);
+ const due=dueFrom(Math.max(b.loan.due,Date.now()),ST.renewDays);
  const r=await txBook(b.id,cur=>{if(!cur.loan||cur.loan.sid!==b.loan.sid)stop("This loan has just changed. Check the book and try again.");if((cur.loan.renewals||0)>=ST.maxRenewals)stop("This loan can't be renewed again.");return{...cur,loan:{...cur.loan,due,renewals:(cur.loan.renewals||0)+1,rem:null,rem2:null}}});
  if(!r)return false;addLog({type:"renew",bid:b.id,bt:b.title,sid:b.loan.sid,sn:stu(b.loan.sid)?.name||"",due});if(dlg.open)closeDlg();toast("Renewed until "+fmtL(due)+".");return due}
 function loansView(m){const o=S.books.filter(b=>b.loan).sort((a,b)=>a.loan.due-b.loan.due);shownIds=o.map(b=>b.id);
@@ -1084,7 +1197,7 @@ function remindersDlg(){const soon=Date.now()+ST.remindDays*day,late=S.books.fil
  dlg.onclick=e=>{if(e.target.dataset.close!==undefined)return closeDlg();if(e.target.dataset.x==="copy"){const t=remMsgs[+e.target.dataset.i];(navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(()=>toast("Message copied."),()=>toast("Could not copy. Select the message text and copy it yourself."))}}}
 
 /* ================= REQUESTS: RESERVATIONS AND SUGGESTIONS ================= */
-const canHold=b=>role()!=="viewer"&&!copiesOf(b).some(c=>!c.loan&&!c.state)&&copiesOf(b).some(c=>!c.state);
+const canHold=b=>role()!=="viewer"&&!isPub()&&!copiesOf(b).some(c=>!c.loan&&!c.state)&&copiesOf(b).some(c=>!c.state);
 function holdDlg(id){const b=S.books.find(x=>x.id===id);if(!b)return;const k=isKiosk();
  open(`<h2>Reserve “${esc(b.title)}”</h2><p class="note" style="margin-top:0">We'll keep a place in line ${k?"for you":"for them"}. Enter ${k?"your":"the student's"} GR No. from the ID card.</p><label for="h-id">GR No.</label><input id="h-id" autocomplete="off" inputmode="numeric" maxlength="30"><div class="row"><button class="b alt" data-close>Cancel</button><button class="b" data-x="ok">Reserve</button></div>`);
  dlg.onclick=async e=>{if(e.target.dataset.close!==undefined)return closeDlg();if(e.target.dataset.x!=="ok")return;const adm=normId($("#h-id").value);if(!adm||!/^[A-Z0-9\-\/]{1,30}$/.test(adm)){toast("Enter the GR No.");return}
@@ -1115,7 +1228,7 @@ function holdCancel(id){const h=S.holds.find(x=>x.id===id);if(!h)return;ask("Can
 function holdDone(b,sid){const h=S.holds.find(x=>x.root===root(b)&&(x.sid===sid||normId(x.adm)===normId(stu(sid)?.adm)));if(h)updateDoc(doc(db,"holds",h.id),{status:"done"}).catch(()=>{})}
 
 /* ================= AUDIT LOG ================= */
-const LT={lend:"Borrowed",return:"Returned",book_add:"Book added",book_edit:"Book edited",book_del:"Book deleted",stu_add:"Student added",stu_del:"Student deleted",stu_arch:"Student marked as left",stu_unarch:"Student back in the school",user_add:"User added",user_edit:"User changed",user_del:"User removed",email:"Email reminder sent",email2:"Overdue notice sent",weekly:"Weekly summary sent",renew:"Loan renewed",book_state:"Status changed",hold_add:"Book reserved",hold_cancel:"Reservation cancelled",bulk_edit:"Books edited together",import:"Imported from Excel",rollover:"New school year",backup:"Backup downloaded",export:"Data exported",stats_rebuild:"Statistics rebuilt",sugg:"Suggestion updated",review_rm:"Review removed",settings:"Settings changed",pw_change:"Password changed"};
+const LT={lend:"Borrowed",return:"Returned",book_add:"Book added",book_edit:"Book edited",book_del:"Book deleted",stu_add:"Student added",stu_del:"Student deleted",stu_arch:"Student marked as left",stu_unarch:"Student back in the school",user_add:"User added",user_edit:"User changed",user_del:"User removed",email:"Email reminder sent",email2:"Overdue notice sent",weekly:"Weekly summary sent",renew:"Loan renewed",book_state:"Status changed",hold_add:"Book reserved",hold_cancel:"Reservation cancelled",bulk_edit:"Books edited together",import:"Imported from Excel",rollover:"New school year",backup:"Backup downloaded",export:"Data exported",stats_rebuild:"Statistics rebuilt",sugg:"Suggestion updated",review_rm:"Review removed",settings:"Settings changed",pw_change:"Password changed",labels:"Labels printed",acc:"Accession numbers assigned",stock:"Stock-take"};
 const logLine=l=>{const ex=l.type==="lend"?"due "+fmt(l.due):l.type==="return"?"was due "+fmt(l.due)+(l.rating?" · rated "+num(l.rating)+" ★":"")+(l.rv?" · “"+l.rv+"”":""):"";
  return`<div class="card" style="display:block;padding:10px 14px"><div class="t">${LT[l.type]||esc(l.type)}${l.type==="return"&&l.late?` <span class="tag late">${plural(num(l.dl),"day")} late</span>`:""}</div><div class="s">${[l.bt,l.sn,l.note,ex].filter(Boolean).map(esc).join(" · ")}</div><div class="s">${new Date(num(l.at)).toLocaleString()} · by ${esc(l.by||"unknown")}</div></div>`};
 function histDlg(t,fn){const L=S.logs.filter(fn);open(`<h2>${esc(t)}</h2>${L.length?L.map(logLine).join(""):'<div class="empty">No records yet.</div>'}<div class="note">From the latest 600 records. Use Reports, Export for the full history.</div><div class="row"><button class="b alt" data-close>Close</button></div>`);dlg.onclick=null}
@@ -1156,7 +1269,7 @@ ${u?`<label class="chk"><input type="checkbox" id="u-a" ${u.active===false?"":"c
    catch(er){toast("Could not add user: "+(er.code==="auth/email-already-in-use"?"that email already has an account.":er.code==="auth/password-does-not-meet-requirements"?"the password does not meet the project's password policy.":(er.code||er.message)),true)}finally{if(app2)deleteApp(app2).catch(()=>{})}}}}
 
 async function doLend(b,sid,days){const p=stu(sid);if(!b||!p)return null;if(b.state){toast("This book is marked "+(STL[b.state]||"unavailable").toLowerCase()+" and can't be lent.");return null}
- const d=Math.min(365,Math.max(1,+days||ST.loanDays)),now=Date.now(),loan={sid,date:now,due:eod(now+d*day)},lim=overLimit(sid,1);
+ const d=Math.min(365,Math.max(1,+days||ST.loanDays)),now=Date.now(),loan={sid,date:now,due:dueFrom(now,d)},lim=overLimit(sid,1);
  if(lim){toast(p.name+" can borrow up to "+plural(lim,"book")+" at a time.");return null}
  const fh=S.holds.find(h=>h.root===root(b));if(fh&&fh.sid!==sid&&!await ask((stu(fh.sid)?.name||"Another student")+" is first in line for this book. Lend it to "+p.name+" anyway?",{title:"This book is reserved",ok:"Lend anyway"}))return null;
  const r=await txBook(b.id,async(cur,t)=>{const{ref,st}=await stuInTx(t,sid);if(cur.loan)stop("This book is already lent out.");if(cur.state)stop("This book is marked "+String(STL[cur.state]||cur.state).toLowerCase()+" and can't be lent.");
@@ -1169,11 +1282,12 @@ async function doReturn(b,rating,rv){const now=Date.now();rv=String(rv||"").repl
   t.set(statRef(now),retStat(now,now>cur.loan.due),{merge:true});return nb});
  if(!r)return null;retLog(r.old,rating,rv);return r}
 let desk={mode:"lend",sid:"",bid:"",sq:"",bq:"",days:null,rating:0,rv:"",done:null,busy:false};
-function deskReset(mode){desk={mode:mode||desk.mode,sid:"",bid:"",sq:"",bq:"",days:null,rating:0,rv:"",done:null,busy:false}}
+function deskReset(mode){desk={mode:mode||desk.mode,sid:"",bid:"",sq:"",bq:"",days:null,rating:0,rv:"",done:null,busy:false,cls:desk.cls||"",log:desk.log||[]}}
 const deskStep=(n,title,cls,body)=>`<section class="step ${cls}"><h3><span class="sn">${cls==="done"?ico("check"):n}</span>${title}</h3>${body}</section>`;
 const bookMatch=(b,ql)=>(b.title+" "+(b.author||"")+" "+(b.isbn||"")).toLowerCase().includes(ql);
-function deskView(m){const L=desk.mode==="lend";
- const head=`<div class="rh"><div style="flex:1;min-width:220px"><h2>${L?"Lend a book":"Return a book"}</h2><div class="s">${L?"Choose the student, then the book, check the due date and confirm.":"Find the book, add an optional rating, and confirm the return."}</div></div><div class="seg" role="group" aria-label="Desk mode"><button type="button" data-act="dkmode" data-v="lend" aria-pressed="${L}">${ico("lend")}Lend</button><button type="button" data-act="dkmode" data-v="ret" aria-pressed="${!L}">${ico("ret")}Return</button></div></div>`;
+function deskView(m){const L=desk.mode==="lend",C=desk.mode==="class";
+ const head=`<div class="rh"><div style="flex:1;min-width:220px"><h2>${C?"Class library period":L?"Lend a book":"Return a book"}</h2><div class="s">${C?"For when a whole class comes in: scan each ID card and book, without any windows.":L?"Choose the student, then the book, check the due date and confirm.":"Find the book, add an optional rating, and confirm the return."}</div></div><div class="seg" role="group" aria-label="Desk mode"><button type="button" data-act="dkmode" data-v="lend" aria-pressed="${L}">${ico("lend")}Lend</button><button type="button" data-act="dkmode" data-v="ret" aria-pressed="${desk.mode==="ret"}">${ico("ret")}Return</button><button type="button" data-act="dkmode" data-v="class" aria-pressed="${C}">${ico("users")}Class period</button></div></div>`;
+ if(C)return classView(m,head);
  if(desk.done){const p=stu(desk.done.sid);m.innerHTML=head+`<section class="step donebox"><div class="ei">${ico("check")}</div><h2>${esc(desk.done.title)}</h2><p class="s" style="font-size:15px">${esc(desk.done.text)}</p><div class="row" style="justify-content:center"><button class="b lg" data-act="dknext">${L?"Lend another book":"Return another book"}</button>${L&&p?`<button class="b alt lg" data-act="dksame">Another book for ${esc(String(p.name).split(" ")[0])}</button>`:""}</div></section>`;return}
  const p=desk.sid?stu(desk.sid):null,b=desk.bid?S.books.find(x=>x.id===desk.bid):null;if(desk.sid&&!p)desk.sid="";if(desk.bid&&!b)desk.bid="";
  if(L){const ql=desk.sq.trim().toLowerCase(),bq=desk.bq.trim().toLowerCase();
@@ -1183,11 +1297,11 @@ function deskView(m){const L=desk.mode==="lend";
   const bRes=bq?S.books.filter(x=>bookMatch(x,bq)).slice(0,10):[];
   const s2=b?`<div class="chosen">${cov(b)}<div style="flex:1;min-width:0"><div class="t">${esc(b.title)}</div><div class="s">${esc(b.author||"")}${copiesOf(b).length>1?" · Copy "+copyNo(b)+" of "+copiesOf(b).length:""}</div><div>${statusTag(b)}</div></div><button class="b alt" data-act="dkclr" data-v="book">Change</button></div>`
    :`<div class="bar" style="margin:0"><div class="sbox">${ico("search")}<input id="dk-bq" type="search" placeholder="Title, author or ISBN" value="${esc(desk.bq)}" aria-label="Find book" autocomplete="off"></div><button class="b alt" data-act="dkscan" data-v="book">${ico("scan")}Scan ISBN</button></div>${bq?(bRes.length?`<ul class="pick">${bRes.map(x=>{const ok=!x.loan&&!x.state;return`<li><button type="button" data-act="dkbook" data-id="${esc(x.id)}" ${ok?"":"disabled"}>${cov(x).replace(/data-act="detail"/,"")}<span style="flex:1;min-width:0"><b>${esc(x.title)}</b><span class="s" style="display:block">${esc(x.author||"")}${copiesOf(x).length>1?" · Copy "+copyNo(x):""}</span></span>${statusTag(x)}</button></li>`}).join("")}</ul>`:'<div class="note">No book matches. Try the ISBN on the back cover.</div>'):'<div class="note">Type the title or ISBN, or scan the barcode on the back cover.</div>'}`;
-  const days=desk.days??ST.loanDays,due=eod(Date.now()+Math.min(365,Math.max(1,+days||1))*day),warn=[];
+  const days=desk.days??ST.loanDays,due=dueFrom(Date.now(),Math.min(365,Math.max(1,+days||1))),warn=[];
   if(p&&overLimit(p.id,1))warn.push(`${esc(p.name)} already has the maximum of ${plural(maxFor(p),"book")}.`);
   if(p){const od=S.books.filter(x=>x.loan&&x.loan.sid===p.id&&isLate(x));if(od.length)warn.push(`${esc(p.name)} has ${plural(od.length,"overdue book")}: ${od.map(x=>"“"+esc(x.title)+"”").join(", ")}.`)}
   if(b&&p){const fh=S.holds.find(h=>h.root===root(b));if(fh&&fh.sid!==p.id)warn.push(`This book is reserved. ${esc(stu(fh.sid)?.name||"Another student")} is first in line.`)}
-  const s3=`<label for="dk-days" style="margin-top:0">Days to keep it</label><input id="dk-days" type="number" min="1" max="365" value="${esc(days)}" style="max-width:140px"><div class="duebox">${ico("cal")}<div><span class="s">Due back on</span><br><b>${new Date(due).toLocaleDateString(undefined,{weekday:"long",day:"numeric",month:"long"})}</b></div></div>
+  const s3=`<label for="dk-days" style="margin-top:0">Days to keep it</label><input id="dk-days" type="number" min="1" max="365" value="${esc(days)}" style="max-width:140px"><div class="duebox">${ico("cal")}<div><span class="s">Due back on</span><br><b>${new Date(due).toLocaleDateString(undefined,{weekday:"long",day:"numeric",month:"long"})}</b><div class="s">Skips weekends and school holidays</div></div></div>
 ${warn.map(w=>`<div class="warnbox">${w}</div>`).join("")}<button class="b lg wide" style="margin-top:14px" data-act="dkgo" ${p&&b&&!desk.busy?"":"disabled"}>${desk.busy?"Saving…":ico("lend")+"Lend book"}</button>${!p||!b?`<div class="note" style="text-align:center">Choose ${!p&&!b?"a student and a book":!p?"a student":"a book"} first.</div>`:""}`;
   m.innerHTML=head+`<div class="desk">${deskStep(1,"Student",p?"done":"cur",s1)}${deskStep(2,"Book",b?"done":p?"cur":"",s2)}${deskStep(3,"Due date and confirm",p&&b?"cur":"",s3)}</div>`;
  }else{const bq=desk.bq.trim().toLowerCase(),out=S.books.filter(x=>x.loan),res=(bq?out.filter(x=>bookMatch(x,bq)||(stu(x.loan.sid)?.name+" "+(stu(x.loan.sid)?.adm||"")).toLowerCase().includes(bq)):out.slice().sort((a,c)=>a.loan.due-c.loan.due)).slice(0,10);
@@ -1201,13 +1315,13 @@ ${warn.map(w=>`<div class="warnbox">${w}</div>`).join("")}<button class="b lg wi
  const di=$("#dk-days");if(di)di.addEventListener("input",e=>{desk.days=e.target.value;render()});
  const rv=$("#dk-rv");if(rv)rv.addEventListener("input",e=>{desk.rv=e.target.value})}
 function deskScan(kind){if(kind==="id"){idScan=true;scan(code=>{idScan=false;const p=findPerson(code);if(!p){toast("No student found for GR No. "+code+".");return}if(p.archived){toast(p.name+" is marked as having left the school.");return}desk.sid=p.id;render()});return}
- scan(code=>{const cps=S.books.filter(x=>x.isbn===code);if(!cps.length){toast("No book with barcode "+code+".");return}
+ scan(code=>{const cps=findByCode(code);if(!cps.length){toast("No book with barcode "+code+".");return}
   const pool=desk.mode==="lend"?cps.filter(x=>!x.loan&&!x.state):cps.filter(x=>x.loan);
   if(!pool.length){toast(desk.mode==="lend"?"Every copy of “"+cps[0].title+"” is borrowed or unavailable.":"No copy of “"+cps[0].title+"” is borrowed.");return}
   if(pool.length===1)desk.bid=pool[0].id;else desk.bq=code;render()})}
 async function deskGo(){const b=S.books.find(x=>x.id===desk.bid);if(!b||desk.busy)return;desk.busy=true;render();
- try{if(desk.mode==="lend"){const p=stu(desk.sid);const loan=await doLend(b,desk.sid,desk.days??ST.loanDays);if(loan)desk.done={sid:p.id,title:"Lent to "+p.name,text:"“"+b.title+"” is due back on "+fmtL(loan.due)+"."}}
-  else{const sid=b.loan?.sid,late=isLate(b),dl=late?Math.ceil((Date.now()-b.loan.due)/day):0;const r=await doReturn(b,desk.rating,desk.rv);if(r){const hn=holdsFor(b)[0];desk.done={sid,title:"Returned",text:"“"+b.title+"” is back"+(late?", "+plural(dl,"day")+" late":" on time")+"."+(hn?" Next in line: "+(stu(hn.sid)?.name||"GR "+hn.adm)+".":"")}}}}
+ try{if(desk.mode==="lend"){const p=stu(desk.sid),bu=badgeUp(desk.sid);const loan=await doLend(b,desk.sid,desk.days??ST.loanDays);if(loan&&bu){confetti(true);toast(p.name+" just earned a "+bu+" reading badge!",true)}if(loan)desk.done={sid:p.id,title:"Lent to "+p.name,text:"“"+b.title+"” is due back on "+fmtL(loan.due)+"."}}
+  else{const sid=b.loan?.sid,late=isLate(b),dl=late?Math.ceil((Date.now()-b.loan.due)/day):0;const r=await doReturn(b,desk.rating,desk.rv);if(r&&!late)confetti(false);if(r){const hn=holdsFor(b)[0];desk.done={sid,title:"Returned",text:"“"+b.title+"” is back"+(late?", "+plural(dl,"day")+" late":" on time")+"."+(hn?" Next in line: "+(stu(hn.sid)?.name||"GR "+hn.adm)+".":"")}}}}
  finally{desk.busy=false;render()}}
 async function deskRenew(){const b=S.books.find(x=>x.id===desk.bid);if(!b)return;const due=await renew(b.id);if(due){desk.done={sid:b.loan.sid,title:"Renewed",text:"“"+b.title+"” is now due back on "+fmtL(due)+"."};render()}}
 let lfFrom="",lfTo="";
@@ -1233,27 +1347,28 @@ function wireChart(el,spec,bands){const pick=i=>spec.onPick&&spec.onPick(spec.da
   if(["ArrowRight","ArrowDown","ArrowLeft","ArrowUp"].includes(e.key)){e.preventDefault();const n=el.querySelector(`.band[data-i="${i+(e.key==="ArrowRight"||e.key==="ArrowDown"?1:-1)}"]`);n&&n.focus()}}}
 function drawCharts(){Object.entries(CH).forEach(([id,spec])=>{const el=document.getElementById(id);if(!el){delete CH[id];return}
  const W=Math.max(240,Math.floor(el.clientWidth||300));if(!spec.data.length||spec.data.every(d=>!d.v)){el.innerHTML=`<div class="empty">${spec.empty||"No data for this period yet."}</div>`;return}
- el.innerHTML=spec.type==="col"?colSvg(spec,W):barSvg(spec,W);wireChart(el,spec)})}
+ el.innerHTML=({col:colSvg,bar:barSvg,heat:heatSvg,tree:treeSvg,line:lineSvg}[spec.type]||barSvg)(spec,W);el.dataset.w=W;wireChart(el,spec)});if($("#main").classList.contains("anim")&&!drawCharts._re)countUp();
+ clearTimeout(drawCharts._t);drawCharts._t=setTimeout(()=>{if(Object.keys(CH).some(id=>{const el=document.getElementById(id);return el&&el.dataset.w&&Math.abs(Math.floor(el.clientWidth)-(+el.dataset.w))>8})){drawCharts._re=true;drawCharts();drawCharts._re=false}},350)}
 /* vertical columns: time or days of the week */
 function colSvg(sp,W){const H=sp.h||190,pl=34,pr=6,pt=12,pb=24,iw=W-pl-pr,ih=H-pt-pb,n=sp.data.length,max=niceMax(Math.max(...sp.data.map(d=>d.v))),bw=iw/n,w=Math.max(2,Math.min(24,bw*.66)),y=v=>pt+ih-v/max*ih;
- const every=Math.max(1,Math.ceil(n/Math.max(1,Math.floor(iw/46))));let s=`<svg viewBox="0 0 ${W} ${H}" height="${H}" role="img" aria-label="${esc(sp.label)}">`;
+ const every=Math.max(1,Math.ceil(n/Math.max(1,Math.floor(iw/46))));let s=`<svg class="v" viewBox="0 0 ${W} ${H}" height="${H}" role="img" aria-label="${esc(sp.label)}">`;
  [0,.5,1].forEach(f=>{const yy=y(max*f);s+=`<line class="${f?"gl":"base"}" x1="${pl}" x2="${W-pr}" y1="${yy}" y2="${yy}"/><text class="ax" x="${pl-6}" y="${yy+4}" text-anchor="end">${fmtN(max*f)}</text>`});
  sp.data.forEach((d,i)=>{const x=pl+i*bw+(bw-w)/2,h=d.v/max*ih,top=pt+ih-h,r=Math.min(4,w/2,h);
-  if(h>0)s+=`<path class="mk ${sp.cls||""}" d="M${x},${pt+ih}V${top+r}Q${x},${top} ${x+r},${top}H${x+w-r}Q${x+w},${top} ${x+w},${top+r}V${pt+ih}Z"/>`;
+  if(h>0)s+=`<path class="mk ${sp.cls||""}" style="animation-delay:${Math.min(i*25,600)}ms" d="M${x},${pt+ih}V${top+r}Q${x},${top} ${x+r},${top}H${x+w-r}Q${x+w},${top} ${x+w},${top+r}V${pt+ih}Z"/>`;
   if(i%every===0||i===n-1&&n<=14)s+=`<text class="ax" x="${pl+i*bw+bw/2}" y="${H-6}" text-anchor="middle">${esc(d.short||d.k)}</text>`;
   s+=`<rect class="band" data-i="${i}" x="${pl+i*bw}" y="${pt}" width="${bw}" height="${ih}" tabindex="0" role="button" aria-label="${esc(d.k)}: ${fmtN(d.v)}"/>`});
  return s+"</svg>"}
 /* horizontal bars: categories, value at the end of the bar */
 function barSvg(sp,W){const rows=sp.data,rh=28,H=rows.length*rh+4,lw=Math.min(150,Math.max(70,W*.32)),vw=40,iw=W-lw-vw-8,max=Math.max(...rows.map(d=>d.v),1);
- let s=`<svg viewBox="0 0 ${W} ${H}" height="${H}" role="img" aria-label="${esc(sp.label)}">`;
+ let s=`<svg class="h" viewBox="0 0 ${W} ${H}" height="${H}" role="img" aria-label="${esc(sp.label)}">`;
  rows.forEach((d,i)=>{const y=i*rh+4,w=Math.max(d.v?3:0,d.v/max*iw),r=Math.min(4,w/2),bh=16,by=y+(rh-bh)/2-2,lab=String(d.k).length>22?String(d.k).slice(0,21)+"…":d.k;
   s+=`<text class="lb" x="${lw-8}" y="${by+12}" text-anchor="end">${esc(lab)}</text>`;
-  if(w>0)s+=`<path class="mk ${sp.cls||""} ${d.dim?"dim":""}" d="M${lw},${by}H${lw+w-r}Q${lw+w},${by} ${lw+w},${by+r}V${by+bh-r}Q${lw+w},${by+bh} ${lw+w-r},${by+bh}H${lw}Z"/>`;
+  if(w>0)s+=`<path class="mk ${sp.cls||""} ${d.dim||(sp.lead&&i>0)?"soft":""}" style="animation-delay:${i*80}ms" d="M${lw},${by}H${lw+w-r}Q${lw+w},${by} ${lw+w},${by+r}V${by+bh-r}Q${lw+w},${by+bh} ${lw+w-r},${by+bh}H${lw}Z"/>`;
   s+=`<text class="vl" x="${lw+w+6}" y="${by+12}">${fmtN(d.v)}</text><rect class="band" data-i="${i}" x="0" y="${y}" width="${W}" height="${rh}" tabindex="0" role="button" aria-label="${esc(d.k)}: ${fmtN(d.v)}"/>`});
  return s+"</svg>"}
 const tblHtml=(cols,rows)=>`<div class="twrap"><table class="tbl"><thead><tr>${cols.map((c,i)=>`<th class="${i?"n":""}">${esc(c)}</th>`).join("")}</tr></thead><tbody>${rows.map(r=>`<tr>${r.map((c,i)=>`<td class="${i?"n":""}">${esc(c)}</td>`).join("")}</tr>`).join("")}</tbody></table></div>`;
 let tblOn=new Set();
-function panel(id,title,sub,spec,cols,rows){const t=tblOn.has(id);return`<section class="panel"><div class="ph"><div><h3>${esc(title)}</h3><div class="sub2">${esc(sub)}</div></div><button class="mini noprint" data-act="tbl" data-v="${id}" aria-pressed="${t}">Table</button></div>${t?tblHtml(cols,rows):chartSlot(spec)}</section>`}
+function panel(id,title,sub,spec,cols,rows,foot=""){const t=tblOn.has(id);return`<section class="panel"><div class="ph"><div><h3>${esc(title)}</h3><div class="sub2">${esc(sub)}</div></div><button class="mini noprint" data-act="tbl" data-v="${id}" aria-pressed="${t}">Table</button></div>${t?tblHtml(cols,rows):chartSlot(spec)+foot}</section>`}
 addEventListener("resize",()=>{clearTimeout(window._rz);window._rz=setTimeout(()=>{if(me&&tab==="dash"&&!isKiosk())render()},200)});
 
 /* ================= DASHBOARD ================= */
@@ -1276,35 +1391,41 @@ function prevTotal(){const now=new Date();
  const pm=rangeMonths(dRange,1);if(!pm.some(k=>S.stats[k]))return null;return sumF(pm,"loans")}
 function deltaHtml(cur,prev,label){if(prev==null)return`<span class="delta flat">No earlier data to compare</span>`;if(!prev&&!cur)return`<span class="delta flat">Same as ${label}</span>`;
  if(!prev)return`<span class="delta up">▲ New activity vs ${label}</span>`;const p=Math.round((cur-prev)/prev*100);return p===0?`<span class="delta flat">Same as ${label}</span>`:`<span class="delta ${p>0?"up":"down"}">${p>0?"▲":"▼"} ${Math.abs(p)}% vs ${label}</span>`}
-function analyticsHtml(){const B=S.books,late=B.filter(isLate),onLoan=B.filter(b=>b.loan).length;
- const months=rangeMonths(),ts=timeSeries(),total=sumF(months,"loans"),rets=sumF(months,"returns"),lateR=sumF(months,"late"),readers=Object.keys(sumMap(months,"byStudent")).length;
+function analyticsHtml(){const B=S.books,late=B.filter(isLate);
+ const months=rangeMonths(),ts=timeSeries(),total=sumF(months,"loans"),rets=sumF(months,"returns"),lateR=sumF(months,"late"),readers=Object.keys(sumMap(months,"byStudent")).length,ontime=rets?Math.round((rets-lateR)/rets*100):null,goal=num(ST.onTimeGoal)||90;
  const prevLabel=dRange==="month"?"same days last month":dRange==="q"?"previous 3 months":"previous 12 months";
  const grades=Object.entries(sumMap(months,"byGrade")).map(([k,v])=>({k,v})).sort((a,b)=>b.v-a.v);
- let gen=Object.entries(sumMap(months,"byGenre")).map(([k,v])=>({k,v})).sort((a,b)=>b.v-a.v);if(gen.length>8){const rest=gen.slice(7).reduce((a,x)=>a+x.v,0);gen=gen.slice(0,7).concat({k:"Other genres",v:rest,other:true})}
- const dowM=sumMap(months,"byDow"),dow=[1,2,3,4,5,6,0].map(d=>({k:DOWL[d],short:DOW[d],v:num(dowM[d])}));
+ let gen=Object.entries(sumMap(months,"byGenre")).map(([k,v])=>({k,v})).sort((a,b)=>b.v-a.v);if(gen.length>9){const rest=gen.slice(8).reduce((a,x)=>a+x.v,0);gen=gen.slice(0,8).concat({k:"Other genres",v:rest,other:true})}
+ const dowM=sumMap(months,"byDow"),dow=[1,2,3,4,5,6,0].filter(d=>!(ST.weekend||[]).map(Number).includes(d)||num(dowM[d])).map(d=>({k:DOWL[d],short:DOW[d],v:num(dowM[d])}));
  const odMap={};late.forEach(b=>{const g=gKey(gr(stu(b.loan.sid)));odMap[g]=(odMap[g]||0)+1});const od=Object.entries(odMap).map(([k,v])=>({k,v})).sort((a,b)=>byGrade(a.k,b.k));
  const topB=Object.entries(sumMap(months,"byBook")).map(([r,v])=>({b:byRoot(r),v})).filter(x=>x.b).sort((a,b)=>b.v-a.v).slice(0,5);
  const topS=Object.entries(sumMap(months,"byStudent")).map(([sid,v])=>({s:stu(sid),v})).filter(x=>x.s).sort((a,b)=>b.v-a.v).slice(0,5);
  const rated=[...new Map(B.filter(b=>num(b.rN)).map(b=>[root(b),b])).values()].sort((a,c)=>num(c.rSum)/num(c.rN)-num(a.rSum)/num(a.rN)||num(c.rN)-num(a.rN)).slice(0,5);
- const hasStats=Object.keys(S.stats).length>0;
+ const hasStats=Object.keys(S.stats).length>0,heat=heatData(16);
+ const ys=yearStart(),yk=mKey(ys),cur=mKey(Date.now()),sy=y=>y+"–"+String(y+1).slice(2);
+ const yoy=Array.from({length:12},(_,i)=>{const k=mAdd(yk,i),k0=mAdd(yk,i-12),a=k>cur?null:num(S.stats[k]?.loans),b=num(S.stats[k0]?.loans);return{k:mName(k,true),short:mName(k).split(" ")[0],a,b,v:Math.max(num(a),b)}});
  const row=(i,t,s,r)=>`<div class="card" style="padding:9px 12px;margin-bottom:6px"><div class="av" style="width:30px;height:30px;font-size:13px">${i+1}</div><div class="info"><div class="t">${t}</div><div class="s">${s}</div></div><b>${r}</b></div>`;
+ const heatLeg=`<div class="hleg" aria-hidden="true">Fewer<i class="h1"></i><i class="h2"></i><i class="h3"></i><i class="h4"></i>More<i class="hx" style="margin-left:12px"></i>Weekend or holiday</div>`;
  return`<div class="rh" style="margin-top:26px"><h2>Borrowing analytics</h2><div class="chips noprint" style="margin:0" role="group" aria-label="Period">${Object.entries(RANGES).map(([k,v])=>`<button class="chip" data-act="drange" data-v="${k}" aria-pressed="${dRange===k}">${v}</button>`).join("")}</div></div>
-<div class="stats" style="grid-template-columns:repeat(auto-fit,minmax(150px,1fr))">
-<div class="s1"><b>${fmtN(total)}</b><span>Loans · ${esc(rangeLabel().toLowerCase())}</span>${deltaHtml(total,prevTotal(),prevLabel)}</div>
-<div><b>${readers}</b><span>Active readers, of ${active().length} students</span></div>
-<div><b>${rets?Math.round(lateR/rets*100)+"%":"–"}</b><span>Returned late · ${plural(rets,"return")}</span></div></div>
-${hasStats?"":`<div class="okbox">Charts fill in as books are lent and returned. If you used the app before this version, an administrator can rebuild the statistics from the audit log in Settings, Data.</div>`}
+<div class="kpis">
+<div class="kpi"><span class="l">Loans · ${esc(rangeLabel().toLowerCase())}</span><b class="cu" data-v="${total}">${fmtN(total)}</b>${deltaHtml(total,prevTotal(),prevLabel)}${spark(weekly(8))}<span class="s">Weekly, last 8 weeks</span></div>
+<div class="kpi"><span class="l">Active readers</span><b class="cu" data-v="${readers}">${fmtN(readers)}</b><span class="delta flat">of ${active().length} students</span>${spark(monthly(6,m=>Object.keys(m.byStudent||{}).length))}<span class="s">Monthly, last 6 months</span></div>
+<div class="kpi"><span class="l">Returned on time</span><b class="cu" data-v="${ontime??0}" data-s="%">${ontime==null?"–":ontime+"%"}</b><span class="delta ${ontime==null?"flat":ontime>=goal?"up":"down"}">${ontime==null?"No returns in this period":ontime>=goal?"✓ Meeting the "+goal+"% goal":"Below the "+goal+"% goal"}</span><div class="meter goal" role="img" aria-label="${ontime??0}% returned on time; goal ${goal}%"><span class="${ontime!=null&&ontime>=goal?"ok":"low"}" style="width:${ontime??0}%"></span><i style="left:${goal}%"></i></div><span class="s">Goal ${goal}% · set in Settings</span></div>
+<div class="kpi"><span class="l">Returns</span><b class="cu" data-v="${rets}">${fmtN(rets)}</b><span class="delta flat">${plural(lateR,"late return")}</span>${spark(monthly(6,m=>num(m.returns)))}<span class="s">Monthly, last 6 months</span></div></div>
+${hasStats?"":`<div class="okbox">Charts fill in as books are lent and returned. If you used the app before version 2, an administrator can rebuild the statistics from the activity log in Settings, Data.</div>`}
 ${panel("t","Loans over time",dRange==="y"?"Per month. Point at a bar for loans and returns.":dRange==="q"?"Per week. Point at a bar for loans and returns.":"Per day this month. Point at a bar for loans and returns.",{type:"col",label:"Loans over time",data:ts,tip:d=>`<b>${esc(d.k)}</b><div class="r"><span>Loans</span><b>${d.v}</b></div><div class="r"><span>Returns</span><span>${d.ret}</span></div><div class="r"><span>Returned late</span><span>${d.late}</span></div>`,onPick:d=>{if(d.month){rTab="monthly";rMonth=d.month;tab="reports";render()}},empty:"No loans in this period yet."},["Period","Loans","Returns","Late"],ts.map(d=>[d.k,d.v,d.ret,d.late]))}
 <div class="grid2">
-${panel("g","Loans by grade","Select a grade to see its readers.",{type:"bar",label:"Loans by grade",data:grades,tip:d=>`<b>Grade ${esc(d.k)}</b>${fmtN(d.v)} loans · ${total?Math.round(d.v/total*100):0}% of all`,onPick:d=>gradeDlg(d.k),empty:"No loans in this period yet."},["Grade","Loans"],grades.map(d=>[d.k,d.v]))}
-${panel("n","Popular genres","Select a genre to see its books.",{type:"bar",label:"Loans by genre",data:gen,tip:d=>`<b>${esc(d.k)}</b>${fmtN(d.v)} loans`,onPick:d=>{if(!d.other&&d.k!=="No genre"){tab="books";q=d.k;filt="all";render()}},empty:"No loans in this period yet."},["Genre","Loans"],gen.map(d=>[d.k,d.v]))}
+${panel("h","Reading calendar","Every school day of the last 16 weeks. Darker means more books lent.",{type:"heat",label:"Reading calendar of loans per school day",heat,data:heat.cells,tip:d=>`<b>${esc(d.k)}</b>${d.hol?"Weekend or holiday · ":""}${plural(d.v,"loan")}`,empty:"No loans in the last 16 weeks yet."},["Day","Loans"],heat.cells.map(c=>[c.k,c.v]),heatLeg)}
+${panel("g","Class reading race","Loans by grade. The leader is highlighted; select a class to see its readers.",{type:"bar",lead:true,label:"Loans by grade",data:grades,tip:d=>`<b>Grade ${esc(d.k)}</b>${fmtN(d.v)} loans · ${total?Math.round(d.v/total*100):0}% of all`,onPick:d=>gradeDlg(d.k),empty:"No loans in this period yet."},["Grade","Loans"],grades.map(d=>[d.k,d.v]))}
+${panel("n","Genre map","Bigger boxes were borrowed more. Select one to see its books.",{type:"tree",h:250,label:"Loans by genre",data:gen,tip:d=>`<b>${esc(d.k)}</b>${fmtN(d.v)} loans · ${total?Math.round(d.v/total*100):0}%`,onPick:d=>{if(!d.other&&d.k!=="No genre"){tab="books";gf=d.k;q="";filt="all";render()}},empty:"No loans in this period yet."},["Genre","Loans"],gen.map(d=>[d.k,d.v]))}
+${panel("y","This school year vs last","Loans per month, "+sy(ys.getFullYear())+" compared with "+sy(ys.getFullYear()-1)+".",{type:"line",label:"Loans per month this school year and last",la:sy(ys.getFullYear()),lb:sy(ys.getFullYear()-1),data:yoy,tip:d=>`<b>${esc(d.k)}</b><div class="r"><span>This year</span><b>${d.a??"–"}</b></div><div class="r"><span>Last year</span><span>${d.b}</span></div>`,empty:"No loans recorded in either school year yet."},["Month","This year","Last year"],yoy.map(d=>[d.k,d.a??"",d.b]))}
 ${panel("w","Busiest days","Loans by day of the week.",{type:"col",label:"Loans by day of the week",data:dow,h:170,tip:d=>`<b>${esc(d.k)}</b>${fmtN(d.v)} loans`,empty:"No loans in this period yet."},["Day","Loans"],dow.map(d=>[d.k,d.v]))}
-${panel("o","Overdue now, by grade","Select a grade for a printable list for the class teacher.",{type:"bar",label:"Overdue books by grade",cls:"crit",data:od,tip:d=>`<b>Grade ${esc(d.k)}</b>${plural(d.v,"overdue book")}`,onPick:d=>{tab="reports";rTab="overdue";odG=d.k;render()},empty:"Nothing is overdue. Well done!"},["Grade","Overdue"],od.map(d=>[d.k,d.v]))}
+${panel("o","Overdue now, by grade","Select a grade for a printable list for the class teacher.",{type:"bar",cls:"crit",label:"Overdue books by grade",data:od,tip:d=>`<b>Grade ${esc(d.k)}</b>${plural(d.v,"overdue book")}`,onPick:d=>{tab="reports";rTab="overdue";odG=d.k;render()},empty:"Nothing is overdue. Well done!"},["Grade","Overdue"],od.map(d=>[d.k,d.v]))}
 </div>
-<div class="grid2">
-<section class="panel"><h3>Most borrowed</h3><div class="sub2">${esc(rangeLabel())}</div>${topB.length?topB.map((x,i)=>row(i,esc(x.b.title),esc(x.b.author||"")+(x.b.genre?" · "+esc(x.b.genre):""),plural(x.v,"loan"))).join(""):'<div class="empty">No loans in this period yet.</div>'}</section>
-<section class="panel"><h3>Top readers</h3><div class="sub2">${esc(rangeLabel())} · badges count the whole school year</div>${topS.length?topS.map((x,i)=>row(i,esc(x.s.name)+" "+badgeHtml(yearReads(x.s.id)),gr(x.s)?"Grade "+esc(gr(x.s)):"",plural(x.v,"book"))).join(""):'<div class="empty">No loans in this period yet.</div>'}</section>
-<section class="panel"><h3>Top rated</h3><div class="sub2">All time, from ratings given at return</div>${rated.length?rated.map((b,i)=>row(i,esc(b.title),esc(b.author||""),"★ "+(num(b.rSum)/num(b.rN)).toFixed(1))).join(""):'<div class="empty">No ratings yet. Ratings are added when a book is returned.</div>'}</section>
+<div class="grid3">
+<section class="panel"><h3>Most borrowed</h3><div class="sub2">${esc(rangeLabel())}</div>${topB.length?topB.map((x,i)=>row(i,esc(x.b.title),esc(x.b.author||"")+(x.b.genre?` · <span class="gdot" style="--gc:${gColor(x.b.genre)}"></span>`+esc(x.b.genre):""),plural(x.v,"loan"))).join(""):emptyBox("book","No loans in this period yet","")}</section>
+<section class="panel"><h3>Top readers</h3><div class="sub2">${esc(rangeLabel())} · badges count the whole school year</div>${topS.length?topS.map((x,i)=>row(i,esc(x.s.name)+" "+badgeHtml(yearReads(x.s.id)),gr(x.s)?"Grade "+esc(gr(x.s)):"",plural(x.v,"book"))).join(""):emptyBox("users","No loans in this period yet","")}</section>
+<section class="panel"><h3>Top rated</h3><div class="sub2">All time, from ratings given at return</div>${rated.length?rated.map((b,i)=>row(i,esc(b.title),esc(b.author||""),"★ "+(num(b.rSum)/num(b.rN)).toFixed(1))).join(""):emptyBox("check","No ratings yet","Ratings are added when a book is returned.")}</section>
 </div>`}
 
 function dashView(m){for(const k in CH)delete CH[k];
@@ -1312,11 +1433,11 @@ function dashView(m){for(const k in CH)delete CH[k];
  const h=new Date().getHours(),first=String(me?.name||"").trim().split(/\s+/)[0]||"there",today=new Date().toLocaleDateString(undefined,{weekday:"long",day:"numeric",month:"long",year:"numeric"});
  const dueToday=onLoan.filter(b=>!isLate(b)&&b.loan.due<=eod(now)).length,dueWeek=onLoan.filter(b=>!isLate(b)&&b.loan.due<=eod(now+6*day)).length,worst=late.length?Math.max(...late.map(b=>Math.ceil((now-b.loan.due)/day))):0;
  const qa=limitedMode?`<button class="b" data-act="gotab" data-v="books">${ico("book")}Browse books</button>`:canEdit()?`<button class="b gold" data-act="gotab" data-v="desk">${ico("desk")}Lend or return</button><button class="b" data-act="addbook">${ico("plus")}Add book</button><button class="b" data-act="addstu">${ico("user")}Add student</button><button class="b" data-act="idsearch">${ico("id")}Scan ID card</button>`:`<button class="b" data-act="gotab" data-v="books">${ico("book")}Browse books</button><button class="b" data-act="gotab" data-v="reports">${ico("chart")}Reports</button>`;
- const card=(ic,c,v,l,sm,x="")=>`<div class="${x}"><div class="stat"><span class="si ${c}">${ico(ic)}</span><div style="min-width:0"><b>${v}</b><span>${l}</span><span class="sm">${sm}</span></div></div></div>`;
+ const card=(ic,c,v,l,sm,x="")=>`<div class="${x}"><div class="stat"><span class="si ${c}">${ico(ic)}</span><div style="min-width:0"><b class="cu" data-v="${String(v).replace(/[^0-9]/g,"")}">${v}</b><span>${l}</span><span class="sm">${sm}</span></div></div></div>`;
  const stats=`<div class="stats">${card("book","blue",fmtN(B.length),"Total books",`${plural(titles,"title")}${genres?" · "+plural(genres,"genre"):""}`)}${card("check","green",fmtN(avail),"Available",B.length?Math.round(avail/B.length*100)+"% of the collection":"–")}${card("clock","amber",fmtN(onLoan.length),"Currently borrowed",limitedMode?"&nbsp;":dueToday?plural(dueToday,"book")+" due back today":dueWeek?dueWeek+" due in the next 7 days":"None due this week")}${limitedMode?"":card("alert",late.length?"red":"green",fmtN(late.length),"Overdue",late.length?`Oldest ${plural(worst,"day")} late · <button class="linkbtn" style="padding:0;font-size:12px" data-act="reminders">Remind</button>`:"Everything is on time",late.length?"crit":"")}</div>`;
  const welcome=`<section class="welcome"><div><div class="wd">${esc(today)}</div><h2>Good ${h<12?"morning":h<17?"afternoon":"evening"}, ${esc(first)}</h2><p>Here's what's happening in your library today.</p></div><div class="qa">${qa}</div></section>`;
  const recent=[...new Map(B.slice().sort((a,c)=>(c.addedAt||0)-(a.addedAt||0)).map(b=>[root(b),b])).values()].slice(0,8);
- const recentHtml=`<section class="panel"><div class="ph"><div><h3>Recently added</h3><div class="sub2">The newest titles in the collection</div></div><button class="mini" data-act="gotab" data-v="books">All books</button></div>${recent.length?`<div class="minibooks">${recent.map(b=>`<button class="minibook" data-act="detail" data-id="${esc(b.id)}" aria-label="${esc(b.title)}">${img(b.cover)?`<img class="cov" src="${img(b.cover)}" alt="" loading="lazy">`:`<span class="cov" style="display:grid;place-items:center;background:linear-gradient(150deg,#1d4499,#14337a);color:#fff;font-size:12px;font-weight:700;padding:8px;text-align:center">${esc(String(b.title).slice(0,40))}</span>`}<span class="t">${esc(b.title)}</span><span class="s" style="display:block">${b.addedAt?ago(b.addedAt):""}</span></button>`).join("")}</div>`:emptyBox("book","No books yet","",canEdit()?`<button class="b" data-act="addbook">${ico("plus")}Add book</button>`:"")}</section>`;
+ const recentHtml=`<section class="panel"><div class="ph"><div><h3>Recently added</h3><div class="sub2">The newest titles in the collection</div></div><button class="mini" data-act="gotab" data-v="books">All books</button></div>${recent.length?`<div class="minibooks">${recent.map(b=>`<button class="minibook" data-act="detail" data-id="${esc(b.id)}" aria-label="${esc(b.title)}">${cover(b)}<span class="t">${esc(b.title)}</span><span class="s" style="display:block">${b.addedAt?ago(b.addedAt):""}</span></button>`).join("")}</div>`:emptyBox("book","No books yet","",canEdit()?`<button class="b" data-act="addbook">${ico("plus")}Add book</button>`:"")}</section>`;
  if(limitedMode){m.innerHTML=welcome+stats+recentHtml;return}
  const feed=S.logs.slice(0,8),od=late.slice().sort((a,c)=>a.loan.due-c.loan.due).slice(0,6);
  const feedHtml=`<section class="panel"><div class="ph"><div><h3>Recent activity</h3><div class="sub2">The latest borrowing and changes</div></div><button class="mini" data-act="gotab" data-v="logs">Activity log</button></div>${feed.length?`<ul class="feed">${feed.map(l=>{const[ic,c]=LCAT(l);return`<li><span class="fi si ${c}">${ico(ic)}</span><div class="fb"><b>${LT[l.type]||esc(l.type)}</b>${l.bt?" · “"+esc(l.bt)+"”":""}${l.sn?` <span class="s">${l.type==="lend"?"to":l.type==="return"?"from":"·"} ${esc(l.sn)}</span>`:""}${l.note&&!l.bt?` <span class="s">${esc(l.note)}</span>`:""}<div class="s">by ${esc(String(l.by||"unknown").split("@")[0])}</div></div><span class="ft">${ago(num(l.at))}</span></li>`}).join("")}</ul>`:emptyBox("activity","Nothing yet","Lending, returns and changes will appear here.")}</section>`;
@@ -1326,12 +1447,13 @@ function dashView(m){for(const k in CH)delete CH[k];
 
 /* ================= REPORTS ================= */
 let rTab="monthly",rMonth=mKey(Date.now()),odG="",rGrade="",RX={},extraMonth={};
-const RT={monthly:"Monthly report",overdue:"Overdue by grade",collection:"Collection insights",readers:"Readers and badges",export:"Export"};
+const RT={monthly:"Monthly report",overdue:"Overdue by grade",collection:"Collection insights",readers:"Readers and badges",register:"Accession register",export:"Export"};
 function reportsView(m){for(const k in CH)delete CH[k];RX={};
  const head=`<div class="chips noprint" role="group" aria-label="Report">${Object.entries(RT).map(([k,v])=>`<button class="chip" data-act="rtab" data-v="${k}" aria-pressed="${rTab===k}">${v}</button>`).join("")}</div>`;
- m.innerHTML=head+`<div id="rep">${({monthly:monthlyRep,overdue:overdueRep,collection:collectionRep,readers:readersRep,export:exportRep}[rTab]||monthlyRep)()}</div>`;
+ m.innerHTML=head+`<div id="rep">${({monthly:monthlyRep,overdue:overdueRep,collection:collectionRep,readers:readersRep,register:registerRep,export:exportRep}[rTab]||monthlyRep)()}</div>`;
  const mi=$("#r-month");if(mi)mi.onchange=e=>{if(/^\d{4}-\d{2}$/.test(e.target.value)){rMonth=e.target.value;render()}};
  const gs=$("#r-grade");if(gs)gs.onchange=e=>{(rTab==="overdue"?(odG=e.target.value):(rGrade=e.target.value));render()};
+ ["r-af","r-at"].forEach(id=>{const e=$("#"+id);if(e)e.onchange=()=>{const v=e.value.replace(/\D/g,"");id==="r-af"?rAF=v:rAT=v;render()}});
  requestAnimationFrame(drawCharts)}
 const repHead=(title,sub,xl)=>`<div class="rh"><h2>${esc(title)}</h2><button class="b alt noprint" data-act="print">Print</button>${xl?`<button class="b alt noprint" data-act="xl" data-v="${xl}">Excel</button>`:""}</div><div class="sub2" style="margin-top:-6px">${sub}</div>`;
 function monthStats(k){if(S.stats[k])return S.stats[k];if(extraMonth[k]!==undefined)return extraMonth[k];extraMonth[k]=null;getDoc(doc(db,"stats","m-"+k)).then(d=>{extraMonth[k]=d.exists()?d.data():{};render()}).catch(()=>{extraMonth[k]={}});return null}
@@ -1399,34 +1521,43 @@ async function exportAll(){toast("Preparing the workbook… this can take a mome
   Suggestions:[["Title","Author","Note","GR No","Status","Date"],...S.sugg.map(x=>[x.title,x.author||"",x.note||"",x.adm,SUGS[x.status]||x.status,fmtL(x.at)])],
   "Audit log":[["When","Action","Book","Student","Details","By"],...logs.map(l=>[new Date(num(l.at)).toLocaleString(),LT[l.type]||l.type,l.bt||"",l.sn||"",[l.note,l.type==="lend"?"due "+fmtL(l.due):"",l.type==="return"&&l.late?plural(num(l.dl),"day")+" late":"",l.rating?"rated "+l.rating:"",l.rv||""].filter(Boolean).join(" · "),l.by||""])]});
  if(ok)addLog({type:"export",note:"Full workbook"})}
+let rAF="",rAT="";
+function registerRep(){const all=S.books.slice().sort((a,b)=>accNum(a)-accNum(b)||(a.addedAt||0)-(b.addedAt||0)),f=num(rAF),t=num(rAT),rows=all.filter(b=>{const n=accNum(b);return(!f||n>=f)&&(!t||n<=t)}),noAcc=S.books.filter(b=>!b.acc).length;
+ RX.register={name:"accession-register-"+ymd(Date.now()),books:rows,sheets:{"Accession register":[["Acc. No.","Date added","Title","Author","ISBN","Genre","Shelf","Status"],...rows.map(b=>[b.acc||"",b.addedAt?fmtL(b.addedAt):"",b.title,b.author||"",b.isbn||"",b.genre||"",b.shelf||"",b.state?STL[b.state]:b.loan?"On loan":"On shelf"])]}};
+ return`<div class="bar noprint"><label for="r-af" style="margin:0;align-self:center">Acc. No. from</label><input id="r-af" inputmode="numeric" value="${esc(rAF)}" style="max-width:120px"><label for="r-at" style="margin:0;align-self:center">to</label><input id="r-at" inputmode="numeric" value="${esc(rAT)}" style="max-width:120px"><button class="b alt" data-act="reglabels">${ico("file")}Print labels for these (${rows.filter(b=>b.acc).length})</button></div>`+repHead("Accession register",`${plural(rows.length,"copy","copies")}${noAcc?` · ${noAcc} without an accession number (assign them in Settings, Data)`:""}.`,"register")+
+ (rows.length?`<div class="panel" style="padding:6px"><div class="twrap"><table class="tbl stack"><thead><tr><th>Acc. No.</th><th>Added</th><th>Title</th><th>Author</th><th>ISBN</th><th>Shelf</th><th>Status</th></tr></thead><tbody>${rows.slice(0,1000).map(b=>`<tr><td data-l="Acc. No."><b>${esc(b.acc||"–")}</b></td><td data-l="Added">${b.addedAt?fmt(b.addedAt)+" "+new Date(b.addedAt).getFullYear():"–"}</td><td data-l="Title">${esc(b.title)}</td><td data-l="Author">${esc(b.author||"–")}</td><td data-l="ISBN">${esc(b.isbn||"–")}</td><td data-l="Shelf">${esc(b.shelf||"–")}</td><td data-l="Status">${statusTag(b)}</td></tr>`).join("")}</tbody></table></div></div>${rows.length>1000?`<div class="note">Showing 1,000 of ${rows.length}. The Excel file has them all.</div>`:""}`:emptyBox("book","No books in this range",""))}
 
 /* ================= KIOSK (reads the catalog only: no borrower details) ================= */
-function kioskView(m){const gs=[...new Set(S.books.map(b=>b.genre).filter(Boolean))].sort(),seen=new Set(),L=[],ql=kq.toLowerCase();
+function kioskView(m){const pub=isPub(),gs=[...new Set(S.books.map(b=>String(b.genre||"").trim()).filter(Boolean))].sort(),seen=new Set(),L=[],ql=kq.toLowerCase(),roots=new Set(S.books.map(root)).size;
  S.books.filter(b=>(!kg||b.genre===kg)&&(b.title+" "+(b.author||"")+" "+(b.isbn||"")+" "+(b.genre||"")).toLowerCase().includes(ql)).forEach(b=>{if(!seen.has(root(b))){seen.add(root(b));L.push(b)}});
- const browsing=!kq&&!kg,uniq=list=>{const s=new Set();return list.filter(b=>!s.has(root(b))&&s.add(root(b)))};
- const tile=b=>`<button class="tile" data-act="detail" data-id="${esc(b.id)}" aria-label="${esc(b.title)}">${img(b.cover)?`<img class="cov" src="${img(b.cover)}" alt="" loading="lazy">`:`<span class="cov"></span>`}<span class="t">${esc(b.title)}</span><span class="s" style="display:block">${esc(b.author||"")}</span><span style="display:block;margin-top:4px">${copiesOf(b).some(c=>!c.loan&&!c.state)?'<span class="tag">Available</span>':'<span class="tag out">Borrowed</span>'}</span></button>`;
- const newest=uniq(S.books.slice().sort((a,b)=>(b.addedAt||0)-(a.addedAt||0))).slice(0,12),popular=uniq(S.books.filter(b=>num(b.borrows)).sort((a,b)=>num(b.borrows)-num(a.borrows))).slice(0,12);
- const P=S.pub,readers=P&&P.readers&&P.top&&P.top.length&&P.month===mKey(Date.now());
- m.innerHTML=`<div class="rh"><h2 style="font-size:22px">Find a book</h2><button class="b alt" data-act="suggest">Suggest a book</button></div><div class="bar"><input id="kq" type="search" style="font-size:18px;padding:14px" placeholder="Search by title, author or subject" value="${esc(kq)}" aria-label="Search books"></div><div class="chips"><button class="chip" data-kg="" aria-pressed="${!kg}">All categories</button>${gs.map(g=>`<button class="chip" data-kg="${esc(g)}" aria-pressed="${kg===g}">${esc(g)}</button>`).join("")}</div>
-${browsing?`${newest.length?`<h2 class="sect">New arrivals</h2><div class="hscroll">${newest.map(tile).join("")}</div>`:""}${popular.length?`<h2 class="sect">Most popular</h2><div class="hscroll">${popular.map(tile).join("")}</div>`:""}
-${readers?`<h2 class="sect">Top readers this month</h2><div class="grid2"><section class="panel">${P.top.slice(0,10).map((r,i)=>`<div class="card" style="padding:8px 12px;margin-bottom:6px"><div class="av" style="width:30px;height:30px;font-size:13px">${i+1}</div><div class="info"><div class="t">${esc(r.n)} ${r.b&&["gold","silver","bronze"].includes(r.b)?`<span class="badge ${r.b}">★ ${r.b[0].toUpperCase()+r.b.slice(1)}</span>`:""}</div><div class="s">${r.g?"Grade "+esc(r.g):""}</div></div><b>${plural(num(r.c),"book")}</b></div>`).join("")}</section>${P.cls&&Object.keys(P.cls).length?`<section class="panel"><h3>Top reader in each class</h3><div class="twrap"><table class="tbl"><tbody>${Object.keys(P.cls).sort(byGrade).map(g=>`<tr><td>${esc(g)}</td><td>${esc(P.cls[g][0]?.n||"")}</td><td class="n">${num(P.cls[g][0]?.c)}</td></tr>`).join("")}</tbody></table></div></section>`:""}</div>`:""}
-<h2 class="sect">All books</h2>`:""}
-${L.length?L.slice(0,browsing?30:100).map(b=>`<div class="card ${copiesOf(b).some(c=>!c.loan&&!c.state)?"":"out"}">${cov(b)}<div class="info"><div class="t" style="font-size:17px">${esc(b.title)}${stars(b)}</div><div class="s">${esc(b.author||"")}</div><div class="s">${b.genre?esc(b.genre):""}${b.genre&&b.shelf?" · ":""}${b.shelf?"Shelf "+esc(b.shelf):""}</div><div>${avTag(copiesOf(b))}</div></div><div class="acts">${canHold(b)?`<button class="b" data-act="hold" data-id="${esc(b.id)}">Reserve</button>`:""}<button class="b alt" data-act="detail" data-id="${esc(b.id)}">Details</button></div></div>`).join("")+(browsing&&L.length>30?`<div class="note">Search or choose a category to see more.</div>`:""):`<div class="empty">No books match. Try another word or category, or <button class="linkbtn" data-act="suggest" style="padding:0">suggest a book</button>.</div>`}`;
+ const browsing=!kq&&!kg,uniq=list=>{const s=new Set();return list.filter(b=>!s.has(root(b))&&s.add(root(b)))},av=b=>copiesOf(b).some(c=>!c.loan&&!c.state);
+ const tile=b=>`<button class="tile" data-act="detail" data-id="${esc(b.id)}" aria-label="${esc(b.title)}">${cover(b)}<span class="t">${esc(b.title)}</span><span class="s" style="display:block">${esc(b.author||"")}</span><span style="display:block;margin-top:4px">${av(b)?'<span class="tag">Available</span>':'<span class="tag out">Borrowed</span>'}</span></button>`;
+ const newest=uniq(S.books.slice().sort((a,b)=>(b.addedAt||0)-(a.addedAt||0))).slice(0,12),popular=uniq(S.books.filter(b=>num(b.borrows)).sort((a,b)=>num(b.borrows)-num(a.borrows))).slice(0,12),W=botw();
+ const P=S.pub,readers=!pub&&P&&P.readers&&P.top&&P.top.length&&P.month===mKey(Date.now());
+ const gcount=g=>new Set(S.books.filter(b=>b.genre===g).map(root)).size;
+ m.innerHTML=`<section class="khero"><div class="wd">${pub?"Indian Public High School · online catalogue":"Indian Public High School Library"}</div><h2>What will you read next?</h2><p>Search ${plural(roots,"book")} in the library${pub?". Come to the library desk to borrow.":"."}</p><div class="sbox kbig">${ico("search")}<input id="kq" type="search" placeholder="Search by title, author or subject" value="${esc(kq)}" aria-label="Search books"></div></section>
+${gs.length?`<div class="gtiles">${(kg?[`<button class="gtile" data-kg="" style="--gc:#14337a">${ico("x")}<b>All categories</b></button>`]:[]).concat(gs.slice(0,kg?0:12).map(g=>`<button class="gtile" data-kg="${esc(g)}" style="--gc:${gColor(g)}"><b>${esc(g)}</b><span>${plural(gcount(g),"book")}</span></button>`)).join("")}</div>`:""}
+${browsing?`${W?`<section class="spot"><div class="spotc">${cover(W.b,"bigcov")}</div><div style="min-width:0"><div class="wd" style="color:var(--warn)">${ico("star")} Book of the week</div><h2>${esc(W.b.title)}</h2><p class="s" style="font-size:15px;margin:2px 0 10px">${[W.b.author,W.b.genre].filter(Boolean).map(esc).join(" · ")}</p><div style="display:flex;gap:8px;flex-wrap:wrap">${av(W.b)?'<span class="tag">Available now</span>':'<span class="tag out">Borrowed right now</span>'}<span class="tag gold plain">${esc(W.why)}</span></div>${(W.b.reviews||[]).find(r=>r.t)?`<div class="rev" style="margin-top:12px">“${esc((W.b.reviews||[]).find(r=>r.t).t)}”</div>`:""}<div class="row" style="justify-content:flex-start"><button class="b" data-act="detail" data-id="${esc(W.b.id)}">See details</button>${!pub&&canHold(W.b)?`<button class="b alt" data-act="hold" data-id="${esc(W.b.id)}">Reserve</button>`:""}</div></div></section>`:""}
+${newest.length?`<h2 class="sect">New arrivals</h2><div class="hscroll">${newest.map(tile).join("")}</div>`:""}${popular.length?`<h2 class="sect">Most popular</h2><div class="hscroll">${popular.map(tile).join("")}</div>`:""}
+${readers?`<h2 class="sect">Top readers this month</h2><div class="podium">${P.top.slice(0,3).map((r,i)=>`<div class="pod p${i+1}"><div class="av lg">${esc(initials(r.n))}</div><b>${esc(r.n)}</b><span class="s">${r.g?"Grade "+esc(r.g):""}</span><div class="pbar"><span>${i+1}</span>${plural(num(r.c),"book")}</div></div>`).join("")}</div>${P.top.length>3?`<div class="panel">${P.top.slice(3,10).map((r,i)=>`<div class="card" style="padding:8px 12px;margin-bottom:6px"><div class="av" style="width:30px;height:30px;font-size:13px">${i+4}</div><div class="info"><div class="t">${esc(r.n)} ${r.b&&["gold","silver","bronze"].includes(r.b)?`<span class="badge ${r.b}">★ ${r.b[0].toUpperCase()+r.b.slice(1)}</span>`:""}</div><div class="s">${r.g?"Grade "+esc(r.g):""}</div></div><b>${plural(num(r.c),"book")}</b></div>`).join("")}</div>`:""}`:""}
+${pub?"":`<section class="sugg"><div>${ILLU.inbox}</div><div style="flex:1;min-width:200px"><h3>Can't find the book you want?</h3><p class="s">Tell the librarian and they may order it for the library.</p></div><button class="b gold lg" data-act="suggest">${ico("bulb")}Suggest a book</button></section>`}
+<h2 class="sect">All books</h2>`:`<div class="s" style="margin:4px 0 12px">${plural(L.length,"book")} found${kg?" in "+esc(kg):""}</div>`}
+${L.length?L.slice(0,browsing?30:120).map(b=>`<div class="card ${av(b)?"":"out"}"><span class="covw" data-act="detail" data-id="${esc(b.id)}" role="button" tabindex="0" aria-label="Details for ${esc(b.title)}">${cover(b)}</span><div class="info"><div class="t" style="font-size:17px">${esc(b.title)}${stars(b)}</div><div class="s">${esc(b.author||"")}</div><div class="s">${b.genre?`<span class="gdot" style="--gc:${gColor(b.genre)}"></span>${esc(b.genre)}`:""}${b.genre&&b.shelf?" · ":""}${b.shelf?"Shelf "+esc(b.shelf):""}</div><div>${avTag(copiesOf(b))}</div></div><div class="acts">${!pub&&canHold(b)?`<button class="b" data-act="hold" data-id="${esc(b.id)}">Reserve</button>`:""}<button class="b alt" data-act="detail" data-id="${esc(b.id)}">Details</button></div></div>`).join("")+(browsing&&L.length>30?`<div class="note">Search or choose a category to see more.</div>`:""):emptyBox("search","No books match",pub?"Try another word or category.":`Try another word or category, or <button class="linkbtn" data-act="suggest" style="padding:0">suggest a book</button>.`)}`;
  searchBind("kq",v=>kq=v)}
 
 /* ================= BARCODE AND ID CARD SCANNING ================= */
 let stream=null,scanning=false,zxr=null;
 const isIsbnLike=c=>/^97[89]\d{10}$/.test(c)||validISBN(c);
 /* ID cards: the barcode above the photo holds the GR No. (for example 9281). Book barcodes are refused in this mode. */
-const okCode=c=>idScan?(/^[A-Za-z0-9\-\/]{1,15}$/.test(c)&&!isIsbnLike(c)):(validISBN(c)||S.books.some(b=>b.isbn===c)||/^\d{8,14}$/.test(c));
+const okCode=c=>idScan?(/^[A-Za-z0-9\-\/]{1,15}$/.test(c)&&!isIsbnLike(c)):(validISBN(c)||findByCode(c).length>0||/^\d{8,14}$/.test(c));
 const zxHints=()=>{if(!window.ZXing)return null;const h=new Map();h.set(ZXing.DecodeHintType.TRY_HARDER,true);return h};
 async function scan(cb){
- if(!navigator.mediaDevices?.getUserMedia){toast("The camera needs a secure page. Open the app from its https:// address.");return}
+ const noCam=!navigator.mediaDevices?.getUserMedia;
  const tipTxt=idScan?"Hold the ID card so the barcode above the photo sits inside the box. Upright or sideways both work.":"Hold the barcode on the back cover inside the box, about 15 cm from the camera, in good light.";
  open(`<h2>${idScan?"Scan ID card":"Scan ISBN barcode"}</h2><div class="scanbox"><video id="vid" playsinline muted></video><div class="scanframe" aria-hidden="true"></div></div>
 <div class="note" id="sc-st" role="status">${tipTxt}</div>
 <div class="row" style="justify-content:flex-start;margin-top:10px"><label class="b alt" style="margin:0;color:var(--brand)">${ico("upload")}Take a photo instead<input type="file" id="sc-file" accept="image/*" capture="environment" hidden></label>${idScan?`<button class="b alt" type="button" data-x="ocr">Read the card text</button>`:""}</div>
-<label for="sc-man">Or type the ${idScan?"GR No.":"ISBN"}</label><div class="bar" style="margin:0"><input id="sc-man" inputmode="numeric" maxlength="20" autocomplete="off"><button class="b" type="button" data-x="man">Use</button></div>
+<label for="sc-man">Or type the ${idScan?"GR No.":"ISBN or accession No."} and press Enter</label><div class="bar" style="margin:0"><input id="sc-man" inputmode="numeric" maxlength="20" autocomplete="off"><button class="b" type="button" data-x="man">Use</button></div>
 <div class="row"><button class="b alt" data-close>Cancel</button></div>`);
  const say=t=>{const a=$("#sc-st");if(a)a.textContent=t};
  const done=code=>{stopScan();if(dlg.open)dlg.close();cb(code)};
@@ -1436,10 +1567,12 @@ async function scan(cb){
    if("BarcodeDetector" in window){try{const r=await new BarcodeDetector().detect(c);v=r.map(x=>String(x.rawValue).trim()).find(okCode)||null}catch(er){}}
    if(!v)v=zxStill(c,okCode);
    if(v)fin(v);else say("No barcode found in that photo. Take it straight on, close enough that the barcode fills about half the picture, without glare.")}catch(er){say("That photo could not be opened.")}e.target.value=""};
+ $("#sc-man").addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();dlg.querySelector('[data-x="man"]').click()}});
  dlg.onclick=async e=>{if(e.target.dataset.close!==undefined)return closeDlg();const x=e.target.closest("[data-x]")?.dataset.x;
   if(x==="man"){const raw=$("#sc-man").value.trim(),v=idScan?normId(raw):to13(raw.replace(/[-\s]/g,"").toUpperCase());if(v)done(v);return}
   if(x==="ocr"){const v=$("#vid");if(!v||!v.videoWidth){say("The camera is not ready yet.");return}const c=document.createElement("canvas");c.width=v.videoWidth;c.height=v.videoHeight;c.getContext("2d").drawImage(v,0,0);
    say("Reading the card… hold still.");try{const r=await readCard(c,say);if(r.gr)done(r.gr);else say("Could not find the GR No. Try better light, or type it below.")}catch(err){say("Could not read the card: "+(err.message||err))}}};
+ if(noCam){const sb=$(".scanbox");if(sb)sb.remove();say(isSecureContext?"This device has no camera the browser can use. Take a photo or type the number below.":"The camera only works when the app is opened from its https:// address. Take a photo or type the number below.");setTimeout(()=>$("#sc-man")?.focus(),50);return}
  try{const v=$("#vid");scanning=true;
   stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:"environment",width:{ideal:1920},height:{ideal:1080},advanced:[{focusMode:"continuous"}]}});
   v.srcObject=stream;await v.play();
@@ -1491,7 +1624,7 @@ function zxStill(c,accept){const wins=[[0,0,1,1],[.15,.15,.7,.7],[.3,.3,.4,.4]];
  for(const deg of [0,90,-8,8,82,98])for(const wdw of wins){const v=zxDecode(cropTo(c,c.width,c.height,wdw,1100,deg));if(v&&accept(v))return v}return null}
 
 /* ================= SETTINGS (gear icon) ================= */
-let sTab="account";
+let sTab="account",holEdit=null;
 const STABS={account:"My account",borrowing:"Borrowing",messages:"Reminders and emails",security:"Security and privacy",data:"Data",about:"Version"};
 function settingsView(m){if(isKiosk()){tab="dash";return render()}
  const tabs=Object.keys(STABS).filter(k=>isAdmin()||["account","about"].includes(k));if(!tabs.includes(sTab))sTab="account";
@@ -1500,6 +1633,8 @@ function settingsView(m){if(isKiosk()){tab="dash";return render()}
  const SI={account:"user",borrowing:"book",messages:"mail",security:"shield",data:"file",about:"info"};
  m.innerHTML=`<div class="setgrid"><div class="setnav" role="group" aria-label="Settings section">${tabs.map(k=>`<button type="button" data-act="stab" data-v="${k}" aria-pressed="${sTab===k}">${ico(SI[k])}${STABS[k]}</button>`).join("")}</div><div id="set-body">${({account:setAccount,borrowing:setBorrowing,messages:setMessages,security:setSecurity,data:setData,about:setAbout}[sTab])()}</div></div>`;
  const pf=$("#pw-form");if(pf)pf.onsubmit=changePw;
+ $$("[data-hi]").forEach(el=>el.addEventListener("input",()=>{holEdit=holEdit||clean(ST.holidays||[]);const h=holEdit[+el.dataset.hi];if(h)h[el.dataset.hf]=el.value}));
+ const pq=$("#pubqr");if(pq)loadQR().then(()=>{const qr=qrcode(0,"M");qr.addData(pubLink());qr.make();pq.innerHTML=qr.createImgTag(4,0)}).catch(()=>pq.remove());
  const th=$("#st-theme");if(th)th.onchange=e=>setTheme(e.target.value)}
 const fld=(id,l,v,h,t="number",x="")=>`<label for="${id}">${l}</label><input id="${id}" type="${t}" ${t==="number"?'min="0" max="999"':'maxlength="200"'} value="${esc(v)}" ${x}>${h?`<div class="note">${h}</div>`:""}`;
 const chk=(id,l,v)=>`<label class="chk" style="margin-top:12px"><input type="checkbox" id="${id}" ${v?"checked":""}> ${l}</label>`;
@@ -1516,7 +1651,10 @@ async function changePw(e){e.preventDefault();const msg=$("#pw-m"),u=auth.curren
 function setBorrowing(){return`<section class="panel"><h3>Loans</h3>${fld("st-ml","Maximum books per student",ST.maxLoans,"The default for every student. Use 0 for no limit. You can override it for one person on their profile.")}${fld("st-ms","Maximum books per staff member",ST.maxLoansStaff,"")}${fld("st-ld","Default days to keep a book",ST.loanDays,"Pre-filled when lending. Books are due at the end of that day.")}${fld("st-mr","Times a loan can be renewed",ST.maxRenewals,"Use 0 to turn renewals off.")}${fld("st-rn","Days added by each renewal",ST.renewDays,"")}</section>
 <section class="panel"><h3>School year and reading badges</h3><label for="st-ys">School year starts in</label><select id="st-ys" style="max-width:240px">${Array.from({length:12},(_,i)=>`<option value="${i+1}" ${+ST.yearStartMonth===i+1?"selected":""}>${new Date(2000,i,1).toLocaleDateString(undefined,{month:"long"})}</option>`).join("")}</select><div class="note">Badges count books borrowed since this month.</div>
 ${fld("st-bb","Bronze badge: books in the school year",ST.badgeBronze,"")}${fld("st-bs","Silver badge",ST.badgeSilver,"")}${fld("st-bg","Gold badge",ST.badgeGold,"")}
-${fld("st-fg","Final grade",ST.finalGrade,"Students in this grade graduate at the academic year rollover. For example, XII or 12.","text",'maxlength="10"')}</section>${saveRow}`}
+${fld("st-fg","Final grade",ST.finalGrade,"Students in this grade graduate at the academic year rollover. For example, XII or 12.","text",'maxlength="10"')}</section>
+<section class="panel"><h3>School days and holidays</h3><div class="sub2">Due dates never fall on these days; they move to the next school day.</div><label>Weekend days</label><div class="chips">${[1,2,3,4,5,6,0].map(d=>`<label class="chip" style="margin:0;display:inline-flex;gap:6px;align-items:center;color:var(--ink)"><input type="checkbox" data-wd="${d}" ${(ST.weekend||[]).map(Number).includes(d)?"checked":""}>${DOWL[d]}</label>`).join("")}</div>
+<label>Holidays</label>${(holEdit||(holEdit=clean(ST.holidays||[]))).map((h,i)=>`<div class="inl" style="margin-bottom:6px"><input type="date" data-hi="${i}" data-hf="from" value="${esc(h.from)}" aria-label="First day"><input type="date" data-hi="${i}" data-hf="to" value="${esc(h.to)}" aria-label="Last day"><input data-hi="${i}" data-hf="name" value="${esc(h.name)}" placeholder="For example, Winter break" maxlength="60" aria-label="Holiday name"><button class="b alt" style="flex:none;min-width:0" data-act="holrm" data-i="${i}" aria-label="Remove this holiday">${ico("trash")}</button></div>`).join("")||'<div class="note">No holidays added yet.</div>'}<button class="b alt" data-act="holadd" style="margin-top:6px">${ico("plus")}Add a holiday</button></section>
+<section class="panel"><h3>Goals and numbering</h3>${fld("st-goal","On-time return goal (%)",ST.onTimeGoal,"Shown as the goal on the dashboard meter.")}${fld("st-accp","Accession number prefix (optional)",ST.accPrefix,"For example, IPHS- gives IPHS-1024. Leave it empty for plain numbers. Existing numbers don't change.","text",'maxlength="10"')}</section>${saveRow}`}
 function setMessages(){return`<section class="panel"><h3>Sending emails</h3><div class="sub2">Emails are sent through your EmailJS account. The template must use {{to_email}}, {{to_name}}, {{book_title}}, {{due_date}} and {{message}}.</div>
 ${fld("st-es","EmailJS service ID",ST.ejService,"","text")}${fld("st-et","EmailJS template ID",ST.ejTemplate,"","text")}${fld("st-ek","EmailJS public key",ST.ejKey,"Only staff accounts can read these keys.","text")}
 ${chk("st-auto","Send reminders automatically while a library computer has the app open",ST.autoEmail)}
@@ -1527,11 +1665,14 @@ ${chk("st-srv","Reminders are sent by the server every morning (Cloud Function, 
 <div class="row" style="justify-content:flex-start"><button class="b alt" type="button" data-x="tplreset" onclick="document.getElementById('st-tr').value=${esc(JSON.stringify(TPL_REMIND))};document.getElementById('st-to').value=${esc(JSON.stringify(TPL_OVERDUE))}">Restore the original wording</button></div></section>
 <section class="panel"><h3>Weekly summary for the librarian</h3>${chk("st-wk","Email a list of overdue books once a week",ST.weeklyOn)}${fld("st-wt","Send it to",ST.weeklyTo,"One or more email addresses, separated by commas.","text")}</section>
 <div class="row"><button class="b alt" data-act="sendrem">Send due reminders now</button><button class="b alt" data-act="sendweek">Send weekly summary now</button><button class="b" data-act="savest">Save settings</button></div>`}
-function setSecurity(){return`<section class="panel"><h3>Signing in</h3><dl class="kv"><dt>Two-step sign-in</dt><dd>${REQUIRE_2FA?"Required for every account except the kiosk":"Off in this copy of the app"}</dd><dt>New passwords</dt><dd>At least 10 characters, upper-case and lower-case letters and a number</dd></dl>
+function setSecurity(){return`<section class="panel"><h3>Signing in</h3><dl class="kv"><dt>App Check</dt><dd>${APP_CHECK_SITE_KEY?"On (reCAPTCHA v3)":"Not set up yet (see SETUP.md)"}</dd><dt>Two-step sign-in</dt><dd>${REQUIRE_2FA?"Required for every account except the kiosk":"Off in this copy of the app"}</dd><dt>New passwords</dt><dd>At least 10 characters, upper-case and lower-case letters and a number</dd></dl>
 ${fld("st-idle","Sign staff out after this many minutes without activity",ST.idleMinutes,"Use 0 to turn it off. The kiosk is never signed out; it returns to the start screen after a minute instead.")}</section>
 <section class="panel"><h3>Privacy</h3>${chk("st-hide","Hide student names from read-only accounts",ST.hideNamesFromViewer)}<div class="note">Read-only accounts then see only the catalogue and whether each book is available. The security rules enforce this, so the names can't be read another way.</div>
 ${chk("st-kr","Show top readers on the kiosk",ST.showReadersOnKiosk)}<div class="note">Shows first name, initial and grade only.</div></section>${saveRow}`}
-function setData(){return`<section class="panel"><h3>Backup</h3><div class="sub2">Download everything as one file: books, students, the full audit log, reservations, suggestions, users and settings. It contains personal details and your EmailJS keys, so keep it somewhere safe.</div><button class="b" data-act="backup">Download backup</button></section>
+function setData(){return`<section class="panel"><h3>Online catalogue for phones</h3><div class="sub2">A public page where students and parents can search the library and see what is available, without signing in. It shows titles only, never who borrowed what.</div>${chk("st-pub","Switch on the online catalogue",ST.publicCatalog)}<div class="inl" style="margin-top:10px;align-items:flex-start"><div style="flex:2;min-width:220px"><label for="pub-l" style="margin-top:0">Link to share</label><input id="pub-l" readonly value="${esc(pubLink())}" onfocus="this.select()"><div class="row" style="justify-content:flex-start;margin-top:8px"><button class="b alt" data-act="copylink">${ico("file")}Copy link</button><button class="b" data-act="savest">Save</button></div><div class="note">Print the QR code for the library notice board. It only works while the catalogue is switched on.</div></div><div class="qr" id="pubqr" style="flex:none;margin:0" aria-label="QR code for the online catalogue"></div></div></section>
+<section class="panel"><h3>Accession numbers and spine labels</h3><div class="sub2">Every copy gets its own number, added automatically for new books. Labels carry it as a barcode for lending and stock-taking.</div><div class="row" style="justify-content:flex-start;margin-top:0"><button class="b alt" data-act="assignacc">${ico("plus")}Number books that have none (${S.books.filter(b=>!b.acc).length})</button><button class="b alt" data-act="rtab" data-v="register">Open the accession register</button></div><div class="note">To print labels, select books on the Books page and choose Labels, or use the register. Labels fit A4 sheets of 3 × 7 (63.5 × 38.1 mm).</div></section>
+<section class="panel"><h3>Book covers</h3><div class="sub2">Covers are looked up automatically from the ISBN on library computers. Books without a cover online keep a coloured cover with their title.</div><button class="b alt" data-act="findcovers">${ico("refresh")}Find missing covers now (${S.books.filter(b=>!img(b.cover)&&b.isbn).length})</button></section>
+<section class="panel"><h3>Backup</h3><div class="sub2">Download everything as one file: books, students, the full audit log, reservations, suggestions, users and settings. It contains personal details and your EmailJS keys, so keep it somewhere safe.</div><button class="b" data-act="backup">Download backup</button></section>
 <section class="panel"><h3>Export to Excel</h3><div class="sub2">Readable spreadsheets of books, students, loans and the audit log.</div><button class="b alt" data-act="rtab" data-v="export">Open Reports, Export</button></section>
 <section class="panel"><h3>New school year</h3><div class="sub2">Move every student up one grade, and mark the final grade as having left the school. Their borrowing history is kept.</div><button class="b" data-act="rollover">Start the rollover</button></section>
 <section class="panel"><h3>Maintenance</h3><div class="sub2">Rebuild statistics recalculates the charts, badges, recommendations and “last borrowed” dates from the full audit log. Use it once after upgrading from version 1, at a quiet time when nobody is lending.</div><div class="row" style="justify-content:flex-start"><button class="b alt" data-act="rebuild">Rebuild statistics</button><button class="b alt" data-act="rebuildcat">Rebuild kiosk catalog</button></div></section>`}
@@ -1544,11 +1685,13 @@ function saveSettings(){const v=id=>$(id)?.value,n=(id,d,min=0,max=999)=>{const 
  const wt=s("#st-wt",ST.weeklyTo,500);if(wt&&!wt.split(",").map(x=>x.trim()).filter(Boolean).every(x=>EMAIL_RE.test(x))){toast("Check the weekly summary email addresses.");return}
  const fg=s("#st-fg",ST.finalGrade,10);if(!parseGrade(fg)){toast("The final grade does not look right. Use something like XII or 12.");return}
  const b1=n("#st-bb",ST.badgeBronze,1),b2=n("#st-bs",ST.badgeSilver,1),b3=n("#st-bg",ST.badgeGold,1);if(!(b1<b2&&b2<b3)){toast("Badges must go up: bronze less than silver, less than gold.");return}
+ const wdb=$$("[data-wd]"),wk=wdb.length?wdb.filter(x=>x.checked).map(x=>+x.dataset.wd):(ST.weekend||[]);if(wk.length>=7){toast("At least one day of the week must be a school day.");return}
+ let hols=ST.holidays||[];if(holEdit){hols=holEdit.map(h=>({from:String(h.from||""),to:String(h.to||h.from||""),name:String(h.name||"").trim().slice(0,60)})).filter(h=>h.from||h.to||h.name);if(hols.some(h=>!/^\d{4}-\d{2}-\d{2}$/.test(h.from)||!/^\d{4}-\d{2}-\d{2}$/.test(h.to)||h.to<h.from)){toast("Check the holiday dates: each needs a first day, and the last day can't be before it.",true);return}hols.sort((a,b)=>a.from.localeCompare(b.from))}
  const A={maxLoans:n("#st-ml",ST.maxLoans,0,50),maxLoansStaff:n("#st-ms",ST.maxLoansStaff,0,50),loanDays:n("#st-ld",ST.loanDays,1,365),maxRenewals:n("#st-mr",ST.maxRenewals,0,10),renewDays:n("#st-rn",ST.renewDays,1,365),remindDays:n("#st-rd",ST.remindDays,0,30),
   autoEmail:c("#st-auto",ST.autoEmail),serverSends:c("#st-srv",ST.serverSends),overdueAfter:n("#st-oa",ST.overdueAfter,0,60),weeklyOn:c("#st-wk",ST.weeklyOn),idleMinutes:n("#st-idle",ST.idleMinutes,0,240),hideNamesFromViewer:c("#st-hide",ST.hideNamesFromViewer),showReadersOnKiosk:c("#st-kr",ST.showReadersOnKiosk),
-  yearStartMonth:n("#st-ys",ST.yearStartMonth,1,12),badgeBronze:b1,badgeSilver:b2,badgeGold:b3,finalGrade:normGrade(fg)};
+  yearStartMonth:n("#st-ys",ST.yearStartMonth,1,12),badgeBronze:b1,badgeSilver:b2,badgeGold:b3,finalGrade:normGrade(fg),weekend:wk,holidays:hols,onTimeGoal:n("#st-goal",ST.onTimeGoal,50,100),accPrefix:s("#st-accp",ST.accPrefix,10).toUpperCase().replace(/[^A-Z0-9\-\/]/g,""),publicCatalog:c("#st-pub",ST.publicCatalog)};
  const E={ejService:s("#st-es",ST.ejService,100),ejTemplate:s("#st-et",ST.ejTemplate,100),ejKey:s("#st-ek",ST.ejKey,100),tplRemind:s("#st-tr",ST.tplRemind,1000)||TPL_REMIND,tplOverdue:s("#st-to",ST.tplOverdue,1000)||TPL_OVERDUE,weeklyTo:wt};
- Promise.all([setDoc(doc(db,"settings","app"),A),setDoc(doc(db,"settings","email"),E)]).then(()=>{addLog({type:"settings",note:STABS[sTab]});toast("Settings saved.")}).catch(fail)}
+ Promise.all([setDoc(doc(db,"settings","app"),A),setDoc(doc(db,"settings","email"),E)]).then(()=>{holEdit=null;addLog({type:"settings",note:STABS[sTab]});toast("Settings saved.")}).catch(fail)}
 
 /* ================= EMAIL: REMINDERS, OVERDUE NOTICES, WEEKLY SUMMARY ================= */
 let autoT=null,remBusy=false;
@@ -1613,16 +1756,10 @@ async function rebuildStats(){if(!await ask("Rebuild statistics from the full au
  const ops=[...Object.values(M).map(m=>w=>w.set(doc(db,"stats","m-"+m.month),m)),...Object.entries(last).map(([id,t])=>w=>w.update(doc(db,"books",id),{lastLent:t})),...Object.entries(reads).filter(([sid])=>stu(sid)).map(([sid,r])=>w=>w.update(doc(db,"students",sid),{reads:r.slice(-40)}))];
  if(await commitBatches(ops)){addLog({type:"stats_rebuild",note:plural(logs.length,"log entry","log entries")+" → "+plural(Object.keys(M).length,"month")});toast("Statistics rebuilt from "+plural(logs.length,"record")+".",true)}}
 
-/* ================= START ================= */
-try{const f=sessionStorage.getItem("lib-flash");if(f){$("#lerr").textContent=f;sessionStorage.removeItem("lib-flash")}}catch(e){}
-if(!configured){showView("login");$("#lerr").textContent="Firebase is not set up yet. Paste your Firebase settings into the marked section at the top of the script in this file."}
-else{bindLogin();onAuthStateChanged(auth,u=>{onUser(u).catch(e=>{console.error(e);$("#lerr").textContent="Something went wrong: "+(e.code||e.message);showView("login")})})}
-
-
 /* ================= SHARED UI: confirm dialog, notifications, skeletons, sidebar ================= */
-const TITLES={dash:"Dashboard",books:"Books",students:"Students",desk:"Borrow & Return",loans:"On loan",holds:"Requests",reports:"Reports",logs:"Activity log",users:"Users",settings:"Settings"};
+const TITLES={stock:"Stock-take",dash:"Dashboard",books:"Books",students:"Students",desk:"Borrow & Return",loans:"On loan",holds:"Requests",reports:"Reports",logs:"Activity log",users:"Users",settings:"Settings"};
 const ago=t=>{const s=Math.max(0,(Date.now()-t)/1000);if(s<60)return"just now";if(s<3600)return Math.floor(s/60)+" min ago";if(s<86400)return Math.floor(s/3600)+" h ago";if(s<7*86400)return Math.floor(s/86400)+" d ago";return fmt(t)};
-const emptyBox=(ic,title,text,btn="")=>`<div class="empty"><div class="ei">${ico(ic)}</div><b>${title}</b>${text?`<div>${text}</div>`:""}${btn}</div>`;
+const emptyBox=(ic,title,text,btn="")=>`<div class="empty">${ILLU[ic]?`<div class="eill">${ILLU[ic]}</div>`:`<div class="ei">${ico(ic)}</div>`}<b>${title}</b>${text?`<div>${text}</div>`:""}${btn}</div>`;
 const LCAT=l=>{const t=l.type;if(t==="lend")return["lend","blue"];if(t==="return")return l.late?["ret","red"]:["ret","green"];if(t==="renew")return["refresh","violet"];if(/^book|bulk|import/.test(t))return["book","gold"];if(/^stu|rollover/.test(t))return["user","violet"];if(/^user|pw_/.test(t))return["shield","violet"];if(/email|weekly/.test(t))return["mail","gold"];if(/hold|sugg/.test(t))return["inbox","blue"];return["activity","blue"]};
 
 /* ----- styled confirmation dialog: await ask("message",{title,ok,danger}) ----- */
@@ -1664,6 +1801,214 @@ syncColBtn();
 $("#colBtn").addEventListener("click",()=>{const m=document.body.classList.toggle("mini");try{localStorage.setItem("lib-side",m?"mini":"")}catch(e){}syncColBtn();setTimeout(()=>{if(me&&["dash","reports"].includes(tab))render()},230)});
 $("#menuBtn").addEventListener("click",()=>document.body.classList.add("side-open"));
 $("#scrim").addEventListener("click",()=>document.body.classList.remove("side-open"));
+
+/* ================= 2.2 FEATURES ================= */
+
+/* ----- celebrations ----- */
+function confetti(big){if(matchMedia("(prefers-reduced-motion: reduce)").matches)return;const c=document.createElement("canvas");c.width=innerWidth;c.height=innerHeight;c.style.cssText="position:fixed;inset:0;pointer-events:none;z-index:70";c.setAttribute("aria-hidden","true");document.body.appendChild(c);
+ const x=c.getContext("2d"),cols=["#e0a526","#14337a","#2a78d6","#1baf7a","#e87ba4","#eb6834"],P=[],n=big?200:90;
+ for(let i=0;i<n;i++)P.push({x:innerWidth/2+(Math.random()-.5)*200,y:innerHeight*.38,vx:(Math.random()-.5)*(big?18:12),vy:-Math.random()*13-5,r:Math.random()*7+4,c:cols[i%cols.length],a:Math.random()*6,va:(Math.random()-.5)*.35});
+ const t0=performance.now();(function f(t){const k=(t-t0)/1000;x.clearRect(0,0,c.width,c.height);P.forEach(p=>{p.vy+=.38;p.x+=p.vx;p.y+=p.vy;p.vx*=.985;p.a+=p.va;x.save();x.translate(p.x,p.y);x.rotate(p.a);x.globalAlpha=Math.max(0,1-k/1.9);x.fillStyle=p.c;x.fillRect(-p.r/2,-p.r/4,p.r,p.r/2);x.restore()});if(k<1.9)requestAnimationFrame(f);else c.remove()})(t0)}
+const badgeUp=(sid,add=1)=>{const n=yearReads(sid),b0=badgeFor(n),b1=badgeFor(n+add);return b1&&b1!==b0?b1:""};
+
+/* ----- reservations left behind by deleted books or students ----- */
+async function cancelHolds(pred,why){for(const h of S.holds.filter(pred)){try{await updateDoc(doc(db,"holds",h.id),{status:"cancelled"});addLog({type:"hold_cancel",bid:h.bid,bt:h.bt,sid:h.sid,sn:h.sn,note:why})}catch(e){}}}
+function orphanHolds(ids){const gone=new Set(ids),roots=new Set(S.books.filter(b=>!gone.has(b.id)).map(root));return cancelHolds(h=>!roots.has(h.root),"book removed from the library")}
+
+/* ----- accession numbers ----- */
+/* Reserves n consecutive numbers from meta/acc in a transaction, so two librarians never get the same number. */
+async function reserveAcc(n){const ref=doc(db,"meta","acc");let start=0;
+ await runTransaction(db,async t=>{const s=await t.get(ref);let nx=s.exists()?num(s.data().next):0;if(!nx)nx=1+Math.max(0,...S.books.map(b=>parseInt(accOf(b).replace(/\D/g,""),10)||0));start=nx;t.set(ref,{next:nx+n,by:auth.currentUser?.email||""})});return start}
+const accStr=n=>String(ST.accPrefix||"").toUpperCase()+n;
+const accNum=b=>parseInt(accOf(b).replace(/\D/g,""),10)||0;
+async function assignAcc(){const todo=S.books.filter(b=>!b.acc).sort((a,b)=>(a.addedAt||0)-(b.addedAt||0));if(!todo.length){toast("Every book already has an accession number.");return}
+ if(!await ask("Give accession numbers to "+plural(todo.length,"book")+" that don't have one? They are numbered in the order the books were added.",{title:"Assign accession numbers",ok:"Assign numbers"}))return;
+ let st;try{st=await reserveAcc(todo.length)}catch(e){fail(e);return}
+ if(await commitBatches(todo.map((b,i)=>w=>w.update(doc(db,"books",b.id),{acc:accStr(st+i)})))){addLog({type:"acc",note:"Accession numbers "+accStr(st)+" to "+accStr(st+todo.length-1)});toast("Assigned "+accStr(st)+" to "+accStr(st+todo.length-1)+".",true)}}
+
+/* ----- barcode spine labels (Code 128 of the accession number) ----- */
+let jbLoading=null;
+function loadJB(){if(window.JsBarcode)return Promise.resolve();return jbLoading||(jbLoading=new Promise((ok,no)=>{const s=document.createElement("script");s.src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.6/dist/JsBarcode.all.min.js";s.integrity="sha384-Kk5SjBOKprEnGfyBWfD2zROFd1Cu8kwOXxG2GIhYPcoDL2rBJS9P8Ud1ZMy4412a";s.crossOrigin="anonymous";s.onload=ok;s.onerror=()=>{jbLoading=null;no()};document.head.appendChild(s)}))}
+async function printLabels(list){const books=list.filter(b=>b.acc);if(!books.length){toast("These books have no accession numbers yet. Assign them in Settings, Data.",true);return}
+ try{await loadJB()}catch(e){toast("The barcode tool could not load. Check the internet connection.");return}
+ const area=$("#printArea");area.innerHTML=`<div class="labels">${books.map(b=>`<div class="lab"><div class="lh">IPHS Library${b.shelf?" · "+esc(b.shelf):""}</div><div class="lt">${esc(b.title)}</div><svg class="lbc" data-acc="${esc(b.acc)}"></svg></div>`).join("")}</div>`;
+ area.querySelectorAll("svg.lbc").forEach(s=>{try{JsBarcode(s,s.dataset.acc,{format:"CODE128",width:1.5,height:34,fontSize:12,margin:0,textMargin:1,displayValue:true})}catch(e){}});
+ addLog({type:"labels",note:plural(books.length,"label")});document.body.classList.add("printing");setTimeout(()=>{print();setTimeout(()=>document.body.classList.remove("printing"),400)},200)}
+
+/* ----- automatic covers: looked up once per book, stored on the book (Open Library, then Google Books) ----- */
+let coverRun=false,coverAuto=false;
+async function fillCovers(manual){if(coverRun||!canEdit()||limitedMode)return;coverRun=true;let found=0,tried=0;
+ try{const todo=S.books.filter(b=>!img(b.cover)&&b.isbn&&validISBN(b.isbn)&&(manual||!b.coverTried||Date.now()-num(b.coverTried)>30*day)),by=new Map();
+  todo.forEach(b=>{(by.get(b.isbn)||by.set(b.isbn,[]).get(b.isbn)).push(b)});const isbns=[...by.keys()].slice(0,manual?2000:80);if(manual&&!isbns.length){toast("Every book with an ISBN already has a cover.");return}
+  for(let i=0;i<isbns.length;i+=20){const part=isbns.slice(i,i+20);let data={};try{data=await(await fetch("https://openlibrary.org/api/books?format=json&jscmd=data&bibkeys="+part.map(x=>"ISBN:"+x).join(","))).json()}catch(e){}
+   for(const isbn of part){let url=String(data["ISBN:"+isbn]?.cover?.medium||"").replace("http://","https://");
+    if(!url&&manual){try{const v=(await(await fetch("https://www.googleapis.com/books/v1/volumes?q=isbn:"+isbn)).json()).items?.[0]?.volumeInfo;url=String(v?.imageLinks?.thumbnail||"").replace("http://","https://")}catch(e){}}
+    tried++;for(const b of by.get(isbn)){try{await updateDoc(doc(db,"books",b.id),img(url)?{cover:url,coverTried:Date.now()}:{coverTried:Date.now()});if(img(url))found++}catch(e){}}}
+   if(manual)toast(`Looking for covers… ${tried} of ${isbns.length}`)}}
+ finally{coverRun=false}if(manual)toast(found?plural(found,"cover")+" added.":"No new covers were found online.",true)}
+
+/* ----- full borrowing history on a student's profile (not just the latest 600 records) ----- */
+async function loadHist(id){const box=$("#pf-hist");if(!box)return;
+ try{const L=(await getDocs(query(collection(db,"logs"),where("sid","==",id)))).docs.map(d=>d.data()).filter(l=>["lend","return","renew"].includes(l.type)).sort((a,b)=>num(b.at)-num(a.at));
+  const box2=$("#pf-hist");if(!box2)return;const lr=L.filter(l=>l.type==="return"&&l.late).length,lrEl=$("#pf-late");if(lrEl)lrEl.textContent=lr;
+  box2.innerHTML=L.length?`<ul class="tl">${L.slice(0,80).map(l=>`<li class="${l.type==="return"?(l.late?"late":"ret"):""}"><b>${l.type==="lend"?"Borrowed":l.type==="renew"?"Renewed":"Returned"}</b> “${esc(l.bt||"")}”<div class="s">${fmtL(num(l.at))}${l.type==="return"&&l.late?` · ${plural(num(l.dl),"day")} late`:""}${l.rating?` · rated ${num(l.rating)} ★`:""}</div></li>`).join("")}</ul><div class="note">${L.length>80?"Showing the latest 80 of "+L.length+" records.":plural(L.filter(l=>l.type==="lend").length,"book")+" borrowed in total."}</div>`:emptyBox("clock","No history yet","")}
+ catch(e){const b=$("#pf-hist");if(b)b.innerHTML=`<div class="note">Could not load the history: ${esc(e.code||e.message)}</div>`}}
+
+/* ================= CLASS PERIOD MODE (inside Borrow & Return) ================= */
+const clLog=(k,b,p,due)=>{desk.log=[{k,t:b.title,n:p?.name||"",due,at:Date.now()},...(desk.log||[])].slice(0,60);toast(k==="lend"?"Lent “"+b.title+"” to "+(p?.name||"")+".":"Returned “"+b.title+"”.")};
+function classView(m,head){const grades=[...new Set(active().map(s=>normGrade(gr(s))).filter(Boolean))].sort(byGrade);if(desk.cls&&!grades.includes(desk.cls))desk.cls="";
+ const roster=desk.cls?active().filter(s=>normGrade(gr(s))===desk.cls):[],p=desk.sid?stu(desk.sid):null,lg=desk.log||[],has=p?S.books.filter(b=>b.loan&&b.loan.sid===p.id):[];
+ m.innerHTML=head+`<div class="desk" style="grid-template-columns:repeat(auto-fit,minmax(min(100%,360px),1fr))">
+<section class="step cur"><h3><span class="sn">${ico("scan")}</span>Scan or type, then press Enter</h3>
+<div class="bar" style="margin:0"><div class="sbox">${ico("search")}<input id="dk-cq" placeholder="ID card, ISBN or accession number" autocomplete="off" aria-label="Scan or type a code"></div><button class="b alt" data-act="clscan" data-v="id">${ico("id")}Card</button><button class="b alt" data-act="clscan" data-v="book">${ico("scan")}Book</button></div>
+<div class="note">Scan the student's ID card, then each of their books. A book they already have is <b>returned</b>; an available book is <b>lent</b> until ${new Date(dueFrom(Date.now(),ST.loanDays)).toLocaleDateString(undefined,{weekday:"short",day:"numeric",month:"short"})}. A USB barcode scanner works too.</div>
+${p?`<div class="chosen" style="margin-top:12px;align-items:flex-start"><span class="av">${esc(initials(p.name))}</span><div style="flex:1;min-width:0"><div class="t">${esc(p.name)} ${badgeHtml(yearReads(p.id))}</div><div class="s">${[gr(p)&&"Grade "+esc(gr(p)),p.adm&&"GR "+esc(p.adm)].filter(Boolean).join(" · ")} · ${has.length}${maxFor(p)?" of "+maxFor(p):""} books</div>${has.map(b=>`<div class="s" style="margin-top:3px">• ${esc(b.title)} ${isLate(b)?'<span class="tag late">Overdue</span>':`<span class="tag out">due ${fmt(b.loan.due)}</span>`}</div>`).join("")}</div><button class="b alt" data-act="clclr">Next student</button></div>`:`<div class="infobox" style="margin-top:12px">No student selected yet. Scan an ID card, or choose a name from the class list.</div>`}
+<h3 style="margin:18px 0 6px;font-size:15px">This period <span class="s" style="font-weight:500">· ${lg.filter(x=>x.k==="lend").length} lent · ${lg.filter(x=>x.k==="ret").length} returned</span></h3>
+${lg.length?`<ul class="feed">${lg.slice(0,12).map(x=>`<li><span class="fi si ${x.k==="lend"?"blue":"green"}">${ico(x.k==="lend"?"lend":"ret")}</span><div class="fb"><b>${x.k==="lend"?"Lent":"Returned"}</b> “${esc(x.t)}”<div class="s">${esc(x.n)}${x.due?" · due "+fmt(x.due):""}</div></div><span class="ft">${ago(x.at)}</span></li>`).join("")}</ul>`:'<div class="note">Nothing yet this period.</div>'}</section>
+<section class="step"><h3><span class="sn">${ico("users")}</span>Class list</h3><select id="dk-cls" aria-label="Class"><option value="">Choose a class</option>${grades.map(g=>`<option ${desk.cls===g?"selected":""}>${esc(g)}</option>`).join("")}</select>
+${desk.cls?`<ul class="pick" style="max-height:520px">${roster.map(z=>{const n=S.books.filter(b=>b.loan&&b.loan.sid===z.id),late=n.filter(isLate).length;return`<li><button type="button" data-act="dkstu" data-id="${esc(z.id)}" style="${z.id===desk.sid?"border-color:var(--brand);background:var(--surf2)":""}"><span class="av">${esc(initials(z.name))}</span><span style="flex:1;min-width:0"><b>${esc(z.name)}</b><span class="s" style="display:block">GR ${esc(z.adm||"–")} · ${plural(n.length,"book")}</span></span>${late?`<span class="tag late">${late} overdue</span>`:n.length?'<span class="tag out">Has books</span>':""}</button></li>`}).join("")||'<li class="note">No students in this class.</li>'}</ul>`:'<div class="note">Choose the class that has come for its library period to see who has which books.</div>'}</section></div>`;
+ const c=$("#dk-cls");if(c)c.onchange=e=>{desk.cls=e.target.value;render()};
+ const i=$("#dk-cq");if(i){i.onkeydown=e=>{if(e.key==="Enter"){e.preventDefault();classCode(i.value)}};if(document.activeElement===document.body||!document.activeElement)setTimeout(()=>{if(!dlg.open&&!$("#cdlg").open)i.focus()},30)}}
+async function classCode(v){v=String(v||"").trim();if(!v||desk.busy)return;const inp=$("#dk-cq");if(inp)inp.value="";
+ const p=findPerson(v);if(p&&!findByCode(v).length){if(p.archived){toast(p.name+" is marked as having left the school.");return}desk.sid=p.id;if(!desk.cls)desk.cls=normGrade(gr(p));render();return}
+ const cps=findByCode(v);if(!cps.length){toast(p?"":"Nothing matches “"+v+"”. Check the code.");if(p){desk.sid=p.id;render()}return}
+ desk.busy=true;try{
+  const mine=desk.sid?cps.find(b=>b.loan&&b.loan.sid===desk.sid):null;
+  if(mine){const who=stu(mine.loan.sid),r=await doReturn(mine,0,"");if(r){clLog("ret",mine,who);if(Date.now()<=r.old.loan.due)confetti(false)}return}
+  const av=cps.find(b=>!b.loan&&!b.state);
+  if(!desk.sid){const out=cps.find(b=>b.loan);if(out){const who=stu(out.loan.sid),r=await doReturn(out,0,"");if(r)clLog("ret",out,who)}else toast("Scan the student's ID card first.");return}
+  if(av){const p2=stu(desk.sid),bu=badgeUp(desk.sid),loan=await doLend(av,desk.sid,ST.loanDays);if(loan){clLog("lend",av,p2,loan.due);if(bu){confetti(true);toast(p2.name+" just earned a "+bu+" reading badge!",true)}}}
+  else{const o=cps.find(b=>b.loan);toast("Every copy of “"+cps[0].title+"” is "+(o?"lent out (to "+(stu(o.loan.sid)?.name||"someone")+")":"unavailable")+".")}}
+ finally{desk.busy=false;render();setTimeout(()=>$("#dk-cq")?.focus(),40)}}
+
+/* ================= STOCK-TAKING ================= */
+let STK=[],stkLast=[];
+const stkOpen=()=>STK.find(s=>s.status==="open");
+const keyOf=c=>String(c).toUpperCase().replace(/[^A-Z0-9_-]/g,"_").slice(0,60);
+const onShelf=(b,shelf)=>!shelf||String(b.shelf||"").trim().toLowerCase()===String(shelf).trim().toLowerCase();
+function stkResult(s){const pool=S.books.filter(b=>onShelf(b,s.shelf)),seen=new Set();
+ pool.forEach(b=>{if(b.acc&&(s.acc||{})["a_"+keyOf(b.acc)])seen.add(b.id)});
+ const byI={};pool.forEach(b=>{if(b.isbn&&!seen.has(b.id))(byI[b.isbn]=byI[b.isbn]||[]).push(b)});
+ Object.entries(byI).forEach(([i,cps])=>{let n=num((s.cnt||{})["i_"+keyOf(i)]);cps.sort((a,c)=>(!!a.loan)-(!!c.loan)||(!!a.state)-(!!c.state));for(const b of cps){if(n<=0)break;seen.add(b.id);n--}});
+ const expected=pool.filter(b=>!b.loan&&!b.state);
+ return{pool,expected,seen,missing:expected.filter(b=>!seen.has(b.id)),found:expected.filter(b=>seen.has(b.id)),onLoan:pool.filter(b=>seen.has(b.id)&&b.loan),flagged:pool.filter(b=>seen.has(b.id)&&b.state),mis:Object.values(s.mis||{}),unknown:Object.entries(s.unk||{}).map(([k,n])=>({code:k.slice(2),n:num(n)}))}}
+async function stkStart(){const shelf=($("#stk-shelf")?.value||"").trim().slice(0,60),id=Date.now().toString(36)+uid();
+ try{await setDoc(doc(db,"stocktakes",id),{id,startedAt:Date.now(),by:auth.currentUser?.email||"",shelf,status:"open",scans:0,cnt:{},acc:{},unk:{},mis:{}});addLog({type:"stock",note:"Stock-take started"+(shelf?" for shelf "+shelf:"")})}catch(e){fail(e)}}
+async function stkScan(code){const s=stkOpen();code=String(code||"").trim();if(!s||!code)return;const ref=doc(db,"stocktakes",s.id),m=findByCode(code),U=code.toUpperCase();let upd,msg,ok=true;
+ if(!m.length){upd={["unk.u_"+keyOf(U)]:increment(1)};msg="Not in the catalogue: "+code;ok=false}
+ else{const hit=m.find(b=>accOf(b).toUpperCase()===U),b=hit||m[0];
+  if(s.shelf&&!onShelf(b,s.shelf)){upd={["mis.m_"+keyOf(hit?"A"+U:"I"+b.isbn)]:{t:b.title,shelf:b.shelf||"",code:U}};msg="“"+b.title+"” belongs on shelf "+(b.shelf||"(none)")+". Move it there.";ok=false}
+  else if(hit){upd={["acc.a_"+keyOf(U)]:Date.now()};msg="Found “"+b.title+"”"+(b.loan?", but it is recorded as borrowed":"")}
+  else{upd={["cnt.i_"+keyOf(b.isbn)]:increment(1)};msg="Found “"+b.title+"”"}}
+ upd.scans=increment(1);upd.last=Date.now();
+ try{await updateDoc(ref,upd);stkLast=[{at:Date.now(),msg,ok},...stkLast].slice(0,8)}catch(e){fail(e)}render();setTimeout(()=>$("#stk-in")?.focus(),40)}
+function stkSheets(s){const r=stkResult(s),row=b=>[accOf(b),b.title,b.author||"",b.isbn||"",b.shelf||""];
+ return{Missing:[["Acc. No.","Title","Author","ISBN","Shelf"],...r.missing.map(row)],"Found, recorded as borrowed":[["Acc. No.","Title","Author","ISBN","Shelf","Borrowed by"],...r.onLoan.map(b=>[...row(b),stu(b.loan.sid)?.name||""])],"Found, marked lost or damaged":[["Acc. No.","Title","Author","ISBN","Shelf","Status"],...r.flagged.map(b=>[...row(b),STL[b.state]||b.state])],"Wrong shelf":[["Code","Title","Belongs on shelf"],...r.mis.map(x=>[x.code,x.t,x.shelf])],"Unknown codes":[["Code","Times scanned"],...r.unknown.map(x=>[x.code,x.n])]}}
+function stockView(m){if(!canEdit()){tab="dash";return render()}const s=stkOpen(),shelves=[...new Set(S.books.map(b=>String(b.shelf||"").trim()).filter(Boolean))].sort();
+ if(!s){const past=STK.filter(x=>x.status!=="open").slice(0,12);
+  m.innerHTML=`<div class="rh"><div style="flex:1;min-width:240px"><h2>Stock-taking</h2><div class="s">Walk along the shelves scanning every book. The app then lists what is missing, on the wrong shelf, or recorded wrongly.</div></div></div>
+<section class="panel"><h3>Start a stock-take</h3><div class="sub2">Leave the shelf empty to check the whole library. Several librarians can scan at the same time.</div><div class="bar" style="margin:0"><input id="stk-shelf" list="stk-shelves" placeholder="Shelf (optional), for example A-3" style="max-width:320px"><datalist id="stk-shelves">${shelves.map(x=>`<option>${esc(x)}</option>`).join("")}</datalist><button class="b" data-act="stkstart">${ico("scan")}Start</button></div></section>
+<section class="panel"><h3>Previous stock-takes</h3>${past.length?`<div class="twrap"><table class="tbl stack"><thead><tr><th>Started</th><th>Shelf</th><th class="n">Scanned</th><th class="n">Missing</th><th>By</th><th></th></tr></thead><tbody>${past.map(x=>`<tr><td data-l="Started">${fmtL(x.startedAt)}</td><td data-l="Shelf">${esc(x.shelf||"Whole library")}</td><td class="n" data-l="Scanned">${num(x.scans)}</td><td class="n" data-l="Missing">${num(x.summary?.missing)}</td><td data-l="By" class="s">${esc(String(x.by||"").split("@")[0])}</td><td class="n" data-l=""><button class="b alt" data-act="stkxl" data-id="${esc(x.id)}">Excel</button></td></tr>`).join("")}</tbody></table></div>`:emptyBox("check","No stock-takes yet","Start one when the library is quiet, for example at the end of term.")}</section>`;return}
+ const r=stkResult(s),pct=r.expected.length?Math.round(r.found.length/r.expected.length*100):0,list=(arr,f)=>arr.slice(0,100).map(f).join("")+(arr.length>100?`<div class="note">and ${arr.length-100} more (see Excel)</div>`:"");
+ m.innerHTML=`<div class="rh"><div style="flex:1;min-width:240px"><h2>Stock-take in progress</h2><div class="s">${esc(s.shelf?"Shelf "+s.shelf:"Whole library")} · started ${fmtL(s.startedAt)} by ${esc(String(s.by||"").split("@")[0])} · ${plural(num(s.scans),"scan")}</div></div><button class="b alt" data-act="stkxl" data-id="${esc(s.id)}">Excel</button><button class="b" data-act="stkdone">${ico("check")}Finish</button></div>
+<div class="grid2"><section class="step cur"><h3><span class="sn">${ico("scan")}</span>Scan each book once</h3><div class="bar" style="margin:0"><div class="sbox">${ico("search")}<input id="stk-in" placeholder="ISBN or accession number, then Enter" autocomplete="off" aria-label="Scan a book"></div><button class="b alt" data-act="stkcam">${ico("scan")}Camera</button></div>
+<div class="note">Accession labels identify each copy exactly. With ISBNs, scan every copy once.</div>
+<div style="margin-top:14px"><div class="inl" style="justify-content:space-between"><b>${r.found.length} of ${r.expected.length} found</b><span class="s">${pct}%</span></div><div class="meter" style="margin-top:6px"><span style="width:${pct}%"></span></div></div>
+${stkLast.length?`<ul class="feed" style="margin-top:10px">${stkLast.map(x=>`<li><span class="fi si ${x.ok?"green":"amber"}">${ico(x.ok?"check":"alert")}</span><div class="fb">${esc(x.msg)}</div><span class="ft">${ago(x.at)}</span></li>`).join("")}</ul>`:""}</section>
+<section class="panel"><h3>Not found yet <span class="s" style="font-weight:500">(${r.missing.length})</span></h3><div class="sub2">On the shelf according to the records, not scanned yet</div><div style="max-height:360px;overflow:auto">${r.missing.length?list(r.missing,b=>`<div class="s" style="padding:3px 0">${b.acc?`<b>${esc(b.acc)}</b> · `:""}${esc(b.title)}${b.shelf?" · "+esc(b.shelf):""}</div>`):'<div class="okbox">Everything expected here has been found.</div>'}</div>${r.missing.length?`<button class="b alt" style="margin-top:10px" data-act="stklost">Mark ${plural(r.missing.length,"missing book")} as lost</button>`:""}</section></div>
+<div class="grid3">${[["Found, but recorded as borrowed",r.onLoan,b=>`${esc(b.title)} <span class="s">· ${esc(stu(b.loan.sid)?.name||"")}</span>`,"Return these in Borrow & Return if the student no longer has them."],["Found, but marked lost or damaged",r.flagged,b=>`${esc(b.title)} <span class="s">· ${STL[b.state]||""}</span>`,"Edit these books to put them back in circulation."],["On the wrong shelf",r.mis,x=>`${esc(x.t)} <span class="s">· belongs on ${esc(x.shelf||"no shelf")}</span>`,""],["Codes not in the catalogue",r.unknown,x=>`${esc(x.code)} <span class="s">· ${plural(x.n,"time")}</span>`,"Add these books to the library."]].map(([t,a,f,h])=>`<section class="panel"><h3>${t} <span class="s" style="font-weight:500">(${a.length})</span></h3>${h&&a.length?`<div class="sub2">${h}</div>`:""}${a.length?list(a,x=>`<div style="padding:3px 0;font-size:13.5px">${f(x)}</div>`):'<div class="note">None.</div>'}</section>`).join("")}</div>`;
+ const i=$("#stk-in");if(i){i.onkeydown=e=>{if(e.key==="Enter"){e.preventDefault();const v=i.value;i.value="";stkScan(v)}};if(!dlg.open)setTimeout(()=>{if(document.activeElement===document.body)i.focus()},30)}}
+async function stkFinish(){const s=stkOpen();if(!s)return;const r=stkResult(s);if(!await ask("Finish this stock-take? "+r.found.length+" of "+r.expected.length+" books were found; "+r.missing.length+" are missing. You can still download the results afterwards.",{title:"Finish stock-take",ok:"Finish"}))return;
+ try{await updateDoc(doc(db,"stocktakes",s.id),{status:"closed",closedAt:Date.now(),summary:{expected:r.expected.length,found:r.found.length,missing:r.missing.length}});addLog({type:"stock",note:"Stock-take finished: "+r.missing.length+" missing of "+r.expected.length});stkLast=[];toast("Stock-take finished.")}catch(e){fail(e)}}
+async function stkLost(){const s=stkOpen();if(!s)return;const r=stkResult(s);if(!r.missing.length)return;
+ if(!await ask("Mark "+plural(r.missing.length,"book")+" as lost? They will stop showing as available. You can change any of them back later by editing the book.",{title:"Mark missing books as lost",ok:"Mark as lost",danger:true}))return;
+ const note="Missing at stock-take, "+fmtL(Date.now());const done=await txBooks(r.missing.map(b=>b.id),cur=>cur.loan||cur.state?null:{...cur,state:"lost",snote:note});
+ if(done){addLog({type:"bulk_edit",note:plural(done.length,"book")+" marked lost after stock-take"});toast(plural(done.length,"book")+" marked as lost.")}}
+function stkExcel(id){const s=STK.find(x=>x.id===id);if(!s)return;if(writeXlsx("stock-take-"+ymd(s.startedAt)+(s.shelf?"-"+s.shelf:""),stkSheets(s)))addLog({type:"export",note:"Stock-take results"})}
+
+/* ================= ONLINE CATALOGUE (no sign-in, ?catalog) ================= */
+const PUB=new URLSearchParams(location.search).has("catalog");
+const pubLink=()=>location.origin+location.pathname+"?catalog";
+function startPublic(){me={role:"public",name:"Visitor"};limitedMode=true;S.ready={};showView("app");applyRole();
+ $("#out").onclick=()=>{location.href=location.pathname};render();
+ unsubs=[onSnapshot(collection(db,"catalog"),r=>{S.books=r.docs.map(d=>fromCat(d.data())).sort((a,b)=>(b.addedAt||0)-(a.addedAt||0));S.ready.books=true;render()},()=>{S.ready.books=true;$("#main").innerHTML=emptyBox("book","The online catalogue is not available","The library has not switched it on, or the connection failed. Ask the librarian.")})]}
+
+/* ================= CTRL+K SEARCH ================= */
+let KR=[],KI=0;
+function cmdItems(qs){const ql=qs.trim().toLowerCase(),m=t=>!ql||t.toLowerCase().includes(ql),out=[];
+ $$("#side nav button[data-tab]:not(.hide)").forEach(b=>{const t=b.querySelector(".lbl").textContent;if(m(t))out.push({ic:"chevR",t,s:"Page",go:()=>{tab=b.dataset.tab;render()}})});
+ if(canEdit()&&!limitedMode)[["lend","Lend a book",()=>{deskReset("lend");tab="desk";render()}],["ret","Return a book",()=>{deskReset("ret");tab="desk";render()}],["users","Class library period",()=>{deskReset("class");tab="desk";render()}],["plus","Add a book",()=>bookForm()],["user","Add a student",()=>stuForm()],["id","Scan an ID card",()=>idScanSearch()],["mail","Open reminders",()=>remindersDlg()],["scan","Start or continue a stock-take",()=>{tab="stock";render()}]].forEach(([ic,t,go])=>{if(m(t))out.push({ic,t,s:"Action",go})});
+ if(ql.length>=2){const seen=new Set();S.books.filter(b=>(b.title+" "+(b.author||"")+" "+(b.isbn||"")+" "+accOf(b)).toLowerCase().includes(ql)).forEach(b=>{if(seen.has(root(b))||seen.size>=6)return;seen.add(root(b));out.push({ic:"book",t:b.title,s:(b.author||"Book")+(b.acc?" · "+b.acc:""),go:()=>detailsDlg(b.id)})});
+  if(!limitedMode)active().filter(z=>(z.name+" "+(z.adm||"")).toLowerCase().includes(ql)).slice(0,6).forEach(z=>out.push({ic:"user",t:z.name,s:[gr(z)&&"Grade "+gr(z),z.adm&&"GR "+z.adm].filter(Boolean).join(" · "),go:()=>stuProfile(z.id)}))}
+ return out.slice(0,16)}
+function cmdDraw(){const ul=$("#k-res");if(!ul)return;ul.innerHTML=KR.length?KR.map((x,i)=>`<li><button type="button" data-k="${i}" aria-selected="${i===KI}"><span class="fi si ${x.s==="Page"?"blue":x.s==="Action"?"gold":"violet"}">${ico(x.ic)}</span><span style="flex:1;min-width:0"><b>${esc(x.t)}</b><span class="s" style="display:block">${esc(x.s)}</span></span>${i===KI?'<kbd>Enter</kbd>':""}</button></li>`).join(""):'<li class="note" style="padding:14px">Nothing matches. Try a title, an author, a name or a GR No.</li>';ul.querySelector('[aria-selected="true"]')?.scrollIntoView({block:"nearest"})}
+function cmdOpen(){if(!me||isPub()||isKiosk())return;const k=$("#kdlg");k.innerHTML=`<div class="sbox">${ico("search")}<input id="k-q" placeholder="Search books, students, pages and actions" autocomplete="off" aria-label="Search everything"></div><ul class="kres" id="k-res" role="listbox"></ul><div class="note" style="margin-top:8px">↑ ↓ to move · Enter to open · Esc to close</div>`;
+ if(!k.open)k.showModal();KR=cmdItems("");KI=0;cmdDraw();const i=$("#k-q");setTimeout(()=>i.focus(),20);
+ i.oninput=()=>{KR=cmdItems(i.value);KI=0;cmdDraw()};
+ i.onkeydown=e=>{if(e.key==="ArrowDown"){e.preventDefault();KI=Math.min(KR.length-1,KI+1);cmdDraw()}else if(e.key==="ArrowUp"){e.preventDefault();KI=Math.max(0,KI-1);cmdDraw()}else if(e.key==="Enter"){e.preventDefault();cmdGo(KI)}};
+ k.onclick=e=>{const b=e.target.closest("[data-k]");if(b)cmdGo(+b.dataset.k);else if(e.target===k)k.close()}}
+function cmdGo(i){const x=KR[i];if(!x)return;$("#kdlg").close();x.go()}
+document.addEventListener("keydown",e=>{if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==="k"){e.preventDefault();const k=$("#kdlg");k.open?k.close():cmdOpen()}});
+$("#cmdBtn").addEventListener("click",()=>cmdOpen());
+
+/* ================= KIOSK ATTRACT MODE (slideshow when nobody is using it) ================= */
+let attractT=null,attractI=0;
+function showAttract(){const pool=[...new Map(S.books.filter(b=>img(b.cover)).map(b=>[root(b),b])).values()].slice(0,15);if(pool.length<3)return;const a=$("#attract");a.classList.remove("hide");
+ const step=()=>{const b=pool[attractI++%pool.length];a.innerHTML=`<div class="attr-in"><img src="${img(b.cover)}" alt=""><div><div class="wd">New in the library</div><h2>${esc(b.title)}</h2><p>${esc(b.author||"")}</p><div class="attr-cta">${ico("search")}Touch anywhere to find your next book</div></div></div>`};step();clearInterval(attractT);attractT=setInterval(step,6000)}
+function hideAttract(){const a=$("#attract");if(a.classList.contains("hide"))return;a.classList.add("hide");clearInterval(attractT);attractT=null}
+$("#attract").addEventListener("pointerdown",()=>{hideAttract();touch()});
+
+/* ================= 2.2 VISUALS ================= */
+const spark=(vals,w=120,h=28)=>{if(!vals.length||vals.every(v=>!v))return`<svg class="spark" viewBox="0 0 ${w} ${h}" height="${h}" aria-hidden="true"><line x1="0" x2="${w}" y1="${h-3}" y2="${h-3}" class="gl"/></svg>`;const mx=Math.max(...vals,1),st=w/Math.max(1,vals.length-1),pts=vals.map((v,i)=>[i*st,h-3-(v/mx)*(h-8)]);
+ return`<svg class="spark" viewBox="0 0 ${w} ${h}" height="${h}" aria-hidden="true"><path d="M${pts.map(p=>p.join(",")).join("L")}L${w},${h}L0,${h}Z" class="sparkA"/><polyline points="${pts.map(p=>p.join(",")).join(" ")}" class="sparkL"/><circle cx="${pts.at(-1)[0]}" cy="${pts.at(-1)[1]}" r="3.5" class="sparkD"/></svg>`};
+function countUp(){$$("#main .cu").forEach(el=>{const v=+el.dataset.v,suf=el.dataset.s||"";if(!(v>0))return;const t0=performance.now(),d=900;(function f(t){const k=Math.min(1,(t-t0)/d),e=1-Math.pow(1-k,3);el.textContent=fmtN(v*e)+suf;if(k<1)requestAnimationFrame(f)})(t0)})}
+const weekly=n=>{const out=[],now=new Date();for(let w=n-1;w>=0;w--){let v=0;for(let i=0;i<7;i++){const d=new Date(now.getFullYear(),now.getMonth(),now.getDate()-w*7-i);v+=num(S.stats[mKey(d)]?.byDay?.[d.getDate()])}out.push(v)}return out};
+const monthly=(n,f)=>Array.from({length:n},(_,i)=>{const k=mAdd(mKey(Date.now()),-(n-1-i)),m=S.stats[k]||{};return f(m)});
+
+/* reading calendar: school days of the last 16 weeks, darker = more loans */
+function heatData(weeks=16){const wk=(ST.weekend||[6,0]).map(Number),days=[1,2,3,4,5,6,0].filter(d=>!wk.includes(d)),out=[],now=new Date(),mon=new Date(now.getFullYear(),now.getMonth(),now.getDate()-((now.getDay()+6)%7));
+ for(let w=weeks-1;w>=0;w--)days.forEach((dw,yi)=>{const d=new Date(mon.getFullYear(),mon.getMonth(),mon.getDate()-w*7+((dw+6)%7));if(d>now)return;const v=num(S.stats[mKey(d)]?.byDay?.[d.getDate()]),hol=isOff(d);out.push({k:d.toLocaleDateString(undefined,{weekday:"short",day:"numeric",month:"short"}),v,x:weeks-1-w,y:yi,dw,hol,m:d.getDate()<=7&&dw===days[0]?d.toLocaleDateString(undefined,{month:"short"}):""})});return{cells:out,days}}
+function heatSvg(sp,W){const{cells,days}=sp.heat,cols=16,lw=34,top=18,gap=3,cs=Math.max(10,Math.min(26,Math.floor((W-lw)/cols)-gap)),H=top+days.length*(cs+gap),mx=Math.max(1,...cells.map(c=>c.v)),lvl=v=>v?Math.min(4,1+Math.floor(v/mx*3.999)):0;
+ let s=`<svg viewBox="0 0 ${W} ${H}" height="${H}" role="img" aria-label="${esc(sp.label)}">`;days.forEach((d,i)=>{if(i%2===0||days.length<=5)s+=`<text class="ax" x="${lw-6}" y="${top+i*(cs+gap)+cs*.72}" text-anchor="end">${DOW[d]}</text>`});
+ cells.forEach((c,i)=>{const x=lw+c.x*(cs+gap),y=top+c.y*(cs+gap);if(c.m)s+=`<text class="ax" x="${x}" y="11">${esc(c.m)}</text>`;s+=`<rect class="${c.hol?"hx":"h"+lvl(c.v)}" x="${x}" y="${y}" width="${cs}" height="${cs}" rx="3"/><rect class="band" data-i="${i}" x="${x}" y="${y}" width="${cs}" height="${cs}" tabindex="0" role="button" aria-label="${esc(c.k)}: ${c.v} loans"/>`});return s+"</svg>"}
+/* genre map (squarified treemap) */
+function squarify(items,x,y,w,h){const out=[],rest=items.slice(),total=rest.reduce((a,b)=>a+b.v,0);if(!total)return out;const sc=w*h/total;let row=[],X=x,Y=y,Wd=w,Hd=h;
+ const worst=(r,len)=>{const s=r.reduce((a,b)=>a+b.v*sc,0),mx=Math.max(...r.map(b=>b.v*sc)),mn=Math.min(...r.map(b=>b.v*sc));return Math.max(len*len*mx/(s*s),(s*s)/(len*len*mn))};
+ const lay=r=>{const s=r.reduce((a,b)=>a+b.v*sc,0);if(Wd>=Hd){const cw=s/Hd;let yy=Y;r.forEach(b=>{const hh=b.v*sc/cw;out.push({...b,x:X,y:yy,w:cw,h:hh});yy+=hh});X+=cw;Wd-=cw}else{const rh=s/Wd;let xx=X;r.forEach(b=>{const ww=b.v*sc/rh;out.push({...b,x:xx,y:Y,w:ww,h:rh});xx+=ww});Y+=rh;Hd-=rh}};
+ while(rest.length){const it=rest[0],len=Math.min(Wd,Hd);if(!row.length||worst([...row,it],len)<=worst(row,len)){row.push(it);rest.shift()}else{lay(row);row=[]}}if(row.length)lay(row);return out}
+function treeSvg(sp,W){const H=sp.h||250,R=squarify(sp.data.filter(d=>d.v>0).map((d,i)=>({...d,i})),0,0,W,H);let s=`<svg viewBox="0 0 ${W} ${H}" height="${H}" role="img" aria-label="${esc(sp.label)}">`;
+ R.forEach(r=>{const c=r.other?"#8a94a8":gColor(r.k),ink=inkOn(c),x=r.x+1,y=r.y+1,w=Math.max(0,r.w-2),h=Math.max(0,r.h-2);s+=`<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="6" fill="${c}" class="tm"/>`;
+  if(w>56&&h>30)s+=`<text x="${x+9}" y="${y+19}" fill="${ink}" class="tml">${esc(String(r.k).length>w/8?String(r.k).slice(0,Math.max(3,Math.floor(w/8)-1))+"…":r.k)}</text>`;if(w>40&&h>48)s+=`<text x="${x+9}" y="${y+37}" fill="${ink}" class="tmv">${fmtN(r.v)}</text>`;
+  s+=`<rect class="band" data-i="${r.i}" x="${x}" y="${y}" width="${w}" height="${h}" tabindex="0" role="button" aria-label="${esc(r.k)}: ${fmtN(r.v)} loans"/>`});return s+"</svg>"}
+/* this school year vs last school year */
+function lineSvg(sp,W){const H=sp.h||210,pl=34,pr=10,pt=26,pb=24,iw=W-pl-pr,ih=H-pt-pb,n=sp.data.length,mx=niceMax(Math.max(1,...sp.data.map(d=>Math.max(num(d.a),num(d.b))))),st=iw/Math.max(1,n-1),X=i=>pl+i*st,Y=v=>pt+ih-v/mx*ih;
+ let s=`<svg viewBox="0 0 ${W} ${H}" height="${H}" role="img" aria-label="${esc(sp.label)}"><g class="lg"><rect x="${pl}" y="4" width="14" height="3" rx="1.5" class="ln1f"/><text class="ax" x="${pl+20}" y="9">${esc(sp.la)}</text><rect x="${pl+120}" y="4" width="14" height="3" rx="1.5" class="ln2f"/><text class="ax" x="${pl+140}" y="9">${esc(sp.lb)}</text></g>`;
+ [0,.5,1].forEach(f=>{const yy=Y(mx*f);s+=`<line class="${f?"gl":"base"}" x1="${pl}" x2="${W-pr}" y1="${yy}" y2="${yy}"/><text class="ax" x="${pl-6}" y="${yy+4}" text-anchor="end">${fmtN(mx*f)}</text>`});
+ const path=key=>sp.data.map((d,i)=>d[key]==null?null:[X(i),Y(num(d[key]))]).filter(Boolean);const pa=path("a"),pb2=path("b");
+ if(pb2.length)s+=`<polyline class="ln2" points="${pb2.map(p=>p.join(",")).join(" ")}"/>`;if(pa.length)s+=`<polyline class="ln1" points="${pa.map(p=>p.join(",")).join(" ")}"/><circle class="ln1d" cx="${pa.at(-1)[0]}" cy="${pa.at(-1)[1]}" r="4.5"/>`;
+ sp.data.forEach((d,i)=>{s+=`<text class="ax" x="${X(i)}" y="${H-6}" text-anchor="middle">${esc(d.short)}</text><rect class="band" data-i="${i}" x="${X(i)-st/2}" y="${pt}" width="${st}" height="${ih}" tabindex="0" role="button" aria-label="${esc(d.k)}"/>`});return s+"</svg>"}
+
+/* ----- small illustrations for empty pages ----- */
+const ILLU={
+ book:`<svg viewBox="0 0 120 84" width="120" height="84" aria-hidden="true"><rect x="22" y="58" width="76" height="12" rx="3" fill="#14337a"/><rect x="28" y="44" width="66" height="12" rx="3" fill="#e0a526"/><rect x="18" y="30" width="72" height="12" rx="3" fill="#2a78d6"/><rect x="34" y="62" width="30" height="3" rx="1.5" fill="#fff" opacity=".6"/><rect x="38" y="48" width="24" height="3" rx="1.5" fill="#fff" opacity=".7"/><path d="M96 20l3 6 6 1-4.5 4 1 6-5.5-3-5.5 3 1-6L87 27l6-1z" fill="#e0a526"/></svg>`,
+ search:`<svg viewBox="0 0 120 84" width="120" height="84" aria-hidden="true"><rect x="20" y="22" width="44" height="54" rx="4" fill="#2a78d6" opacity=".25"/><rect x="28" y="16" width="44" height="54" rx="4" fill="#14337a"/><rect x="34" y="26" width="26" height="3" rx="1.5" fill="#fff" opacity=".7"/><circle cx="78" cy="44" r="16" fill="none" stroke="#e0a526" stroke-width="6"/><path d="M90 56l12 12" stroke="#e0a526" stroke-width="7" stroke-linecap="round"/></svg>`,
+ check:`<svg viewBox="0 0 120 84" width="120" height="84" aria-hidden="true"><rect x="14" y="62" width="92" height="6" rx="3" fill="#14337a"/><rect x="22" y="30" width="10" height="32" rx="2" fill="#2a78d6"/><rect x="34" y="36" width="10" height="26" rx="2" fill="#e0a526"/><rect x="46" y="26" width="10" height="36" rx="2" fill="#14337a"/><circle cx="84" cy="36" r="18" fill="#1baf7a"/><path d="M75 36l6 6 12-12" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+ users:`<svg viewBox="0 0 120 84" width="120" height="84" aria-hidden="true"><circle cx="46" cy="30" r="12" fill="#14337a"/><path d="M24 70c0-14 10-22 22-22s22 8 22 22z" fill="#14337a"/><circle cx="78" cy="34" r="10" fill="#e0a526"/><path d="M60 72c0-12 8-19 18-19s18 7 18 19z" fill="#e0a526"/></svg>`,
+ inbox:`<svg viewBox="0 0 120 84" width="120" height="84" aria-hidden="true"><path d="M20 50l12-28h56l12 28v18a4 4 0 0 1-4 4H24a4 4 0 0 1-4-4z" fill="#14337a"/><path d="M20 50h24l6 8h20l6-8h24" fill="none" stroke="#e0a526" stroke-width="4"/><rect x="46" y="14" width="28" height="30" rx="3" fill="#2a78d6"/></svg>`};
+
+/* ----- KIOSK, redesigned ----- */
+function botw(){const roots=[...new Map(S.books.map(b=>[root(b),b])).values()],rated=roots.filter(b=>num(b.rN)>=2&&num(b.rSum)/num(b.rN)>=4).sort((a,b)=>num(b.rSum)/num(b.rN)-num(a.rSum)/num(a.rN)),pop=roots.filter(b=>num(b.borrows)>0).sort((a,b)=>num(b.borrows)-num(a.borrows));
+ const c=rated.length?rated.slice(0,6):pop.slice(0,6);if(!c.length)return null;const b=c[Math.floor(Date.now()/(7*day))%c.length];return{b,why:rated.length?"Rated "+(num(b.rSum)/num(b.rN)).toFixed(1)+" ★ by "+plural(num(b.rN),"reader"):"Borrowed "+plural(num(b.borrows),"time")}}
+const cover=(b,cls="cov")=>{const s=img(b.cover);return s?`<img class="${cls}" src="${s}" alt="" loading="lazy" data-fb="1">`:`<span class="${cls} ph-cov" style="--gc:${gColor(b.genre)}"><span>${esc(String(b.title).slice(0,60))}</span></span>`};
+/* covers that fail to load fall back to the coloured placeholder */
+document.addEventListener("error",e=>{const t=e.target;if(t&&t.tagName==="IMG"&&t.dataset.fb){const sp=document.createElement("span");sp.className=t.className+" ph-cov";sp.innerHTML="<span></span>";t.replaceWith(sp)}},true);
+
+/* ================= START ================= */
+try{const f=sessionStorage.getItem("lib-flash");if(f){$("#lerr").textContent=f;sessionStorage.removeItem("lib-flash")}}catch(e){}
+if(!configured){showView("login");$("#lerr").textContent="Firebase is not set up yet. Paste your Firebase settings into the marked section at the top of the script in this file."}
+else if(PUB){startPublic()}
+else{bindLogin();onAuthStateChanged(auth,u=>{onUser(u).catch(e=>{console.error(e);$("#lerr").textContent="Something went wrong: "+(e.code||e.message);showView("login")})})}
+
 
 </script>
 </body>
