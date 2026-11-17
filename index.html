@@ -436,7 +436,6 @@ kbd{font:600 11px/1 ui-monospace,Menlo,Consolas,monospace;border:1px solid var(-
   <button role="tab" data-tab="desk" class="nl ed" data-tip="Borrow &amp; Return"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M17 3l4 4-4 4M21 7H9M7 21l-4-4 4-4M3 17h12"/></svg><span class="lbl">Borrow &amp; Return</span></button>
   <button role="tab" data-tab="loans" class="nl" data-tip="On loan"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20zM12 6v6l4 2"/></svg><span class="lbl">On loan</span><span class="n" id="n-loans"></span></button>
   <button role="tab" data-tab="holds" class="nl" data-tip="Requests"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M22 12h-6l-2 3h-4l-2-3H2M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></svg><span class="lbl">Requests</span><span class="n" id="n-holds"></span></button>
-  <button role="tab" data-tab="stock" class="nl ed" data-tip="Stock-take"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7V5a2 2 0 0 1 2-2h2M17 3h2a2 2 0 0 1 2 2v2M21 17v2a2 2 0 0 1-2 2h-2M7 21H5a2 2 0 0 1-2-2v-2M7 8v8M10 8v8M14 8v8M17 8v8"/></svg><span class="lbl">Stock-take</span></button>
   <div class="grp nl">Insights</div>
   <button role="tab" data-tab="reports" class="nl" data-tip="Reports"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3v18h18M8 17v-6M13 17V7M18 17v-4"/></svg><span class="lbl">Reports</span></button>
   <button role="tab" data-tab="logs" class="nl" data-tip="Activity log"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg><span class="lbl">Activity log</span></button>
@@ -508,8 +507,8 @@ const REQUIRE_2FA=true;
 const APP_CHECK_SITE_KEY="";
 /* ========================================================================================= */
 
-const APP={version:"2.2.0",released:"17 November 2026",firebase:"10.12.2",sheetjs:"0.20.3",zxing:"0.21.3",tesseract:"5.1.1",qr:"qrcode-generator 1.4.4",rules:"2.0 (16 November 2026)",issuer:"IPHS Library"};
-const CHANGES=["2.2.0: Class period mode, due dates that skip weekends and holidays, stock-taking, accession numbers with barcode spine labels and the accession register, online catalogue for phones, Ctrl+K search, automatic book covers, genre colours, new analytics (reading calendar, class reading race, genre map, year-on-year, on-time goal), a new kiosk with Book of the week, and full student history.","2.1.1: much better barcode scanning on laptops and webcams, a guide box, “Take a photo instead”, and typing the ISBN by hand.","New design: sidebar menu that can be collapsed (and slides out on phones), welcome dashboard, grid view for books, student profiles, step-by-step Borrow & Return, notification centre, activity log table with date filters.","Students tab (was Borrowers), settings behind the gear icon, light and dark mode switch.","Interactive dashboard with charts.","Two-step sign-in with an authenticator app, automatic sign-out when idle, strong passwords.","School ID card scanning by GR No., and filling in a new student from a photo of their card.","Reports: monthly report, overdue list by grade, collection insights, top readers and badges, Excel export.","Kiosk: new arrivals, most popular, top readers, suggestions, reviews and recommendations, without showing who borrowed what.","Overdue notices, editable message templates, weekly summary email, optional server sending.","Bulk edit, backup, academic year rollover, Genre, Shelf, Mobile and Staff columns in imports, option to hide student names from read-only accounts."];
+const APP={version:"2.2.1",released:"17 November 2026",firebase:"10.12.2",sheetjs:"0.20.3",zxing:"0.21.3",tesseract:"5.1.1",qr:"qrcode-generator 1.4.4",rules:"2.0 (16 November 2026)",issuer:"IPHS Library"};
+const CHANGES=["2.2.1: Stock-taking removed.","2.2.0: Class period mode, due dates that skip weekends and holidays, accession numbers with barcode spine labels and the accession register, online catalogue for phones, Ctrl+K search, automatic book covers, genre colours, new analytics (reading calendar, class reading race, genre map, year-on-year, on-time goal), a new kiosk with Book of the week, and full student history.","2.1.1: much better barcode scanning on laptops and webcams, a guide box, “Take a photo instead”, and typing the ISBN by hand.","New design: sidebar menu that can be collapsed (and slides out on phones), welcome dashboard, grid view for books, student profiles, step-by-step Borrow & Return, notification centre, activity log table with date filters.","Students tab (was Borrowers), settings behind the gear icon, light and dark mode switch.","Interactive dashboard with charts.","Two-step sign-in with an authenticator app, automatic sign-out when idle, strong passwords.","School ID card scanning by GR No., and filling in a new student from a photo of their card.","Reports: monthly report, overdue list by grade, collection insights, top readers and badges, Excel export.","Kiosk: new arrivals, most popular, top readers, suggestions, reviews and recommendations, without showing who borrowed what.","Overdue notices, editable message templates, weekly summary email, optional server sending.","Bulk edit, backup, academic year rollover, Genre, Shelf, Mobile and Staff columns in imports, option to hide student names from read-only accounts."];
 
 let S={books:[],students:[],logs:[],users:[],holds:[],sugg:[],stats:{},pub:null,ready:{}},CAT=new Map();
 let tab="dash",q="",sq="",lq="",kq="",kg="",filt="all",logF="all",showArch=false,unsubs=[],db,auth,me=null,limitedMode=false;
@@ -734,7 +733,6 @@ function startSync(){stopSync();limitedMode=limited();S.ready={};const L=[],on=(
    on(collection(db,"catalog"),r=>{CAT=new Map(r.docs.map(d=>[d.id,d.data()]));schedSync()});
    on(doc(db,"stats","public"),d=>{S.pub=d.exists()?d.data():null;schedSync()});
    on(doc(db,"settings","email"),d=>{STe=d.exists()?d.data():{};mergeST();render();schedAuto()});
-   on(collection(db,"stocktakes"),r=>{STK=r.docs.map(d=>d.data()).sort((a,b)=>b.startedAt-a.startedAt);render()});
   }
   if(isAdmin())on(collection(db,"users"),r=>{S.users=r.docs.map(d=>d.data()).sort((a,b)=>(a.name||"").localeCompare(b.name||""));render()},fail);
  }
@@ -770,7 +768,7 @@ dlg.addEventListener("click",e=>{if(e.target.dataset.close!==undefined)closeDlg(
 function closeDlg(){stopScan();if(dlg.open)dlg.close()}
 dlg.addEventListener("close",()=>{stopScan();idScan=false});
 let sel=new Set(),selMode=false,shownIds=[];
-function render(){if(!me)return;const ae=document.activeElement,fid=ae&&["q","sq","lq","kq","dk-sq","dk-bq","dk-days","dk-cq","stk-in"].includes(ae.id)?ae.id:null,ps=fid&&ae.type!=="number"?ae.selectionStart:null;
+function render(){if(!me)return;const ae=document.activeElement,fid=ae&&["q","sq","lq","kq","dk-sq","dk-bq","dk-days","dk-cq"].includes(ae.id)?ae.id:null,ps=fid&&ae.type!=="number"?ae.selectionStart:null;
  renderView();updateBell();
  if(fid){const n=document.getElementById(fid);if(n&&n!==document.activeElement){n.focus();if(ps!=null)try{n.setSelectionRange(ps,ps)}catch(e){}}}}
 function renderView(){
@@ -781,16 +779,16 @@ function renderView(){
  setN("books",S.books.length);setN("holds",S.holds.length+S.sugg.filter(x=>x.status==="new").length);setN("students",active().length);setN("loans",S.books.filter(b=>b.loan).length,late>0);
  if(isKiosk()||isPub()){$("#pageTitle").textContent=isPub()?"Library catalogue":"Find a book";if(!S.ready.books){m.innerHTML=skel();return}return kioskView(m)}
  if(limitedMode&&!["dash","books","settings"].includes(tab))tab="dash";
- if((tab==="desk"||tab==="stock")&&!canEdit())tab="dash";
+ if(tab==="desk"&&!canEdit())tab="dash";
  $("#pageTitle").textContent=TITLES[tab]||"Library";document.title=(TITLES[tab]||"Library")+" – IPHS Library";
  if(tab!==lastTab){lastTab=tab;m.classList.remove("pg");void m.offsetWidth;m.classList.add("pg","anim");clearTimeout(window._an);window._an=setTimeout(()=>m.classList.remove("anim"),1800)}
  if(!S.ready.books&&["dash","books","loans","desk","students"].includes(tab)){m.innerHTML=skel();return}
- const V={settings:settingsView,holds:holdsView,dash:dashView,logs:logsView,users:usersView,reports:reportsView,books:booksView,students:studentsView,loans:loansView,desk:deskView,stock:stockView};
+ const V={settings:settingsView,holds:holdsView,dash:dashView,logs:logsView,users:usersView,reports:reportsView,books:booksView,students:studentsView,loans:loansView,desk:deskView};
  (V[tab]||dashView)(m)}
 const alertHtml=()=>{const late=S.books.filter(isLate).length;return late&&!limitedMode?`<div class="alert">${ico("alert")}<span><b>${plural(late,"book")} ${late>1?"are":"is"} overdue.</b> Students have been waiting to hear from the library.</span><button class="b" data-act="reminders">${ico("mail")}Open reminders</button></div>`:""};
 
 /* one click handler for the whole app */
-const EDIT_ACTS=["clscan","stkstart","stkdone","stklost","stkcam","blabels","reglabels","findcovers","dkgo","dkrenew","dkstu","dkbook","dkscan","desklend","addbook","import","editbook","borrow","return","addstu","impstu","editstu","selmode","blend","bret","bdel","bedit","renew","holdlend","holdcancel","sugstat","rmrev","cardstu"];
+const EDIT_ACTS=["clscan","blabels","reglabels","findcovers","dkgo","dkrenew","dkstu","dkbook","dkscan","desklend","addbook","import","editbook","borrow","return","addstu","impstu","editstu","selmode","blend","bret","bdel","bedit","renew","holdlend","holdcancel","sugstat","rmrev","cardstu"];
 const ADMIN_ACTS=["assignacc","holadd","holrm","savest","backup","rollover","rebuild","rebuildcat","adduser","edituser"];
 document.addEventListener("click",e=>{if(!me)return;
  const t=e.target.closest("[data-tab]");if(t){tab=t.dataset.tab;selMode=false;sel.clear();document.body.classList.remove("side-open");scrollTo(0,0);render();return}
@@ -814,7 +812,7 @@ document.addEventListener("click",e=>{if(!me)return;
   tbl:()=>{tblOn.has(a.dataset.v)?tblOn.delete(a.dataset.v):tblOn.add(a.dataset.v);render()},gopen:()=>gradeDlg(a.dataset.v),genre:()=>{tab="books";q=a.dataset.v;filt="all";render()},
   odgrade:()=>{tab="reports";rTab="overdue";odG=a.dataset.v;render()},print:()=>print(),xl:()=>exportReport(a.dataset.v),expall:()=>exportAll(),
   clscan:()=>{if(a.dataset.v==="id"){idScan=true;scan(c=>{idScan=false;classCode(c)})}else scan(c=>classCode(c))},clclr:()=>{desk.sid="";render()},
-  stkstart:()=>stkStart(),stkdone:()=>stkFinish(),stklost:()=>stkLost(),stkxl:()=>stkExcel(id),stkcam:()=>scan(c=>stkScan(c)),blabels:()=>printLabels(selBooks()),reglabels:()=>printLabels(RX.register?.books||[]),assignacc:()=>assignAcc(),findcovers:()=>fillCovers(true),
+  blabels:()=>printLabels(selBooks()),reglabels:()=>printLabels(RX.register?.books||[]),assignacc:()=>assignAcc(),findcovers:()=>fillCovers(true),
   holadd:()=>{holEdit=holEdit||clean(ST.holidays||[]);holEdit.push({from:"",to:"",name:""});render()},holrm:()=>{holEdit=holEdit||clean(ST.holidays||[]);holEdit.splice(+a.dataset.i,1);render()},copylink:()=>{(navigator.clipboard?navigator.clipboard.writeText(pubLink()):Promise.reject()).then(()=>toast("Link copied."),()=>toast("Copy the link from the box."))},
   scanfind:()=>scan(code=>{const b=findByCode(code)[0];if(b){q=b.acc&&b.acc.toUpperCase()===String(code).toUpperCase()?b.acc:code;render();toast("Found: "+b.title)}else if(canEdit()){toast("No book with barcode "+code+". Add it first.");bookForm(null,code)}else toast("No book with barcode "+code+".")})};
  A[act]?.()});
@@ -1757,7 +1755,7 @@ async function rebuildStats(){if(!await ask("Rebuild statistics from the full au
  if(await commitBatches(ops)){addLog({type:"stats_rebuild",note:plural(logs.length,"log entry","log entries")+" → "+plural(Object.keys(M).length,"month")});toast("Statistics rebuilt from "+plural(logs.length,"record")+".",true)}}
 
 /* ================= SHARED UI: confirm dialog, notifications, skeletons, sidebar ================= */
-const TITLES={stock:"Stock-take",dash:"Dashboard",books:"Books",students:"Students",desk:"Borrow & Return",loans:"On loan",holds:"Requests",reports:"Reports",logs:"Activity log",users:"Users",settings:"Settings"};
+const TITLES={dash:"Dashboard",books:"Books",students:"Students",desk:"Borrow & Return",loans:"On loan",holds:"Requests",reports:"Reports",logs:"Activity log",users:"Users",settings:"Settings"};
 const ago=t=>{const s=Math.max(0,(Date.now()-t)/1000);if(s<60)return"just now";if(s<3600)return Math.floor(s/60)+" min ago";if(s<86400)return Math.floor(s/3600)+" h ago";if(s<7*86400)return Math.floor(s/86400)+" d ago";return fmt(t)};
 const emptyBox=(ic,title,text,btn="")=>`<div class="empty">${ILLU[ic]?`<div class="eill">${ILLU[ic]}</div>`:`<div class="ei">${ico(ic)}</div>`}<b>${title}</b>${text?`<div>${text}</div>`:""}${btn}</div>`;
 const LCAT=l=>{const t=l.type;if(t==="lend")return["lend","blue"];if(t==="return")return l.late?["ret","red"]:["ret","green"];if(t==="renew")return["refresh","violet"];if(/^book|bulk|import/.test(t))return["book","gold"];if(/^stu|rollover/.test(t))return["user","violet"];if(/^user|pw_/.test(t))return["shield","violet"];if(/email|weekly/.test(t))return["mail","gold"];if(/hold|sugg/.test(t))return["inbox","blue"];return["activity","blue"]};
@@ -1881,51 +1879,6 @@ async function classCode(v){v=String(v||"").trim();if(!v||desk.busy)return;const
   else{const o=cps.find(b=>b.loan);toast("Every copy of “"+cps[0].title+"” is "+(o?"lent out (to "+(stu(o.loan.sid)?.name||"someone")+")":"unavailable")+".")}}
  finally{desk.busy=false;render();setTimeout(()=>$("#dk-cq")?.focus(),40)}}
 
-/* ================= STOCK-TAKING ================= */
-let STK=[],stkLast=[];
-const stkOpen=()=>STK.find(s=>s.status==="open");
-const keyOf=c=>String(c).toUpperCase().replace(/[^A-Z0-9_-]/g,"_").slice(0,60);
-const onShelf=(b,shelf)=>!shelf||String(b.shelf||"").trim().toLowerCase()===String(shelf).trim().toLowerCase();
-function stkResult(s){const pool=S.books.filter(b=>onShelf(b,s.shelf)),seen=new Set();
- pool.forEach(b=>{if(b.acc&&(s.acc||{})["a_"+keyOf(b.acc)])seen.add(b.id)});
- const byI={};pool.forEach(b=>{if(b.isbn&&!seen.has(b.id))(byI[b.isbn]=byI[b.isbn]||[]).push(b)});
- Object.entries(byI).forEach(([i,cps])=>{let n=num((s.cnt||{})["i_"+keyOf(i)]);cps.sort((a,c)=>(!!a.loan)-(!!c.loan)||(!!a.state)-(!!c.state));for(const b of cps){if(n<=0)break;seen.add(b.id);n--}});
- const expected=pool.filter(b=>!b.loan&&!b.state);
- return{pool,expected,seen,missing:expected.filter(b=>!seen.has(b.id)),found:expected.filter(b=>seen.has(b.id)),onLoan:pool.filter(b=>seen.has(b.id)&&b.loan),flagged:pool.filter(b=>seen.has(b.id)&&b.state),mis:Object.values(s.mis||{}),unknown:Object.entries(s.unk||{}).map(([k,n])=>({code:k.slice(2),n:num(n)}))}}
-async function stkStart(){const shelf=($("#stk-shelf")?.value||"").trim().slice(0,60),id=Date.now().toString(36)+uid();
- try{await setDoc(doc(db,"stocktakes",id),{id,startedAt:Date.now(),by:auth.currentUser?.email||"",shelf,status:"open",scans:0,cnt:{},acc:{},unk:{},mis:{}});addLog({type:"stock",note:"Stock-take started"+(shelf?" for shelf "+shelf:"")})}catch(e){fail(e)}}
-async function stkScan(code){const s=stkOpen();code=String(code||"").trim();if(!s||!code)return;const ref=doc(db,"stocktakes",s.id),m=findByCode(code),U=code.toUpperCase();let upd,msg,ok=true;
- if(!m.length){upd={["unk.u_"+keyOf(U)]:increment(1)};msg="Not in the catalogue: "+code;ok=false}
- else{const hit=m.find(b=>accOf(b).toUpperCase()===U),b=hit||m[0];
-  if(s.shelf&&!onShelf(b,s.shelf)){upd={["mis.m_"+keyOf(hit?"A"+U:"I"+b.isbn)]:{t:b.title,shelf:b.shelf||"",code:U}};msg="“"+b.title+"” belongs on shelf "+(b.shelf||"(none)")+". Move it there.";ok=false}
-  else if(hit){upd={["acc.a_"+keyOf(U)]:Date.now()};msg="Found “"+b.title+"”"+(b.loan?", but it is recorded as borrowed":"")}
-  else{upd={["cnt.i_"+keyOf(b.isbn)]:increment(1)};msg="Found “"+b.title+"”"}}
- upd.scans=increment(1);upd.last=Date.now();
- try{await updateDoc(ref,upd);stkLast=[{at:Date.now(),msg,ok},...stkLast].slice(0,8)}catch(e){fail(e)}render();setTimeout(()=>$("#stk-in")?.focus(),40)}
-function stkSheets(s){const r=stkResult(s),row=b=>[accOf(b),b.title,b.author||"",b.isbn||"",b.shelf||""];
- return{Missing:[["Acc. No.","Title","Author","ISBN","Shelf"],...r.missing.map(row)],"Found, recorded as borrowed":[["Acc. No.","Title","Author","ISBN","Shelf","Borrowed by"],...r.onLoan.map(b=>[...row(b),stu(b.loan.sid)?.name||""])],"Found, marked lost or damaged":[["Acc. No.","Title","Author","ISBN","Shelf","Status"],...r.flagged.map(b=>[...row(b),STL[b.state]||b.state])],"Wrong shelf":[["Code","Title","Belongs on shelf"],...r.mis.map(x=>[x.code,x.t,x.shelf])],"Unknown codes":[["Code","Times scanned"],...r.unknown.map(x=>[x.code,x.n])]}}
-function stockView(m){if(!canEdit()){tab="dash";return render()}const s=stkOpen(),shelves=[...new Set(S.books.map(b=>String(b.shelf||"").trim()).filter(Boolean))].sort();
- if(!s){const past=STK.filter(x=>x.status!=="open").slice(0,12);
-  m.innerHTML=`<div class="rh"><div style="flex:1;min-width:240px"><h2>Stock-taking</h2><div class="s">Walk along the shelves scanning every book. The app then lists what is missing, on the wrong shelf, or recorded wrongly.</div></div></div>
-<section class="panel"><h3>Start a stock-take</h3><div class="sub2">Leave the shelf empty to check the whole library. Several librarians can scan at the same time.</div><div class="bar" style="margin:0"><input id="stk-shelf" list="stk-shelves" placeholder="Shelf (optional), for example A-3" style="max-width:320px"><datalist id="stk-shelves">${shelves.map(x=>`<option>${esc(x)}</option>`).join("")}</datalist><button class="b" data-act="stkstart">${ico("scan")}Start</button></div></section>
-<section class="panel"><h3>Previous stock-takes</h3>${past.length?`<div class="twrap"><table class="tbl stack"><thead><tr><th>Started</th><th>Shelf</th><th class="n">Scanned</th><th class="n">Missing</th><th>By</th><th></th></tr></thead><tbody>${past.map(x=>`<tr><td data-l="Started">${fmtL(x.startedAt)}</td><td data-l="Shelf">${esc(x.shelf||"Whole library")}</td><td class="n" data-l="Scanned">${num(x.scans)}</td><td class="n" data-l="Missing">${num(x.summary?.missing)}</td><td data-l="By" class="s">${esc(String(x.by||"").split("@")[0])}</td><td class="n" data-l=""><button class="b alt" data-act="stkxl" data-id="${esc(x.id)}">Excel</button></td></tr>`).join("")}</tbody></table></div>`:emptyBox("check","No stock-takes yet","Start one when the library is quiet, for example at the end of term.")}</section>`;return}
- const r=stkResult(s),pct=r.expected.length?Math.round(r.found.length/r.expected.length*100):0,list=(arr,f)=>arr.slice(0,100).map(f).join("")+(arr.length>100?`<div class="note">and ${arr.length-100} more (see Excel)</div>`:"");
- m.innerHTML=`<div class="rh"><div style="flex:1;min-width:240px"><h2>Stock-take in progress</h2><div class="s">${esc(s.shelf?"Shelf "+s.shelf:"Whole library")} · started ${fmtL(s.startedAt)} by ${esc(String(s.by||"").split("@")[0])} · ${plural(num(s.scans),"scan")}</div></div><button class="b alt" data-act="stkxl" data-id="${esc(s.id)}">Excel</button><button class="b" data-act="stkdone">${ico("check")}Finish</button></div>
-<div class="grid2"><section class="step cur"><h3><span class="sn">${ico("scan")}</span>Scan each book once</h3><div class="bar" style="margin:0"><div class="sbox">${ico("search")}<input id="stk-in" placeholder="ISBN or accession number, then Enter" autocomplete="off" aria-label="Scan a book"></div><button class="b alt" data-act="stkcam">${ico("scan")}Camera</button></div>
-<div class="note">Accession labels identify each copy exactly. With ISBNs, scan every copy once.</div>
-<div style="margin-top:14px"><div class="inl" style="justify-content:space-between"><b>${r.found.length} of ${r.expected.length} found</b><span class="s">${pct}%</span></div><div class="meter" style="margin-top:6px"><span style="width:${pct}%"></span></div></div>
-${stkLast.length?`<ul class="feed" style="margin-top:10px">${stkLast.map(x=>`<li><span class="fi si ${x.ok?"green":"amber"}">${ico(x.ok?"check":"alert")}</span><div class="fb">${esc(x.msg)}</div><span class="ft">${ago(x.at)}</span></li>`).join("")}</ul>`:""}</section>
-<section class="panel"><h3>Not found yet <span class="s" style="font-weight:500">(${r.missing.length})</span></h3><div class="sub2">On the shelf according to the records, not scanned yet</div><div style="max-height:360px;overflow:auto">${r.missing.length?list(r.missing,b=>`<div class="s" style="padding:3px 0">${b.acc?`<b>${esc(b.acc)}</b> · `:""}${esc(b.title)}${b.shelf?" · "+esc(b.shelf):""}</div>`):'<div class="okbox">Everything expected here has been found.</div>'}</div>${r.missing.length?`<button class="b alt" style="margin-top:10px" data-act="stklost">Mark ${plural(r.missing.length,"missing book")} as lost</button>`:""}</section></div>
-<div class="grid3">${[["Found, but recorded as borrowed",r.onLoan,b=>`${esc(b.title)} <span class="s">· ${esc(stu(b.loan.sid)?.name||"")}</span>`,"Return these in Borrow & Return if the student no longer has them."],["Found, but marked lost or damaged",r.flagged,b=>`${esc(b.title)} <span class="s">· ${STL[b.state]||""}</span>`,"Edit these books to put them back in circulation."],["On the wrong shelf",r.mis,x=>`${esc(x.t)} <span class="s">· belongs on ${esc(x.shelf||"no shelf")}</span>`,""],["Codes not in the catalogue",r.unknown,x=>`${esc(x.code)} <span class="s">· ${plural(x.n,"time")}</span>`,"Add these books to the library."]].map(([t,a,f,h])=>`<section class="panel"><h3>${t} <span class="s" style="font-weight:500">(${a.length})</span></h3>${h&&a.length?`<div class="sub2">${h}</div>`:""}${a.length?list(a,x=>`<div style="padding:3px 0;font-size:13.5px">${f(x)}</div>`):'<div class="note">None.</div>'}</section>`).join("")}</div>`;
- const i=$("#stk-in");if(i){i.onkeydown=e=>{if(e.key==="Enter"){e.preventDefault();const v=i.value;i.value="";stkScan(v)}};if(!dlg.open)setTimeout(()=>{if(document.activeElement===document.body)i.focus()},30)}}
-async function stkFinish(){const s=stkOpen();if(!s)return;const r=stkResult(s);if(!await ask("Finish this stock-take? "+r.found.length+" of "+r.expected.length+" books were found; "+r.missing.length+" are missing. You can still download the results afterwards.",{title:"Finish stock-take",ok:"Finish"}))return;
- try{await updateDoc(doc(db,"stocktakes",s.id),{status:"closed",closedAt:Date.now(),summary:{expected:r.expected.length,found:r.found.length,missing:r.missing.length}});addLog({type:"stock",note:"Stock-take finished: "+r.missing.length+" missing of "+r.expected.length});stkLast=[];toast("Stock-take finished.")}catch(e){fail(e)}}
-async function stkLost(){const s=stkOpen();if(!s)return;const r=stkResult(s);if(!r.missing.length)return;
- if(!await ask("Mark "+plural(r.missing.length,"book")+" as lost? They will stop showing as available. You can change any of them back later by editing the book.",{title:"Mark missing books as lost",ok:"Mark as lost",danger:true}))return;
- const note="Missing at stock-take, "+fmtL(Date.now());const done=await txBooks(r.missing.map(b=>b.id),cur=>cur.loan||cur.state?null:{...cur,state:"lost",snote:note});
- if(done){addLog({type:"bulk_edit",note:plural(done.length,"book")+" marked lost after stock-take"});toast(plural(done.length,"book")+" marked as lost.")}}
-function stkExcel(id){const s=STK.find(x=>x.id===id);if(!s)return;if(writeXlsx("stock-take-"+ymd(s.startedAt)+(s.shelf?"-"+s.shelf:""),stkSheets(s)))addLog({type:"export",note:"Stock-take results"})}
-
 /* ================= ONLINE CATALOGUE (no sign-in, ?catalog) ================= */
 const PUB=new URLSearchParams(location.search).has("catalog");
 const pubLink=()=>location.origin+location.pathname+"?catalog";
@@ -1937,7 +1890,7 @@ function startPublic(){me={role:"public",name:"Visitor"};limitedMode=true;S.read
 let KR=[],KI=0;
 function cmdItems(qs){const ql=qs.trim().toLowerCase(),m=t=>!ql||t.toLowerCase().includes(ql),out=[];
  $$("#side nav button[data-tab]:not(.hide)").forEach(b=>{const t=b.querySelector(".lbl").textContent;if(m(t))out.push({ic:"chevR",t,s:"Page",go:()=>{tab=b.dataset.tab;render()}})});
- if(canEdit()&&!limitedMode)[["lend","Lend a book",()=>{deskReset("lend");tab="desk";render()}],["ret","Return a book",()=>{deskReset("ret");tab="desk";render()}],["users","Class library period",()=>{deskReset("class");tab="desk";render()}],["plus","Add a book",()=>bookForm()],["user","Add a student",()=>stuForm()],["id","Scan an ID card",()=>idScanSearch()],["mail","Open reminders",()=>remindersDlg()],["scan","Start or continue a stock-take",()=>{tab="stock";render()}]].forEach(([ic,t,go])=>{if(m(t))out.push({ic,t,s:"Action",go})});
+ if(canEdit()&&!limitedMode)[["lend","Lend a book",()=>{deskReset("lend");tab="desk";render()}],["ret","Return a book",()=>{deskReset("ret");tab="desk";render()}],["users","Class library period",()=>{deskReset("class");tab="desk";render()}],["plus","Add a book",()=>bookForm()],["user","Add a student",()=>stuForm()],["id","Scan an ID card",()=>idScanSearch()],["mail","Open reminders",()=>remindersDlg()]].forEach(([ic,t,go])=>{if(m(t))out.push({ic,t,s:"Action",go})});
  if(ql.length>=2){const seen=new Set();S.books.filter(b=>(b.title+" "+(b.author||"")+" "+(b.isbn||"")+" "+accOf(b)).toLowerCase().includes(ql)).forEach(b=>{if(seen.has(root(b))||seen.size>=6)return;seen.add(root(b));out.push({ic:"book",t:b.title,s:(b.author||"Book")+(b.acc?" · "+b.acc:""),go:()=>detailsDlg(b.id)})});
   if(!limitedMode)active().filter(z=>(z.name+" "+(z.adm||"")).toLowerCase().includes(ql)).slice(0,6).forEach(z=>out.push({ic:"user",t:z.name,s:[gr(z)&&"Grade "+gr(z),z.adm&&"GR "+z.adm].filter(Boolean).join(" · "),go:()=>stuProfile(z.id)}))}
  return out.slice(0,16)}
